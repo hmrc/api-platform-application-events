@@ -19,6 +19,7 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 import play.api.libs.json._
 import uk.gov.hmrc.play.json.Union
+import scala.annotation.nowarn
 
 trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
     with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
@@ -109,6 +110,7 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     case object PPNS_CALLBACK_URI_UPDATED extends EventType
   }
 
+  @nowarn
   implicit val abstractApplicationEventFormats
       : OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
@@ -129,19 +131,19 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     .and[ApplicationApprovalRequestDeclined](EventTypes.APPLICATION_APPROVAL_REQUEST_DECLINED.toString)
     .and[ApiSubscribed](EventTypes.API_SUBSCRIBED_V2.toString)
     .and[ApiUnsubscribed](EventTypes.API_UNSUBSCRIBED_V2.toString)
-    .and[ApiSubscribedEvent](EventTypes.API_SUBSCRIBED.toString)
-    .and[ApiUnsubscribedEvent](EventTypes.API_UNSUBSCRIBED.toString)
     .and[ClientSecretAdded](EventTypes.CLIENT_SECRET_ADDED_V2.toString)
-    .and[ClientSecretAddedEvent](EventTypes.CLIENT_SECRET_ADDED.toString)
     .and[ClientSecretRemoved](EventTypes.CLIENT_SECRET_REMOVED_V2.toString)
-    .and[ClientSecretRemovedEvent](EventTypes.CLIENT_SECRET_REMOVED.toString)
     .and[CollaboratorAdded](EventTypes.COLLABORATOR_ADDED.toString)
-    .and[TeamMemberAddedEvent](EventTypes.TEAM_MEMBER_ADDED.toString)
     .and[CollaboratorRemoved](EventTypes.COLLABORATOR_REMOVED.toString)
-    .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
     .and[RedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
     .and[PpnsCallBackUriUpdatedEvent](EventTypes.PPNS_CALLBACK_URI_UPDATED.toString)
+    .and[ApiSubscribedEvent](EventTypes.API_SUBSCRIBED.toString)
+    .and[ApiUnsubscribedEvent](EventTypes.API_UNSUBSCRIBED.toString)
+    .and[ClientSecretAddedEvent](EventTypes.CLIENT_SECRET_ADDED.toString)
+    .and[ClientSecretRemovedEvent](EventTypes.CLIENT_SECRET_REMOVED.toString)
+    .and[TeamMemberAddedEvent](EventTypes.TEAM_MEMBER_ADDED.toString)
+    .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
     .format
-}
+  }
 
 object EventsJsonFormatters extends EventsJsonFormatters with CommonJsonFormatters
