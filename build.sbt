@@ -14,22 +14,16 @@ lazy val library = (project in file("."))
     crossScalaVersions := supportedScalaVersions,
   )
   .settings(
-    name := "api-platform-application-events",
-    majorVersion                     := 0,
     scalaVersion                     := scala213,
-    targetJvm := "jvm-1.8",
+    name                             := "api-platform-application-events",
+    majorVersion                     := 0,
+    isPublicArtefact                 := true,
+    targetJvm                        := "jvm-1.8",
     libraryDependencies ++= LibraryDependencies()
   )
   .settings(
     ScoverageSettings()
   )
-  .settings(
-    Compile / unmanagedResourceDirectories += baseDirectory.value / "app" / "resources"
-  )
-
-  .configs(Test)
-  .settings(inConfig(Test)(Defaults.testSettings): _*)
-  .settings(inConfig(Test)(BloopDefaults.configSettings))
   .settings(
     Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT")
   )
