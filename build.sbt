@@ -5,21 +5,20 @@ import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 import bloop.integrations.sbt.BloopDefaults
 
-val appName = "api-platform-application-events"
-
 lazy val scala212 = "2.12.15"
 lazy val scala213 = "2.13.8"
 lazy val supportedScalaVersions = List(scala212, scala213)
 
-lazy val microservice = Project(appName, file("."))
-  .enablePlugins(SbtAutoBuildPlugin)
-  .disablePlugins(JUnitXmlReportPlugin)
+lazy val library = (project in file("."))
+  .settings(PlayCrossCompilation.playCrossCompilationSettings)
   .settings(
     crossScalaVersions := supportedScalaVersions,
   )
   .settings(
+    name := "api-platform-application-events",
     majorVersion                     := 0,
     scalaVersion                     := scala213,
+    targetJvm := "jvm-1.8",
     libraryDependencies ++= LibraryDependencies()
   )
   .settings(
