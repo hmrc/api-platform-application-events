@@ -10,7 +10,6 @@ lazy val scala213 = "2.13.8"
 lazy val supportedScalaVersions = List(scala212, scala213)
 
 lazy val library = (project in file("."))
-  .settings(PlayCrossCompilation.playCrossCompilationSettings)
   .settings(
     crossScalaVersions := supportedScalaVersions,
   )
