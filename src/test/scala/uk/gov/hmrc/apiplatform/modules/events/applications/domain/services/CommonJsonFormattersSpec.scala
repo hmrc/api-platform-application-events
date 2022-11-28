@@ -1,13 +1,11 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers
 import play.api.libs.json._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventId
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 
-class CommonJsonFormattersSpec extends AnyWordSpec with Matchers {
+class CommonJsonFormattersSpec extends JsonFormattersSpec {
 
   val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
   val bobSmithUserName = "bob smith"

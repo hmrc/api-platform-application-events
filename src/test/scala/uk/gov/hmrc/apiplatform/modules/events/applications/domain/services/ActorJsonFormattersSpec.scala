@@ -1,14 +1,12 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import org.scalatest.OptionValues
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers
 import play.api.libs.json._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Actor
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Actors
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.LaxEmailAddress
 
-class ActorJsonFormattersSpec extends AnyWordSpec with Matchers with OptionValues {
+class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 
   val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
   val bobSmithUserName = "bob smith"
@@ -17,49 +15,39 @@ class ActorJsonFormattersSpec extends AnyWordSpec with Matchers with OptionValue
 
     import ActorJsonFormatters._
 
-    def testToJson(actor: Actor)(fields: (String, String)*) = {
-      Json.toJson(actor) shouldBe Json.obj(
-        fields.map[(String, Json.JsValueWrapper)] { case (k, v) => (k -> JsString(v)) }: _*
-      )
-    }
-
-    def testFromJson(text: String)(expected: Actor) = {
-      Json.parse(text).validate[Actor] shouldBe JsSuccess(expected)
-    }
-
     "given a gatekeeper user" should {
       "produce json" in {
-        testToJson(Actors.GatekeeperUser(bobSmithUserName))(("actorType" -> "GATEKEEPER"), ("user" -> bobSmithUserName))
+        testToJson[Actor](Actors.GatekeeperUser(bobSmithUserName))(("actorType" -> "GATEKEEPER"), ("user" -> bobSmithUserName))
       }
 
       "read json" in {
-        testFromJson("""{"actorType":"GATEKEEPER","user":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
+        testFromJson[Actor]("""{"actorType":"GATEKEEPER","user":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
       }
     }
 
     "given a collaborator actor" should {
       "produce json" in {
-        testToJson(Actors.Collaborator(bobSmithEmailAddress))(
+        testToJson[Actor](Actors.Collaborator(bobSmithEmailAddress))(
           ("actorType" -> "COLLABORATOR"),
           ("email" -> "bob@smith.com")
         )
       }
 
       "read json" in {
-        testFromJson("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.Collaborator(bobSmithEmailAddress))
+        testFromJson[Actor]("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.Collaborator(bobSmithEmailAddress))
       }
     }
 
     "given a scheduled job actor" should {
       "produce json" in {
-        testToJson(Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))(
+        testToJson[Actor](Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))(
           ("actorType" -> "SCHEDULED_JOB"),
           ("jobId" -> "DeleteAllAppsBwaHaHa")
         )
       }
 
       "read json" in {
-        testFromJson("""{"actorType":"SCHEDULED_JOB","jobId":"DeleteAllAppsBwaHaHa"}""")(Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))
+        testFromJson[Actor]("""{"actorType":"SCHEDULED_JOB","jobId":"DeleteAllAppsBwaHaHa"}""")(Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))
       }
     }
 

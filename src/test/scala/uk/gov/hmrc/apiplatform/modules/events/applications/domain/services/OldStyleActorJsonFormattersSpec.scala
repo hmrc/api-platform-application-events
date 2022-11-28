@@ -1,12 +1,10 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{JsString, Json}
-import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.OldStyleActors
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.OldStyleActor
 
-class OldStyleActorJsonFormattersSpec extends AnyWordSpec with Matchers {
+class OldStyleActorJsonFormattersSpec extends JsonFormattersSpec {
 
   "OldStyleActorJsonFormatters" when {
 

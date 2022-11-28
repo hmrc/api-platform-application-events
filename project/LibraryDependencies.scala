@@ -1,10 +1,10 @@
 import sbt._
 
 object LibraryDependencies {
-  def apply(): Seq[ModuleID] = compileDependencies ++ testDependencies
-
+  def apply() = compileDependencies ++ testDependencies
+  
   lazy val compileDependencies = Seq(
-    "uk.gov.hmrc"             %% "play-json-union-formatter"      % "1.16.0-play-28"
+    "uk.gov.hmrc"             %% "play-json-union-formatter"      % "1.17.0-play-28"
   )
 
   lazy val testDependencies = Seq(

@@ -1,14 +1,12 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-import org.scalatest.matchers.should.Matchers
 import play.api.libs.json.Json
 import scala.annotation.nowarn
       
       
 @nowarn
-class EventsJsonFormattersSpec extends AnyWordSpec with Matchers {
+class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId = EventId.random
 
   "EventsJsonFormatters" when {
