@@ -2,7 +2,7 @@ import sbt._
 
 object LibraryDependencies {
   def apply() = compileDependencies ++ testDependencies
-  
+
   lazy val compileDependencies = Seq(
     "uk.gov.hmrc"             %% "play-json-union-formatter"      % "1.17.0-play-28"
   )

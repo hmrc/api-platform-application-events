@@ -7,7 +7,7 @@ import bloop.integrations.sbt.BloopDefaults
 
 val appName = "api-platform-application-events"
 
-lazy val scala212 = "2.12.16"
+lazy val scala212 = "2.12.15"
 lazy val scala213 = "2.13.8"
 lazy val supportedScalaVersions = List(scala212, scala213)
 
@@ -21,6 +21,9 @@ lazy val microservice = Project(appName, file("."))
     majorVersion                     := 0,
     scalaVersion                     := scala213,
     libraryDependencies ++= LibraryDependencies()
+  )
+  .settings(
+    ScoverageSettings()
   )
   .settings(
     Compile / unmanagedResourceDirectories += baseDirectory.value / "app" / "resources"
