@@ -17,11 +17,16 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-import play.api.libs.json._
 import uk.gov.hmrc.play.json.Union
+import play.api.libs.json.{Json, OFormat, EnvReads, EnvWrites}
+import java.time.LocalDateTime
+import play.api.libs.json.Format
 
 trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
     with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
+
+  implicit def localDateTimeFormats(): Format[LocalDateTime]
+  
   implicit val collaboratorAddedFormats = Json.format[CollaboratorAdded]
   implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemoved]
 
@@ -113,9 +118,7 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
       : OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
     .and[ProductionAppPrivacyPolicyLocationChanged](EventTypes.PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
-    .and[ProductionLegacyAppPrivacyPolicyLocationChanged](
-      EventTypes.PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString
-    )
+    .and[ProductionLegacyAppPrivacyPolicyLocationChanged](EventTypes.PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
     .and[ProductionAppTermsConditionsLocationChanged](EventTypes.PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED.toString)
     .and[ProductionLegacyAppTermsConditionsLocationChanged](EventTypes.PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED.toString)
     .and[ResponsibleIndividualSet](EventTypes.RESPONSIBLE_INDIVIDUAL_SET.toString)
@@ -144,4 +147,19 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     .format
   }
 
-object EventsJsonFormatters extends EventsJsonFormatters with CommonJsonFormatters
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters with EnvWrites with EnvReads {
+  
+  implicit val utcReads = DefaultLocalDateTimeReads
+  implicit val utcWrites = DefaultLocalDateTimeWrites
+
+  implicit def localDateTimeFormats(): Format[LocalDateTime] = Format.apply(utcReads, utcWrites)
+}
+
+/*
+*  For mongo use the following
+*
+*  object EventsMongoJsonFormatters extends EventsJsonFormatters {
+*     implicit def localDateTimeFormats() = MongoJavatimeFormats.localDateTimeFormat
+*  }
+*
+*/

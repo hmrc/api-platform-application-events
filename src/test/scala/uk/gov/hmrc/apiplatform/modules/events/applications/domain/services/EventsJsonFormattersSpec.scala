@@ -23,8 +23,8 @@ import play.api.libs.json.Json
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId = EventId.random
 
-  "EventsJsonFormatters" when {
-    import EventsJsonFormatters._
+  "EventsInterServiceCallJsonFormatters" when {
+    import EventsInterServiceCallJsonFormatters._
 
     "given an old style team member added event" should {
       "convert from json" in {
@@ -43,7 +43,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
     }
 
-    "given a new style collaborated removed event" should {
+    "given a new style collaborator removed event" should {
       "convert from json" in {
         val jsonText = raw"""
               {"id": "${eventId.value}",

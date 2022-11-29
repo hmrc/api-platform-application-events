@@ -25,7 +25,7 @@ trait PrivacyPolicyLocationJsonFormatters {
   private implicit val inDesktopSoftwareFormat = Json.format[PrivacyPolicyLocations.InDesktopSoftware.type]
   private implicit val urlFormat               = Json.format[PrivacyPolicyLocations.Url]
 
-  implicit val privacyPolictLocationFormat = Union.from[PrivacyPolicyLocation]("privacyPolicyType")
+  implicit val privacyPolicyLocationFormat = Union.from[PrivacyPolicyLocation]("privacyPolicyType")
     .and[PrivacyPolicyLocations.NoneProvided.type]("noneProvided")
     .and[PrivacyPolicyLocations.InDesktopSoftware.type]("inDesktop")
     .and[PrivacyPolicyLocations.Url]("url")

@@ -50,4 +50,5 @@ object Actors {
     *   the job name or instance of the job possibly as a UUID
     */
   case object Unknown extends Actor
+
 }
