@@ -27,16 +27,19 @@ trait OldStyleActorJsonFormatters {
     case object COLLABORATOR extends ActorType
     case object GATEKEEPER extends ActorType
     case object SCHEDULED_JOB extends ActorType
+    case object UNKNOWN extends ActorType
   }
 
   implicit val oldStyleActorsCollaboratorJF = Json.format[OldStyleActors.Collaborator]
   implicit val oldStyleActorsGatekeeperUserJF = Json.format[OldStyleActors.GatekeeperUser]
   implicit val oldStyleActorsScheduledJobJF = Json.format[OldStyleActors.ScheduledJob]
+  implicit val oldStyleActorsUnknownJF = Json.format[OldStyleActors.Unknown.type]
 
   implicit val formatOldStyleActor: OFormat[OldStyleActor] = Union.from[OldStyleActor]("actorType")
     .and[OldStyleActors.Collaborator](ActorTypes.COLLABORATOR.toString)
     .and[OldStyleActors.GatekeeperUser](ActorTypes.GATEKEEPER.toString)
     .and[OldStyleActors.ScheduledJob](ActorTypes.SCHEDULED_JOB.toString)
+    .and[OldStyleActors.Unknown.type](ActorTypes.UNKNOWN.toString)
     .format
 }
 

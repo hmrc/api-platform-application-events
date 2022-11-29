@@ -48,4 +48,11 @@ object OldStyleActors {
     *   the job name or instance of the job possibly as a UUID
     */
   case class ScheduledJob(id: String) extends OldStyleActor
+
+  /** Unknown source - probably 3rd party code such as PPNS invocations
+  *
+  * @param id
+  *   the job name or instance of the job possibly as a UUID
+  */
+  case object Unknown extends OldStyleActor
 }

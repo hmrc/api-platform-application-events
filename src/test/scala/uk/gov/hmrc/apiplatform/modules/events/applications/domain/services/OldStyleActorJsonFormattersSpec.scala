@@ -58,5 +58,17 @@ class OldStyleActorJsonFormattersSpec extends JsonFormattersSpec {
         )
       }
     }
+
+    "given an unknown actor" should {
+      "produce json" in {
+        testToJson[OldStyleActor](OldStyleActors.Unknown)(
+          ("actorType" -> "UNKNOWN")
+        )
+      }
+
+      "read json" in {
+        testFromJson[OldStyleActor]("""{"actorType":"UNKNOWN"}""")(OldStyleActors.Unknown)
+      }
+    }
   }
 }

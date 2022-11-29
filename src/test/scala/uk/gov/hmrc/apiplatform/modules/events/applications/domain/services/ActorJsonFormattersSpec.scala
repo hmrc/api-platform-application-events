@@ -67,6 +67,18 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
       }
     }
 
+    "given an unknown actor" should {
+      "produce json" in {
+        testToJson[Actor](Actors.Unknown)(
+          ("actorType" -> "UNKNOWN")
+        )
+      }
+
+      "read json" in {
+        testFromJson[Actor]("""{"actorType":"UNKNOWN"}""")(Actors.Unknown)
+      }
+    }
+
     "given bad json" should {
       "fail accordingly" in {
         val text = """{"actorType":"NOT_VALID","jobId":"DeleteAllAppsBwaHaHa"}"""
