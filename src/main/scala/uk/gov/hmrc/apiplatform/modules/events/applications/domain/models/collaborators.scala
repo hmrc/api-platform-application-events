@@ -37,7 +37,9 @@ case class CollaboratorRemoved(
     verifiedAdminsToEmail: Set[LaxEmailAddress]
   ) extends ApplicationEvent
 
-@deprecated("please use new event CollaboratorAdded", "Q3 2022")
+  /**
+    * DEPRECATED Use CollaboratorAdded instead
+    */
 case class TeamMemberAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -47,7 +49,9 @@ case class TeamMemberAddedEvent(
     teamMemberRole: String
   ) extends OldStyleApplicationEvent
 
-@deprecated("please use new event CollaboratorRemoved", "Q3 2022")
+  /**
+    * DEPRECATED Use CollaboratorRemoved instead
+    */
 case class TeamMemberRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,

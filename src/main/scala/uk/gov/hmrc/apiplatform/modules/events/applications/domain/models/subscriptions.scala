@@ -36,7 +36,9 @@ case class ApiUnsubscribed(
     apiIdentifier: ApiIdentifier
   ) extends ApplicationEvent
 
-@deprecated("please use new event ApiSubscribed", "Oct 2022")
+  /**
+    * DEPRECATED Use ApiSubscribed instead
+    */
 case class ApiSubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -46,7 +48,9 @@ case class ApiSubscribedEvent(
     version: String
   ) extends OldStyleApplicationEvent
 
-@deprecated("please use new event ApiUnsubscribed", "Oct 2022")
+  /**
+    * DEPRECATED Use ApiUnsubscribed instead
+    */
 case class ApiUnsubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,

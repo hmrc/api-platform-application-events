@@ -37,7 +37,9 @@ case class ClientSecretRemoved(
     clientSecretName: String
   ) extends ApplicationEvent
 
-@deprecated("please use new event ClientSecretAdded", "Oct 2022")
+  /**
+    * DEPRECATED Use ClientSecretAdded instead
+    */
 case class ClientSecretAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -46,7 +48,9 @@ case class ClientSecretAddedEvent(
     clientSecretId: String
   ) extends OldStyleApplicationEvent
 
-@deprecated("please use new event ClientSecretRemoved", "Oct 2022")
+  /**
+    * DEPRECATED Use ClientSecretRemoved instead
+    */
 case class ClientSecretRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,

@@ -18,18 +18,15 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 import play.api.libs.json.Json
-import scala.annotation.nowarn
       
       
-@nowarn
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId = EventId.random
 
   "EventsJsonFormatters" when {
     import EventsJsonFormatters._
 
-    "given a team member added event" should {
-
+    "given an old style team member added event" should {
       "convert from json" in {
         val jsonText = raw"""
               {"id": "${eventId.value}",
@@ -46,7 +43,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
     }
 
-    "given a collaborated removed event" should {
+    "given a new style collaborated removed event" should {
       "convert from json" in {
         val jsonText = raw"""
               {"id": "${eventId.value}",
