@@ -58,6 +58,17 @@ object EventTags {
          _ : ProductionLegacyAppTermsConditionsLocationChanged => POLICY_LOCATION
   }
 
+  def fromString(tag: String): Option[EventTag] = tag match {
+    case "COLLABORATOR"    => Some(COLLABORATOR)
+    case "CLIENT_SECRET"   => Some(CLIENT_SECRET)
+    case "PPNS_CALLBACK"   => Some(PPNS_CALLBACK)
+    case "REDIRECT_URIS"   => Some(REDIRECT_URIS)
+    case "TERMS_OF_USE"    => Some(TERMS_OF_USE)
+    case "APP_NAME"        => Some(APP_NAME)
+    case "POLICY_LOCATION" => Some(POLICY_LOCATION)
+    case _                 => None
+  }
+
   def describe(tag: EventTag): String = tag match {
     case SUBSCRIPTION => "Subscription"
     case COLLABORATOR => "Collaborator"

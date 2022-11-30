@@ -17,29 +17,23 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json._
-import uk.gov.hmrc.play.json.Union
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{EventTag, EventTags}
 
 trait EventTagJsonFormatters {
-  implicit val eventTagAppNameJf = Json.format[EventTags.APP_NAME.type]
-  implicit val eventTagClientSecretJf = Json.format[EventTags.CLIENT_SECRET.type]
-  implicit val eventTagCollaboratorJf = Json.format[EventTags.COLLABORATOR.type]
-  implicit val eventTagPolicyLocationJf = Json.format[EventTags.POLICY_LOCATION.type]
-  implicit val eventTagPpnsCallbackJf = Json.format[EventTags.PPNS_CALLBACK.type]
-  implicit val eventTagRedirectUrisJf = Json.format[EventTags.REDIRECT_URIS.type]
-  implicit val eventTagSubscriptionJf = Json.format[EventTags.SUBSCRIPTION.type]
-  implicit val eventTagToUJf = Json.format[EventTags.TERMS_OF_USE.type]
+ implicit val formatEventTag2: Format[EventTag] = new Format[EventTag] {
 
-  implicit val formatEventTag: OFormat[EventTag] = Union.from[EventTag]("eventTag")
-  .and[EventTags.APP_NAME.type](EventTags.APP_NAME.toString)
-  .and[EventTags.CLIENT_SECRET.type](EventTags.CLIENT_SECRET.toString)
-    .and[EventTags.COLLABORATOR.type](EventTags.COLLABORATOR.toString)
-    .and[EventTags.POLICY_LOCATION.type](EventTags.POLICY_LOCATION.toString)
-    .and[EventTags.PPNS_CALLBACK.type](EventTags.PPNS_CALLBACK.toString)
-    .and[EventTags.REDIRECT_URIS.type](EventTags.REDIRECT_URIS.toString)
-    .and[EventTags.SUBSCRIPTION.type](EventTags.SUBSCRIPTION.toString)
-    .and[EventTags.TERMS_OF_USE.type](EventTags.TERMS_OF_USE.toString)
-    .format
+    override def writes(o: EventTag): JsValue = JsString(o.toString())
+
+    override def reads(json: JsValue): JsResult[EventTag] = {
+      (json match {
+        case JsString(text) => EventTags.fromString(text)
+        case _ => None
+      })
+      .fold[JsResult[EventTag]](JsError(s"Cannot find event tag from $json"))(JsSuccess(_))
+    }
+
+
+  }
 }
 
 object EventTagJsonFormatters extends EventTagJsonFormatters

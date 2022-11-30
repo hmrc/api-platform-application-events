@@ -18,6 +18,8 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTag
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
+import play.api.libs.json.JsString
+import play.api.libs.json.Json
 
 class EventTagJsonFormattersSpec extends JsonFormattersSpec {
 
@@ -27,13 +29,12 @@ class EventTagJsonFormattersSpec extends JsonFormattersSpec {
 
     "given an APP_NAME" should {
       "produce json" in {
-        testToJson[EventTag](EventTags.APP_NAME)(
-          ("eventTag" -> "APP_NAME")
-        )
+        val tag: EventTag = EventTags.APP_NAME
+        Json.toJson(tag) shouldBe JsString("APP_NAME")
       }
 
       "read json" in {
-        testFromJson[EventTag]("""{"eventTag":"APP_NAME"}""")(EventTags.APP_NAME)
+        testFromJson[EventTag](""""APP_NAME"""")(EventTags.APP_NAME)
       }
     }
   }
