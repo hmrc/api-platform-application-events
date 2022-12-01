@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{PrivacyPolicyLocation,PrivacyPolicyLocations}
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class PrivacyPolicyLocationJsonFormattersSpec extends JsonFormattersSpec {
 
@@ -47,7 +48,7 @@ class PrivacyPolicyLocationJsonFormattersSpec extends JsonFormattersSpec {
         testFromJson[PrivacyPolicyLocation]("""{"privacyPolicyType":"inDesktop"}""")(PrivacyPolicyLocations.InDesktopSoftware)
       }
     }
-    
+
     "given policy of url provided" should {
       "produce json" in {
         testToJson[PrivacyPolicyLocation](PrivacyPolicyLocations.Url("aUrl"))(
@@ -57,7 +58,9 @@ class PrivacyPolicyLocationJsonFormattersSpec extends JsonFormattersSpec {
       }
 
       "read json" in {
-        testFromJson[PrivacyPolicyLocation]("""{"privacyPolicyType":"url","value":"aUrl"}""")(PrivacyPolicyLocations.Url("aUrl"))
+        testFromJson[PrivacyPolicyLocation]("""{"privacyPolicyType":"url","value":"aUrl"}""")(
+          PrivacyPolicyLocations.Url("aUrl")
+        )
       }
     }
   }

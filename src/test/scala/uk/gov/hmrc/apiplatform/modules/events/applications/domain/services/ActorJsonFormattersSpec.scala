@@ -21,6 +21,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Actor
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Actors
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 
@@ -33,7 +34,10 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 
     "given a gatekeeper user" should {
       "produce json" in {
-        testToJson[Actor](Actors.GatekeeperUser(bobSmithUserName))(("actorType" -> "GATEKEEPER"), ("user" -> bobSmithUserName))
+        testToJson[Actor](Actors.GatekeeperUser(bobSmithUserName))(
+          ("actorType" -> "GATEKEEPER"),
+          ("user" -> bobSmithUserName)
+        )
       }
 
       "read json" in {

@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
 

@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTag
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
 import play.api.libs.json.JsString

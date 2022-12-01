@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers
-import play.api.libs.json._
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import play.api.libs.json.Json
+import play.api.libs.json.JsString
 
-trait JsonFormattersSpec extends AnyWordSpec with Matchers {
+class ApplicationIdSpec extends JsonFormattersSpec {
+  val anAppId = ApplicationId("app123")
 
-  def testToJson[T](in: T)(fields: (String, String)*)(implicit wrt: Writes[T]) = {
-    val f: Seq[(String, JsValue)] = fields.map { case (k, v) => (k -> JsString(v)) }
-    Json.toJson(in) shouldBe JsObject(f)
-  }
+  "ApplicationId" should {
+    "convert to json" in {
 
-  def testFromJson[T](text: String)(expected: T)(implicit rdr: Reads[T]) = {
-    Json.parse(text).validate[T] shouldBe JsSuccess(expected)
+      Json.toJson(anAppId) shouldBe JsString("app123")
+    }
+
+    "read from json" in {
+      testFromJson[ApplicationId](""""app123"""")(anAppId)
+    }
   }
 }

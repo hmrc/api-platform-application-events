@@ -17,8 +17,8 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.LocalDateTime
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
-import uk.gov.hmrc.apiplatform.modules.apis.domain.models.ApiIdentifier
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
 
 sealed trait AbstractApplicationEvent {
   def id: EventId
@@ -35,12 +35,13 @@ sealed trait ApplicationEvent extends AbstractApplicationEvent {
 }
 
 object AbstractApplicationEvent {
+
   implicit val orderEvents: Ordering[AbstractApplicationEvent] = new Ordering[AbstractApplicationEvent]() {
-    override def compare(x: AbstractApplicationEvent, y: AbstractApplicationEvent): Int = x.eventDateTime.compareTo(y.eventDateTime)
+
+    override def compare(x: AbstractApplicationEvent, y: AbstractApplicationEvent): Int =
+      x.eventDateTime.compareTo(y.eventDateTime)
   }
 }
-
-
 
 case class PpnsCallBackUriUpdatedEvent(
     id: EventId,
@@ -53,6 +54,17 @@ case class PpnsCallBackUriUpdatedEvent(
     newCallbackUrl: String
   ) extends OldStyleApplicationEvent
 
+case class RedirectUrisUpdated(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: LocalDateTime,
+    actor: Actor,
+    oldRedirectUris: List[String],
+    newRedirectUris: List[String]
+  ) extends ApplicationEvent
+
+/** DEPRECATED Use RedirectUrisUpdated instead
+  */
 case class RedirectUrisUpdatedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -130,9 +142,8 @@ case class ClientSecretRemoved(
     clientSecretName: String
   ) extends ApplicationEvent
 
-  /**
-    * DEPRECATED Use ClientSecretAdded instead
-    */
+/** DEPRECATED Use ClientSecretAdded instead
+  */
 case class ClientSecretAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -141,9 +152,8 @@ case class ClientSecretAddedEvent(
     clientSecretId: String
   ) extends OldStyleApplicationEvent
 
-  /**
-    * DEPRECATED Use ClientSecretRemoved instead
-    */
+/** DEPRECATED Use ClientSecretRemoved instead
+  */
 case class ClientSecretRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -152,7 +162,7 @@ case class ClientSecretRemovedEvent(
     clientSecretId: String
   ) extends OldStyleApplicationEvent
 
-  case class CollaboratorAdded(
+case class CollaboratorAdded(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: LocalDateTime,
@@ -170,9 +180,8 @@ case class CollaboratorRemoved(
     verifiedAdminsToEmail: Set[LaxEmailAddress]
   ) extends ApplicationEvent
 
-  /**
-    * DEPRECATED Use CollaboratorAdded instead
-    */
+/** DEPRECATED Use CollaboratorAdded instead
+  */
 case class TeamMemberAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -182,9 +191,8 @@ case class TeamMemberAddedEvent(
     teamMemberRole: String
   ) extends OldStyleApplicationEvent
 
-  /**
-    * DEPRECATED Use CollaboratorRemoved instead
-    */
+/** DEPRECATED Use CollaboratorRemoved instead
+  */
 case class TeamMemberRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -194,7 +202,7 @@ case class TeamMemberRemovedEvent(
     teamMemberRole: String
   ) extends OldStyleApplicationEvent
 
-  case class ApiSubscribed(
+case class ApiSubscribed(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: LocalDateTime,
@@ -210,9 +218,8 @@ case class ApiUnsubscribed(
     apiIdentifier: ApiIdentifier
   ) extends ApplicationEvent
 
-  /**
-    * DEPRECATED Use ApiSubscribed instead
-    */
+/** DEPRECATED Use ApiSubscribed instead
+  */
 case class ApiSubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -222,9 +229,8 @@ case class ApiSubscribedEvent(
     version: String
   ) extends OldStyleApplicationEvent
 
-  /**
-    * DEPRECATED Use ApiUnsubscribed instead
-    */
+/** DEPRECATED Use ApiUnsubscribed instead
+  */
 case class ApiUnsubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,
@@ -234,7 +240,6 @@ case class ApiUnsubscribedEvent(
     version: String
   ) extends OldStyleApplicationEvent
 
-  
 case class ResponsibleIndividualChanged(
     id: EventId,
     applicationId: ApplicationId,

@@ -23,7 +23,7 @@ import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import java.time.LocalDateTime
 
 class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
-  
+
   "EventTags" when {
     "given APP_NAME" should {
       "convert to text" in {
@@ -39,7 +39,15 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
       }
 
       "Correctly tag event as it" in {
-        val evt = ProductionAppNameChangedEvent(EventId.random, ApplicationId.random, LocalDateTime.now(), Actors.Unknown, "Old", "New", LaxEmailAddress("bob"))
+        val evt = ProductionAppNameChangedEvent(
+          EventId.random,
+          ApplicationId.random,
+          LocalDateTime.now(),
+          Actors.Unknown,
+          "Old",
+          "New",
+          LaxEmailAddress("bob")
+        )
 
         EventTags.tag(evt) shouldBe EventTags.APP_NAME
       }

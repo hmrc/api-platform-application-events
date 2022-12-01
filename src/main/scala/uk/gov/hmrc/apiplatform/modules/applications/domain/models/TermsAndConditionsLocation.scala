@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
 sealed trait TermsAndConditionsLocation
 
 object TermsAndConditionsLocations {
-  case object NoneProvided      extends TermsAndConditionsLocation
+  case object NoneProvided extends TermsAndConditionsLocation
   case object InDesktopSoftware extends TermsAndConditionsLocation
   case class Url(value: String) extends TermsAndConditionsLocation
 }

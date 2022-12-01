@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{TermsAndConditionsLocation,TermsAndConditionsLocations}
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class TermsAndConditionsLocationJsonFormattersSpec extends JsonFormattersSpec {
 
@@ -32,7 +33,9 @@ class TermsAndConditionsLocationJsonFormattersSpec extends JsonFormattersSpec {
       }
 
       "read json" in {
-        testFromJson[TermsAndConditionsLocation]("""{"termsAndConditionsType":"noneProvided"}""")(TermsAndConditionsLocations.NoneProvided)
+        testFromJson[TermsAndConditionsLocation]("""{"termsAndConditionsType":"noneProvided"}""")(
+          TermsAndConditionsLocations.NoneProvided
+        )
       }
     }
 
@@ -44,10 +47,12 @@ class TermsAndConditionsLocationJsonFormattersSpec extends JsonFormattersSpec {
       }
 
       "read json" in {
-        testFromJson[TermsAndConditionsLocation]("""{"termsAndConditionsType":"inDesktop"}""")(TermsAndConditionsLocations.InDesktopSoftware)
+        testFromJson[TermsAndConditionsLocation]("""{"termsAndConditionsType":"inDesktop"}""")(
+          TermsAndConditionsLocations.InDesktopSoftware
+        )
       }
     }
-    
+
     "given location of url provided" should {
       "produce json" in {
         testToJson[TermsAndConditionsLocation](TermsAndConditionsLocations.Url("aUrl"))(
@@ -57,7 +62,9 @@ class TermsAndConditionsLocationJsonFormattersSpec extends JsonFormattersSpec {
       }
 
       "read json" in {
-        testFromJson[TermsAndConditionsLocation]("""{"termsAndConditionsType":"url","value":"aUrl"}""")(TermsAndConditionsLocations.Url("aUrl"))
+        testFromJson[TermsAndConditionsLocation]("""{"termsAndConditionsType":"url","value":"aUrl"}""")(
+          TermsAndConditionsLocations.Url("aUrl")
+        )
       }
     }
   }

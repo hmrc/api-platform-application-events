@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
-
+package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
 import play.api.libs.json._
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 import uk.gov.hmrc.play.json.Union
 
 trait TermsAndConditionsLocationJsonFormatters {
-  private implicit val noneProvidedFormat      = Json.format[TermsAndConditionsLocations.NoneProvided.type]
+  private implicit val noneProvidedFormat = Json.format[TermsAndConditionsLocations.NoneProvided.type]
   private implicit val inDesktopSoftwareFormat = Json.format[TermsAndConditionsLocations.InDesktopSoftware.type]
-  private implicit val urlFormat               = Json.format[TermsAndConditionsLocations.Url]
+  private implicit val urlFormat = Json.format[TermsAndConditionsLocations.Url]
 
   implicit val trermsAndConditionsLocationFormat = Union.from[TermsAndConditionsLocation]("termsAndConditionsType")
     .and[TermsAndConditionsLocations.NoneProvided.type]("noneProvided")

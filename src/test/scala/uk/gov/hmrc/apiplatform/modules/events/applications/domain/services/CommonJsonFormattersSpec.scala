@@ -20,6 +20,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventId
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class CommonJsonFormattersSpec extends JsonFormattersSpec {
 

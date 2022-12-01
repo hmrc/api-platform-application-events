@@ -17,8 +17,9 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.domain.services._
 import uk.gov.hmrc.play.json.Union
-import play.api.libs.json.{Json, OFormat, EnvReads, EnvWrites}
+import play.api.libs.json.{EnvReads, EnvWrites, Json, OFormat}
 import java.time.LocalDateTime
 import play.api.libs.json.Format
 
@@ -26,7 +27,7 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
 
   implicit def localDateTimeFormats(): Format[LocalDateTime]
-  
+
   implicit val collaboratorAddedFormats = Json.format[CollaboratorAdded]
   implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemoved]
 
@@ -70,6 +71,7 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
   implicit val applicationApprovalRequestDeclinedFormats = Json.format[ApplicationApprovalRequestDeclined]
 
   implicit val redirectUrisUpdatedEventFormats = Json.format[RedirectUrisUpdatedEvent]
+  implicit val redirectUrisUpdatedFormats = Json.format[RedirectUrisUpdated]
   implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
   private sealed trait EventType
@@ -111,6 +113,7 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     case object PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED extends EventType
     case object PROD_APP_NAME_CHANGED extends EventType
     case object REDIRECT_URIS_UPDATED extends EventType
+    case object REDIRECT_URIS_UPDATED_V2 extends EventType
     case object PPNS_CALLBACK_URI_UPDATED extends EventType
   }
 
@@ -118,9 +121,13 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
       : OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
     .and[ProductionAppPrivacyPolicyLocationChanged](EventTypes.PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
-    .and[ProductionLegacyAppPrivacyPolicyLocationChanged](EventTypes.PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
+    .and[ProductionLegacyAppPrivacyPolicyLocationChanged](
+      EventTypes.PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString
+    )
     .and[ProductionAppTermsConditionsLocationChanged](EventTypes.PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED.toString)
-    .and[ProductionLegacyAppTermsConditionsLocationChanged](EventTypes.PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED.toString)
+    .and[ProductionLegacyAppTermsConditionsLocationChanged](
+      EventTypes.PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED.toString
+    )
     .and[ResponsibleIndividualSet](EventTypes.RESPONSIBLE_INDIVIDUAL_SET.toString)
     .and[ResponsibleIndividualChanged](EventTypes.RESPONSIBLE_INDIVIDUAL_CHANGED.toString)
     .and[ResponsibleIndividualChangedToSelf](EventTypes.RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF.toString)
@@ -137,6 +144,7 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     .and[CollaboratorAdded](EventTypes.COLLABORATOR_ADDED.toString)
     .and[CollaboratorRemoved](EventTypes.COLLABORATOR_REMOVED.toString)
     .and[RedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
+    .and[RedirectUrisUpdated](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
     .and[PpnsCallBackUriUpdatedEvent](EventTypes.PPNS_CALLBACK_URI_UPDATED.toString)
     .and[ApiSubscribedEvent](EventTypes.API_SUBSCRIBED.toString)
     .and[ApiUnsubscribedEvent](EventTypes.API_UNSUBSCRIBED.toString)
@@ -145,10 +153,10 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     .and[TeamMemberAddedEvent](EventTypes.TEAM_MEMBER_ADDED.toString)
     .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
     .format
-  }
+}
 
 object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters with EnvWrites with EnvReads {
-  
+
   implicit val utcReads = DefaultLocalDateTimeReads
   implicit val utcWrites = DefaultLocalDateTimeWrites
 
@@ -156,10 +164,10 @@ object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters with En
 }
 
 /*
-*  For mongo use the following
-*
-*  object EventsMongoJsonFormatters extends EventsJsonFormatters {
-*     implicit def localDateTimeFormats() = MongoJavatimeFormats.localDateTimeFormat
-*  }
-*
-*/
+ *  For mongo use the following
+ *
+ *  object EventsMongoJsonFormatters extends EventsJsonFormatters {
+ *     implicit def localDateTimeFormats() = MongoJavatimeFormats.localDateTimeFormat
+ *  }
+ *
+ */

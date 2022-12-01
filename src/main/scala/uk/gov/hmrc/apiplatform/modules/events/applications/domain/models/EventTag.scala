@@ -19,43 +19,37 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 sealed trait EventTag
 
 object EventTags {
-  // 4
   case object SUBSCRIPTION extends EventTag
-  // 4
   case object COLLABORATOR extends EventTag
-  // 4
   case object CLIENT_SECRET extends EventTag
-  // 1
   case object PPNS_CALLBACK extends EventTag
-  // 1
   case object REDIRECT_URIS extends EventTag
-  // 1
   case object APP_NAME extends EventTag
-  // 7
   case object TERMS_OF_USE extends EventTag
-  // 4
   case object POLICY_LOCATION extends EventTag
 
   def tag(evt: AbstractApplicationEvent): EventTag = evt match {
-    case _ : ApiSubscribedEvent | _ : ApiSubscribed | _ : ApiUnsubscribedEvent | _ : ApiUnsubscribed => SUBSCRIPTION
-    case _ : CollaboratorAdded | _ : CollaboratorRemoved | _ : TeamMemberAddedEvent | _: TeamMemberRemovedEvent => COLLABORATOR
-    case _ : ClientSecretAdded | _ : ClientSecretRemoved | _ : ClientSecretAddedEvent | _ : ClientSecretRemovedEvent => CLIENT_SECRET
-    case _ : PpnsCallBackUriUpdatedEvent => PPNS_CALLBACK
-    case _ : RedirectUrisUpdatedEvent => REDIRECT_URIS
-    case _ : ResponsibleIndividualChanged |
-         _ : ResponsibleIndividualChangedToSelf |
-         _ : ResponsibleIndividualDeclined |
-         _ : ResponsibleIndividualDeclinedUpdate |
-         _ : ResponsibleIndividualDidNotVerify |
-         _ : ResponsibleIndividualSet |
-         _ : ResponsibleIndividualVerificationStarted |
-         _ : ApplicationStateChanged |
-         _ : ApplicationApprovalRequestDeclined => TERMS_OF_USE
-    case _ : ProductionAppNameChangedEvent => APP_NAME
-    case _ : ProductionAppPrivacyPolicyLocationChanged |
-         _ : ProductionAppTermsConditionsLocationChanged |
-         _ : ProductionLegacyAppPrivacyPolicyLocationChanged |
-         _ : ProductionLegacyAppTermsConditionsLocationChanged => POLICY_LOCATION
+    case _: ApiSubscribedEvent | _: ApiSubscribed | _: ApiUnsubscribedEvent | _: ApiUnsubscribed => SUBSCRIPTION
+    case _: CollaboratorAdded | _: CollaboratorRemoved | _: TeamMemberAddedEvent | _: TeamMemberRemovedEvent     =>
+      COLLABORATOR
+    case _: ClientSecretAdded | _: ClientSecretRemoved | _: ClientSecretAddedEvent | _: ClientSecretRemovedEvent =>
+      CLIENT_SECRET
+    case _: PpnsCallBackUriUpdatedEvent                       => PPNS_CALLBACK
+    case _: RedirectUrisUpdated | _: RedirectUrisUpdatedEvent => REDIRECT_URIS
+    case _: ResponsibleIndividualChanged |
+        _: ResponsibleIndividualChangedToSelf |
+        _: ResponsibleIndividualDeclined |
+        _: ResponsibleIndividualDeclinedUpdate |
+        _: ResponsibleIndividualDidNotVerify |
+        _: ResponsibleIndividualSet |
+        _: ResponsibleIndividualVerificationStarted |
+        _: ApplicationStateChanged |
+        _: ApplicationApprovalRequestDeclined => TERMS_OF_USE
+    case _: ProductionAppNameChangedEvent                     => APP_NAME
+    case _: ProductionAppPrivacyPolicyLocationChanged |
+        _: ProductionAppTermsConditionsLocationChanged |
+        _: ProductionLegacyAppPrivacyPolicyLocationChanged |
+        _: ProductionLegacyAppTermsConditionsLocationChanged => POLICY_LOCATION
   }
 
   def fromString(tag: String): Option[EventTag] = tag match {
@@ -70,13 +64,13 @@ object EventTags {
   }
 
   def describe(tag: EventTag): String = tag match {
-    case SUBSCRIPTION => "Subscription"
-    case COLLABORATOR => "Collaborator"
-    case CLIENT_SECRET => "Client Secret"
-    case PPNS_CALLBACK => "PPNS Callback"
-    case REDIRECT_URIS => "Redirect URI"
-    case TERMS_OF_USE => "Terms of Use"
-    case APP_NAME => "Application Name"
+    case SUBSCRIPTION    => "Subscription"
+    case COLLABORATOR    => "Collaborator"
+    case CLIENT_SECRET   => "Client Secret"
+    case PPNS_CALLBACK   => "PPNS Callback"
+    case REDIRECT_URIS   => "Redirect URI"
+    case TERMS_OF_USE    => "Terms of Use"
+    case APP_NAME        => "Application Name"
     case POLICY_LOCATION => "Policy Locations"
   }
 }

@@ -19,13 +19,10 @@ package uk.gov.hmrc.apiplatform.modules.apis.domain.models
 import play.api.libs.json.Json
 import scala.util.Random
 
-/**
-  * This file should be in some API based library
-  *
+/** This file should be in some API based library
   */
 
-
-case class ApiContext(value: String) extends AnyVal
+final case class ApiContext(value: String) extends AnyVal
 
 object ApiContext {
   implicit val apiContextFormat = Json.valueFormat[ApiContext]
@@ -33,10 +30,10 @@ object ApiContext {
   implicit val ordering: Ordering[ApiContext] = new Ordering[ApiContext] {
     override def compare(x: ApiContext, y: ApiContext): Int = x.value.compareTo(y.value)
   }
-   def random = ApiContext(Random.alphanumeric.take(10).mkString)
+  def random = ApiContext(Random.alphanumeric.take(10).mkString)
 }
 
-case class ApiVersion(value: String) extends AnyVal
+final case class ApiVersion(value: String) extends AnyVal
 
 object ApiVersion {
   implicit val apiVersionFormat = Json.valueFormat[ApiVersion]
@@ -47,7 +44,7 @@ object ApiVersion {
   def random = ApiVersion(Random.nextDouble().toString)
 }
 
-case class ApiIdentifier(context: ApiContext, version: ApiVersion)
+final case class ApiIdentifier(context: ApiContext, version: ApiVersion)
 
 object ApiIdentifier {
   implicit val apiIdentifierFormat = Json.format[ApiIdentifier]

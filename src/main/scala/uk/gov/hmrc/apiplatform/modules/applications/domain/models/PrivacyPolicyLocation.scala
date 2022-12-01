@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
 sealed trait PrivacyPolicyLocation
 
 object PrivacyPolicyLocations {
-  case object NoneProvided      extends PrivacyPolicyLocation
+  case object NoneProvided extends PrivacyPolicyLocation
   case object InDesktopSoftware extends PrivacyPolicyLocation
   case class Url(value: String) extends PrivacyPolicyLocation
 }

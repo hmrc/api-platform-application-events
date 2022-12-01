@@ -20,18 +20,18 @@ import play.api.libs.json._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{EventTag, EventTags}
 
 trait EventTagJsonFormatters {
- implicit val formatEventTag2: Format[EventTag] = new Format[EventTag] {
+
+  implicit val formatEventTag2: Format[EventTag] = new Format[EventTag] {
 
     override def writes(o: EventTag): JsValue = JsString(o.toString())
 
     override def reads(json: JsValue): JsResult[EventTag] = {
       (json match {
         case JsString(text) => EventTags.fromString(text)
-        case _ => None
+        case _              => None
       })
-      .fold[JsResult[EventTag]](JsError(s"Cannot find event tag from $json"))(JsSuccess(_))
+        .fold[JsResult[EventTag]](JsError(s"Cannot find event tag from $json"))(JsSuccess(_))
     }
-
 
   }
 }
