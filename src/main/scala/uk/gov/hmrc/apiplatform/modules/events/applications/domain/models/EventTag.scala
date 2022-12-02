@@ -53,6 +53,7 @@ object EventTags {
   }
 
   def fromString(tag: String): Option[EventTag] = tag match {
+    case "SUBSCRIPTION"    => Some(SUBSCRIPTION)
     case "COLLABORATOR"    => Some(COLLABORATOR)
     case "CLIENT_SECRET"   => Some(CLIENT_SECRET)
     case "PPNS_CALLBACK"   => Some(PPNS_CALLBACK)
