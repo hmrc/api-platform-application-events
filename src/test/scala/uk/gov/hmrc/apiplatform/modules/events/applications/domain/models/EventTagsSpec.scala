@@ -38,7 +38,7 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
         EventTags.describe(EventTags.APP_NAME) shouldBe "Application Name"
       }
 
-      "Correctly tag event as it" in {
+      "Correctly tag event" in {
         val evt = ProductionAppNameChangedEvent(
           EventId.random,
           ApplicationId.random,

@@ -41,7 +41,16 @@ object ApiVersion {
   implicit val ordering: Ordering[ApiVersion] = new Ordering[ApiVersion] {
     override def compare(x: ApiVersion, y: ApiVersion): Int = x.value.compareTo(y.value)
   }
-  def random = ApiVersion(Random.nextDouble().toString)
+
+  /**
+    * Produces a version from 0-999 . 0-999
+    */
+  def random = {
+    val major = Random.nextInt(1000)
+    val minor = Random.nextInt(1000)
+    val minorFormatted = f"$minor%3d".stripPrefix(" ").stripPrefix(" ")
+    ApiVersion(s"${major.toString}.$minorFormatted")
+  }
 }
 
 final case class ApiIdentifier(context: ApiContext, version: ApiVersion)
@@ -50,4 +59,16 @@ object ApiIdentifier {
   implicit val apiIdentifierFormat = Json.format[ApiIdentifier]
 
   def random = ApiIdentifier(ApiContext.random, ApiVersion.random)
+
+
+  // When we drop 2.12 support we can use : -
+  // Ordering.by[ApiIdentifier, String](_.context.value)
+  //  .orElseBy(_.version.value)
+
+  implicit val ordering: Ordering[ApiIdentifier] = new Ordering[ApiIdentifier] {
+    override def compare(x: ApiIdentifier, y: ApiIdentifier): Int = Ordering.Tuple2[ApiContext,ApiVersion].compare(
+      (x.context,x.version),
+      (y.context, y.version)
+    )
+  }
 }

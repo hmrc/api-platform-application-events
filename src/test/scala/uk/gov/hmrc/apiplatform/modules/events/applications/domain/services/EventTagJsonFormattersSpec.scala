@@ -21,6 +21,7 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTa
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
 import play.api.libs.json.JsString
 import play.api.libs.json.Json
+import play.api.libs.json.JsError
 
 class EventTagJsonFormattersSpec extends JsonFormattersSpec {
 
@@ -36,6 +37,13 @@ class EventTagJsonFormattersSpec extends JsonFormattersSpec {
 
       "read json" in {
         testFromJson[EventTag](""""APP_NAME"""")(EventTags.APP_NAME)
+      }
+
+      "fail to read invalid text json" in {
+        Json.parse(""""BOBBINS"""").validate[EventTag] should matchPattern { case JsError(_) => }
+      }
+      "fail to read invalid typed json" in {
+        Json.parse("""1234""").validate[EventTag] should matchPattern { case JsError(_) => }
       }
     }
   }

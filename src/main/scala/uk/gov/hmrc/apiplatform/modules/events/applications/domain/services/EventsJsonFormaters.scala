@@ -28,51 +28,54 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
 
   implicit def localDateTimeFormats(): Format[LocalDateTime]
 
-  implicit val collaboratorAddedFormats = Json.format[CollaboratorAdded]
-  implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemoved]
+  // All formatters after this must be lazy so that they are evaluated only in the concrete class after the
+  // localDateTimeFormats is "ready"
 
-  implicit val teamMemberAddedEventFormats = Json.format[TeamMemberAddedEvent]
-  implicit val teamMemberRemovedEventFormats = Json.format[TeamMemberRemovedEvent]
+  implicit lazy val collaboratorAddedFormats = Json.format[CollaboratorAdded]
+  implicit lazy val collaboratorRemovedFormats = Json.format[CollaboratorRemoved]
 
-  implicit val clientSecretAddedFormats = Json.format[ClientSecretAdded]
-  implicit val clientSecretRemovedFormats = Json.format[ClientSecretRemoved]
+  implicit lazy val teamMemberAddedEventFormats = Json.format[TeamMemberAddedEvent]
+  implicit lazy val teamMemberRemovedEventFormats = Json.format[TeamMemberRemovedEvent]
 
-  implicit val clientSecretAddedEventFormats = Json.format[ClientSecretAddedEvent]
-  implicit val clientSecretRemovedEventFormats = Json.format[ClientSecretRemovedEvent]
+  implicit lazy val clientSecretAddedFormats = Json.format[ClientSecretAdded]
+  implicit lazy val clientSecretRemovedFormats = Json.format[ClientSecretRemoved]
 
-  implicit val apiSubscribedFormats = Json.format[ApiSubscribed]
-  implicit val apiUnsubscribedFormats = Json.format[ApiUnsubscribed]
+  implicit lazy val clientSecretAddedEventFormats = Json.format[ClientSecretAddedEvent]
+  implicit lazy val clientSecretRemovedEventFormats = Json.format[ClientSecretRemovedEvent]
 
-  implicit val apiSubscribedEventFormats = Json.format[ApiSubscribedEvent]
-  implicit val apiUnsubscribedEventFormats = Json.format[ApiUnsubscribedEvent]
+  implicit lazy val apiSubscribedFormats = Json.format[ApiSubscribed]
+  implicit lazy val apiUnsubscribedFormats = Json.format[ApiUnsubscribed]
 
-  implicit val productionAppNameChangedEventFormats = Json.format[ProductionAppNameChangedEvent]
-  implicit val productionAppPrivacyPolicyLocationChangedFormats = Json.format[ProductionAppPrivacyPolicyLocationChanged]
+  implicit lazy val apiSubscribedEventFormats = Json.format[ApiSubscribedEvent]
+  implicit lazy val apiUnsubscribedEventFormats = Json.format[ApiUnsubscribedEvent]
 
-  implicit val productionLegacyAppPrivacyPolicyLocationChangedFormats =
+  implicit lazy val productionAppNameChangedEventFormats = Json.format[ProductionAppNameChangedEvent]
+  implicit lazy val productionAppPrivacyPolicyLocationChangedFormats = Json.format[ProductionAppPrivacyPolicyLocationChanged]
+
+  implicit lazy val productionLegacyAppPrivacyPolicyLocationChangedFormats =
     Json.format[ProductionLegacyAppPrivacyPolicyLocationChanged]
 
-  implicit val productionAppTermsConditionsLocationChangedFormats =
+  implicit lazy val productionAppTermsConditionsLocationChangedFormats =
     Json.format[ProductionAppTermsConditionsLocationChanged]
 
-  implicit val productionLegacyAppTermsConditionsLocationChangedFormats =
+  implicit lazy val productionLegacyAppTermsConditionsLocationChangedFormats =
     Json.format[ProductionLegacyAppTermsConditionsLocationChanged]
-  implicit val responsibleIndividualSetFormats = Json.format[ResponsibleIndividualSet]
+  implicit lazy val responsibleIndividualSetFormats = Json.format[ResponsibleIndividualSet]
 
-  implicit val responsibleIndividualChangedFormats = Json.format[ResponsibleIndividualChanged]
-  implicit val responsibleIndividualChangedToSelfFormats = Json.format[ResponsibleIndividualChangedToSelf]
-  implicit val applicationStateChangedFormats = Json.format[ApplicationStateChanged]
+  implicit lazy val responsibleIndividualChangedFormats = Json.format[ResponsibleIndividualChanged]
+  implicit lazy val responsibleIndividualChangedToSelfFormats = Json.format[ResponsibleIndividualChangedToSelf]
+  implicit lazy val applicationStateChangedFormats = Json.format[ApplicationStateChanged]
 
-  implicit val responsibleIndividualVerificationStartedFormats = Json.format[ResponsibleIndividualVerificationStarted]
-  implicit val responsibleIndividualDeclinedFormats = Json.format[ResponsibleIndividualDeclined]
-  implicit val responsibleIndividualDeclinedUpdateFormats = Json.format[ResponsibleIndividualDeclinedUpdate]
-  implicit val responsibleIndividualDidNotVerifyFormats = Json.format[ResponsibleIndividualDidNotVerify]
+  implicit lazy val responsibleIndividualVerificationStartedFormats = Json.format[ResponsibleIndividualVerificationStarted]
+  implicit lazy val responsibleIndividualDeclinedFormats = Json.format[ResponsibleIndividualDeclined]
+  implicit lazy val responsibleIndividualDeclinedUpdateFormats = Json.format[ResponsibleIndividualDeclinedUpdate]
+  implicit lazy val responsibleIndividualDidNotVerifyFormats = Json.format[ResponsibleIndividualDidNotVerify]
 
-  implicit val applicationApprovalRequestDeclinedFormats = Json.format[ApplicationApprovalRequestDeclined]
+  implicit lazy val applicationApprovalRequestDeclinedFormats = Json.format[ApplicationApprovalRequestDeclined]
 
-  implicit val redirectUrisUpdatedEventFormats = Json.format[RedirectUrisUpdatedEvent]
-  implicit val redirectUrisUpdatedFormats = Json.format[RedirectUrisUpdated]
-  implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
+  implicit lazy val redirectUrisUpdatedEventFormats = Json.format[RedirectUrisUpdatedEvent]
+  implicit lazy val redirectUrisUpdatedFormats = Json.format[RedirectUrisUpdated]
+  implicit lazy val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
   private sealed trait EventType
 
@@ -117,7 +120,7 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     case object PPNS_CALLBACK_URI_UPDATED extends EventType
   }
 
-  implicit val abstractApplicationEventFormats
+  implicit lazy val abstractApplicationEventFormats
       : OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
     .and[ProductionAppPrivacyPolicyLocationChanged](EventTypes.PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
@@ -155,19 +158,26 @@ trait EventsJsonFormatters extends ActorJsonFormatters with OldStyleActorJsonFor
     .format
 }
 
-object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters with EnvWrites with EnvReads {
+object LocalDateTimeFormatter extends EnvWrites with EnvReads {
+  import play.api.libs.json._
 
-  implicit val utcReads = DefaultLocalDateTimeReads
-  implicit val utcWrites = DefaultLocalDateTimeWrites
+  implicit val writer: Writes[LocalDateTime] = DefaultLocalDateTimeWrites
 
-  implicit def localDateTimeFormats(): Format[LocalDateTime] = Format.apply(utcReads, utcWrites)
+  implicit val reader: Reads[LocalDateTime] = DefaultLocalDateTimeReads
+
+  implicit val format: Format[LocalDateTime] = Format(reader, writer)
+}
+
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters {
+
+  implicit val localDateTimeFormats: Format[LocalDateTime] = LocalDateTimeFormatter.format
 }
 
 /*
  *  For mongo use the following
  *
  *  object EventsMongoJsonFormatters extends EventsJsonFormatters {
- *     implicit def localDateTimeFormats() = MongoJavatimeFormats.localDateTimeFormat
+ *     implicit val localDateTimeFormats = MongoJavatimeFormats.localDateTimeFormat
  *  }
  *
  */
