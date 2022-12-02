@@ -16,7 +16,10 @@
 
 package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{TermsAndConditionsLocation,TermsAndConditionsLocations}
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{
+  TermsAndConditionsLocation,
+  TermsAndConditionsLocations
+}
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class TermsAndConditionsLocationJsonFormattersSpec extends JsonFormattersSpec {

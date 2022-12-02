@@ -23,7 +23,8 @@ import play.api.libs.json.{EnvReads, EnvWrites, Json, OFormat}
 import java.time.LocalDateTime
 import play.api.libs.json.Format
 
-abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) extends ActorJsonFormatters with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
+abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) extends ActorJsonFormatters
+    with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
     with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
 
   private implicit val fmt = localDateTimeFormats

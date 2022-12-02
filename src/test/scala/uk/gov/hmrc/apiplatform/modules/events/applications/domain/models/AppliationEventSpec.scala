@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 
 class AppliationEventSpec extends AnyWordSpec with Matchers {
-  
+
   "AbstractApplicationEvent" when {
     val anOldStyleActor = OldStyleActors.Unknown
     val anActor = Actors.Unknown
@@ -30,7 +30,7 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
     val aRole = "ADMINISTRATOR"
     val appId = ApplicationId.random
     val aCollaborator = Collaborators.Developer("123", anEmail)
-    
+
     "Ordering a collection of events" should {
       "Sort the later ones first" in {
         val time1 = LocalDateTime.now()
@@ -41,9 +41,9 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
         val e2 = TeamMemberAddedEvent(EventId.random, appId, time2, anOldStyleActor, anEmail, aRole)
         val e3 = CollaboratorAdded(EventId.random, appId, time3, anActor, aCollaborator, Set.empty)
 
-        val es = List[AbstractApplicationEvent](e2,e3,e1)
+        val es = List[AbstractApplicationEvent](e2, e3, e1)
 
-        es.sorted shouldBe List(e3,e2,e1)
+        es.sorted shouldBe List(e3, e2, e1)
       }
     }
   }
