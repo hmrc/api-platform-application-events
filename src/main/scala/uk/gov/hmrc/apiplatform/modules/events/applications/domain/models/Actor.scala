@@ -25,29 +25,27 @@ object Actors {
   /** A third party developer who is a collaborator on the application for the event this actor is responsible for
     * triggering
     *
-    * @param id
+    * @param email
     *   the developers email address at the time of the event
     */
   case class Collaborator(email: LaxEmailAddress) extends Actor
 
   /** A gatekeeper stride user (typically SDST)
     *
-    * @param id
-    *   the stride username of the gatekeeper user who triggered the event on which they are the actor
+    * @param username
+    *   the stride user fullname of the gatekeeper user who triggered the event on which they are the actor
     */
-  case class GatekeeperUser(user: String) extends Actor
+  case class GatekeeperUser(username: String) extends Actor
 
   /** An automated job
     *
-    * @param id
+    * @param jobId
     *   the job name or instance of the job possibly as a UUID
     */
   case class ScheduledJob(jobId: String) extends Actor
 
   /** Unknown source - probably 3rd party code such as PPNS invocations
     *
-    * @param id
-    *   the job name or instance of the job possibly as a UUID
     */
   case object Unknown extends Actor
 

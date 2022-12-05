@@ -36,12 +36,12 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
       "produce json" in {
         testToJson[Actor](Actors.GatekeeperUser(bobSmithUserName))(
           ("actorType" -> "GATEKEEPER"),
-          ("user" -> bobSmithUserName)
+          ("username" -> bobSmithUserName)
         )
       }
 
       "read json" in {
-        testFromJson[Actor]("""{"actorType":"GATEKEEPER","user":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
+        testFromJson[Actor]("""{"actorType":"GATEKEEPER","username":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
       }
     }
 

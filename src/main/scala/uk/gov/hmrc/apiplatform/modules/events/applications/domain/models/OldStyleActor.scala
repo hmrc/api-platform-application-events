@@ -38,7 +38,7 @@ object OldStyleActors {
   /** A gatekeeper stride user (typically SDST)
     *
     * @param id
-    *   the stride username in theory but in practice always "admin@gatekeeper"
+    *   the stride users fullname in theory but in practice always "admin@gatekeeper"
     */
   case class GatekeeperUser(id: String) extends OldStyleActor
 
