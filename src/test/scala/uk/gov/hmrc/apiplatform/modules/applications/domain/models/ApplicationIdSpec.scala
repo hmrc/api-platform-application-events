@@ -21,16 +21,16 @@ import play.api.libs.json.Json
 import play.api.libs.json.JsString
 
 class ApplicationIdSpec extends JsonFormattersSpec {
-  val anAppId = ApplicationId("app123")
+  val anAppId = ApplicationId.random
 
   "ApplicationId" should {
     "convert to json" in {
 
-      Json.toJson(anAppId) shouldBe JsString("app123")
+      Json.toJson(anAppId) shouldBe JsString(anAppId.value.toString())
     }
 
     "read from json" in {
-      testFromJson[ApplicationId](""""app123"""")(anAppId)
+      testFromJson[ApplicationId](s""""${anAppId.value.toString}"""")(anAppId)
     }
   }
 }
