@@ -50,7 +50,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                             |"applicationId": "akjhjkhjshjkhksaih",
                             |"eventDateTime": "2014-01-01T13:13:34.441Z",
                             |"eventType": "COLLABORATOR_REMOVED",
-                            |"actor":{"username": "123454654", "actorType": "GATEKEEPER"},
+                            |"actor":{"user": "123454654", "actorType": "GATEKEEPER"},
                             |"collaborator": {
                             |  "id": "1234",
                             |  "email": "bob@smith.com",

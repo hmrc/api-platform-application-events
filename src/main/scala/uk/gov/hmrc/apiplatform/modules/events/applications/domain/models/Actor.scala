@@ -32,10 +32,10 @@ object Actors {
 
   /** A gatekeeper stride user (typically SDST)
     *
-    * @param username
+    * @param user
     *   the stride user fullname of the gatekeeper user who triggered the event on which they are the actor
     */
-  case class GatekeeperUser(username: String) extends Actor
+  case class GatekeeperUser(user: String) extends Actor
 
   /** An automated job
     *
