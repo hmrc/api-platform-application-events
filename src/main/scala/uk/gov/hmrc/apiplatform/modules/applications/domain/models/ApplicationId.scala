@@ -17,14 +17,15 @@
 package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
 import play.api.libs.json.Json
+import java.util.UUID
 
 /** This file should be in some Application based library
   */
 
-final case class ApplicationId(value: String) extends AnyVal
+final case class ApplicationId(value: UUID) extends AnyVal
 
 object ApplicationId {
-  def random: ApplicationId = ApplicationId(java.util.UUID.randomUUID.toString)
+  def random: ApplicationId = ApplicationId(java.util.UUID.randomUUID)
 
   implicit val applicationIdJf = Json.valueFormat[ApplicationId]
 }

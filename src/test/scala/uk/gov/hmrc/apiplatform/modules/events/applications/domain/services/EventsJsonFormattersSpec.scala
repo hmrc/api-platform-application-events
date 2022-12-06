@@ -19,9 +19,12 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 import play.api.libs.json.Json
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId = EventId.random
+  val anAppId = ApplicationId.random
+  val appIdText = anAppId.value.toString()
 
   "EventsInterServiceCallJsonFormatters" when {
     import EventsInterServiceCallJsonFormatters._
@@ -30,7 +33,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       "convert from json" in {
         val jsonText = raw"""
               {"id": "${eventId.value}",
-                            |"applicationId": "akjhjkhjshjkhksaih",
+                            |"applicationId": "$appIdText",
                             |"eventDateTime": "2014-01-01T13:13:34.441Z",
                             |"eventType": "TEAM_MEMBER_ADDED",
                             |"actor":{"id": "123454654", "actorType": "GATEKEEPER"},
@@ -47,7 +50,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       "convert from json" in {
         val jsonText = raw"""
               {"id": "${eventId.value}",
-                            |"applicationId": "akjhjkhjshjkhksaih",
+                            |"applicationId": "$appIdText",
                             |"eventDateTime": "2014-01-01T13:13:34.441Z",
                             |"eventType": "COLLABORATOR_REMOVED",
                             |"actor":{"user": "123454654", "actorType": "GATEKEEPER"},

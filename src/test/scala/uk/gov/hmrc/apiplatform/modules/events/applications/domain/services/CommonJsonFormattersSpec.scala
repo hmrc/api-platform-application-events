@@ -28,15 +28,17 @@ class CommonJsonFormattersSpec extends JsonFormattersSpec {
   val bobSmithUserName = "bob smith"
   "CommonJsonFormatters" when {
 
+    val anAppId = ApplicationId.random
+
     import CommonJsonFormatters._
 
     "given an lax applicationId" should {
       "produce json" in {
-        Json.toJson(ApplicationId("quark")) shouldBe JsString("quark")
+        Json.toJson(anAppId) shouldBe JsString(anAppId.value.toString)
       }
 
       "read json" in {
-        Json.parse(""" "quark" """).as[ApplicationId] shouldBe ApplicationId("quark")
+        Json.parse(s""" "${anAppId.value.toString}" """).as[ApplicationId] shouldBe anAppId
       }
     }
 
