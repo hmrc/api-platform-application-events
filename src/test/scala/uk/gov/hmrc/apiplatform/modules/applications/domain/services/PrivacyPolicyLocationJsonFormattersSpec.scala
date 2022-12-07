@@ -53,7 +53,7 @@ class PrivacyPolicyLocationJsonFormattersSpec extends JsonFormattersSpec {
       "produce json" in {
         testToJson[PrivacyPolicyLocation](PrivacyPolicyLocations.Url("aUrl"))(
           ("privacyPolicyType" -> "url"),
-          ("value" -> "aUrl")
+          ("value"             -> "aUrl")
         )
       }
 

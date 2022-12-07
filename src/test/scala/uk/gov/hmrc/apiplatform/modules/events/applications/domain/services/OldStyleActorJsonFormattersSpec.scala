@@ -33,7 +33,7 @@ class OldStyleActorJsonFormattersSpec extends JsonFormattersSpec {
 
         Json.toJson(actor) shouldBe Json.obj(
           "actorType" -> JsString("GATEKEEPER"),
-          "id" -> JsString("bob smith")
+          "id"        -> JsString("bob smith")
         )
       }
     }
@@ -44,7 +44,7 @@ class OldStyleActorJsonFormattersSpec extends JsonFormattersSpec {
 
         Json.toJson(actor) shouldBe Json.obj(
           "actorType" -> JsString("COLLABORATOR"),
-          "id" -> JsString("bob@smith.com")
+          "id"        -> JsString("bob@smith.com")
         )
       }
     }
@@ -55,7 +55,7 @@ class OldStyleActorJsonFormattersSpec extends JsonFormattersSpec {
 
         Json.toJson(actor) shouldBe Json.obj(
           "actorType" -> JsString("SCHEDULED_JOB"),
-          "id" -> JsString("DeleteAllAppsBwaHaHa")
+          "id"        -> JsString("DeleteAllAppsBwaHaHa")
         )
       }
     }

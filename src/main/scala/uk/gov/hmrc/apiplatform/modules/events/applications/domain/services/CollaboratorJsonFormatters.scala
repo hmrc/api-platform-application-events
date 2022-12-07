@@ -25,11 +25,11 @@ trait CollaboratorJsonFormatters extends CommonJsonFormatters {
 
   private object Roles {
     case object ADMINISTRATOR extends Role
-    case object DEVELOPER extends Role
+    case object DEVELOPER     extends Role
   }
 
   implicit val administratorJf = Json.format[Collaborators.Administrator]
-  implicit val developersJf = Json.format[Collaborators.Developer]
+  implicit val developersJf    = Json.format[Collaborators.Developer]
 
   implicit val collaboratorJf: OFormat[Collaborator] = Union.from[Collaborator]("role")
     .and[Collaborators.Administrator](Roles.ADMINISTRATOR.toString)

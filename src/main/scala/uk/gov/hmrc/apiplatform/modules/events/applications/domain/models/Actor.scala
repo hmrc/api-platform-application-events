@@ -22,8 +22,7 @@ sealed trait Actor
 
 object Actors {
 
-  /** A third party developer who is a collaborator on the application for the event this actor is responsible for
-    * triggering
+  /** A third party developer who is a collaborator on the application for the event this actor is responsible for triggering
     *
     * @param email
     *   the developers email address at the time of the event
@@ -45,7 +44,6 @@ object Actors {
   case class ScheduledJob(jobId: String) extends Actor
 
   /** Unknown source - probably 3rd party code such as PPNS invocations
-    *
     */
   case object Unknown extends Actor
 

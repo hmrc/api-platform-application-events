@@ -22,8 +22,8 @@ import play.api.libs.json.JsString
 import org.scalatest.Inspectors
 
 class ApiIdentifierSpec extends JsonFormattersSpec with Inspectors {
-  val aContext = ApiContext("c1")
-  val aVersion = ApiVersion("1.0")
+  val aContext       = ApiContext("c1")
+  val aVersion       = ApiVersion("1.0")
   val anApiIdentifer = ApiIdentifier(aContext, aVersion)
 
   "ApiContext" should {

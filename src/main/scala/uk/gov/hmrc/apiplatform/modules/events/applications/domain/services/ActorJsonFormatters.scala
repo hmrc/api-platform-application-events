@@ -24,16 +24,16 @@ trait ActorJsonFormatters extends CommonJsonFormatters {
   private sealed trait ActorType
 
   private object ActorTypes {
-    case object COLLABORATOR extends ActorType
-    case object GATEKEEPER extends ActorType
+    case object COLLABORATOR  extends ActorType
+    case object GATEKEEPER    extends ActorType
     case object SCHEDULED_JOB extends ActorType
-    case object UNKNOWN extends ActorType
+    case object UNKNOWN       extends ActorType
   }
 
-  private implicit val collaboratorJF = Json.format[Actors.Collaborator]
+  private implicit val collaboratorJF   = Json.format[Actors.Collaborator]
   private implicit val gatekeeperUserJF = Json.format[Actors.GatekeeperUser]
-  private implicit val scheduledJobJF = Json.format[Actors.ScheduledJob]
-  private implicit val unknownJF = Json.format[Actors.Unknown.type]
+  private implicit val scheduledJobJF   = Json.format[Actors.ScheduledJob]
+  private implicit val unknownJF        = Json.format[Actors.Unknown.type]
 
   implicit val formatNewStyleActor: OFormat[Actor] = Union.from[Actor]("actorType")
     .and[Actors.Collaborator](ActorTypes.COLLABORATOR.toString)

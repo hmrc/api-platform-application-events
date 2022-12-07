@@ -30,6 +30,7 @@ object ApiContext {
   implicit val ordering: Ordering[ApiContext] = new Ordering[ApiContext] {
     override def compare(x: ApiContext, y: ApiContext): Int = x.value.compareTo(y.value)
   }
+
   def random = ApiContext(Random.alphanumeric.take(10).mkString)
 }
 
@@ -45,8 +46,8 @@ object ApiVersion {
   /** Produces a version from 0-999 . 0-999
     */
   def random = {
-    val major = Random.nextInt(1000)
-    val minor = Random.nextInt(1000)
+    val major          = Random.nextInt(1000)
+    val minor          = Random.nextInt(1000)
     val minorFormatted = f"$minor%3d".stripPrefix(" ").stripPrefix(" ")
     ApiVersion(s"${major.toString}.$minorFormatted")
   }

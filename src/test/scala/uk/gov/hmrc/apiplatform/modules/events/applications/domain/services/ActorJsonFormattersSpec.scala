@@ -26,7 +26,7 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 
   val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
-  val bobSmithUserName = "bob smith"
+  val bobSmithUserName     = "bob smith"
 
   "ActorJsonFormatters" when {
 
@@ -36,7 +36,7 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
       "produce json" in {
         testToJson[Actor](Actors.GatekeeperUser(bobSmithUserName))(
           ("actorType" -> "GATEKEEPER"),
-          ("user" -> bobSmithUserName)
+          ("user"      -> bobSmithUserName)
         )
       }
 
@@ -49,7 +49,7 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
       "produce json" in {
         testToJson[Actor](Actors.Collaborator(bobSmithEmailAddress))(
           ("actorType" -> "COLLABORATOR"),
-          ("email" -> "bob@smith.com")
+          ("email"     -> "bob@smith.com")
         )
       }
 
@@ -62,7 +62,7 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
       "produce json" in {
         testToJson[Actor](Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))(
           ("actorType" -> "SCHEDULED_JOB"),
-          ("jobId" -> "DeleteAllAppsBwaHaHa")
+          ("jobId"     -> "DeleteAllAppsBwaHaHa")
         )
       }
 

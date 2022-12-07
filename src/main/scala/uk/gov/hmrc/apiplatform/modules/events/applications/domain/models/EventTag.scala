@@ -19,23 +19,31 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 sealed trait EventTag
 
 object EventTags {
-  case object SUBSCRIPTION extends EventTag
-  case object COLLABORATOR extends EventTag
-  case object CLIENT_SECRET extends EventTag
-  case object PPNS_CALLBACK extends EventTag
-  case object REDIRECT_URIS extends EventTag
-  case object APP_NAME extends EventTag
-  case object TERMS_OF_USE extends EventTag
+  case object SUBSCRIPTION    extends EventTag
+  case object COLLABORATOR    extends EventTag
+  case object CLIENT_SECRET   extends EventTag
+  case object PPNS_CALLBACK   extends EventTag
+  case object REDIRECT_URIS   extends EventTag
+  case object APP_NAME        extends EventTag
+  case object TERMS_OF_USE    extends EventTag
   case object POLICY_LOCATION extends EventTag
 
   def tag(evt: AbstractApplicationEvent): EventTag = evt match {
-    case _: ApiSubscribedEvent | _: ApiSubscribed | _: ApiUnsubscribedEvent | _: ApiUnsubscribed => SUBSCRIPTION
-    case _: CollaboratorAdded | _: CollaboratorRemoved | _: TeamMemberAddedEvent | _: TeamMemberRemovedEvent     =>
-      COLLABORATOR
-    case _: ClientSecretAdded | _: ClientSecretRemoved | _: ClientSecretAddedEvent | _: ClientSecretRemovedEvent =>
-      CLIENT_SECRET
-    case _: PpnsCallBackUriUpdatedEvent                       => PPNS_CALLBACK
-    case _: RedirectUrisUpdated | _: RedirectUrisUpdatedEvent => REDIRECT_URIS
+    case _: ApiSubscribedEvent |
+        _: ApiSubscribed |
+        _: ApiUnsubscribedEvent |
+        _: ApiUnsubscribed => SUBSCRIPTION
+    case _: CollaboratorAdded |
+        _: CollaboratorRemoved |
+        _: TeamMemberAddedEvent |
+        _: TeamMemberRemovedEvent => COLLABORATOR
+    case _: ClientSecretAdded |
+        _: ClientSecretRemoved |
+        _: ClientSecretAddedEvent |
+        _: ClientSecretRemovedEvent => CLIENT_SECRET
+    case _: PpnsCallBackUriUpdatedEvent   => PPNS_CALLBACK
+    case _: RedirectUrisUpdated |
+        _: RedirectUrisUpdatedEvent => REDIRECT_URIS
     case _: ResponsibleIndividualChanged |
         _: ResponsibleIndividualChangedToSelf |
         _: ResponsibleIndividualDeclined |
@@ -45,7 +53,7 @@ object EventTags {
         _: ResponsibleIndividualVerificationStarted |
         _: ApplicationStateChanged |
         _: ApplicationApprovalRequestDeclined => TERMS_OF_USE
-    case _: ProductionAppNameChangedEvent                     => APP_NAME
+    case _: ProductionAppNameChangedEvent => APP_NAME
     case _: ProductionAppPrivacyPolicyLocationChanged |
         _: ProductionAppTermsConditionsLocationChanged |
         _: ProductionLegacyAppPrivacyPolicyLocationChanged |

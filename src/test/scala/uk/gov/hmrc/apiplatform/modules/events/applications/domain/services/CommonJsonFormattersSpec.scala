@@ -25,7 +25,7 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 class CommonJsonFormattersSpec extends JsonFormattersSpec {
 
   val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
-  val bobSmithUserName = "bob smith"
+  val bobSmithUserName     = "bob smith"
   "CommonJsonFormatters" when {
 
     val anAppId = ApplicationId.random
