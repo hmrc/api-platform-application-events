@@ -22,8 +22,8 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
-  val eventId = EventId.random
-  val anAppId = ApplicationId.random
+  val eventId   = EventId.random
+  val anAppId   = ApplicationId.random
   val appIdText = anAppId.value.toString()
 
   "EventsInterServiceCallJsonFormatters" when {

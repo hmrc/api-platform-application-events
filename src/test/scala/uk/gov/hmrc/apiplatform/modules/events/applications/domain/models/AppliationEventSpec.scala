@@ -25,11 +25,11 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
 
   "AbstractApplicationEvent" when {
     val anOldStyleActor = OldStyleActors.Unknown
-    val anActor = Actors.Unknown
-    val anEmail = LaxEmailAddress("bob@smith.com")
-    val aRole = "ADMINISTRATOR"
-    val appId = ApplicationId.random
-    val aCollaborator = Collaborators.Developer("123", anEmail)
+    val anActor         = Actors.Unknown
+    val anEmail         = LaxEmailAddress("bob@smith.com")
+    val aRole           = "ADMINISTRATOR"
+    val appId           = ApplicationId.random
+    val aCollaborator   = Collaborators.Developer("123", anEmail)
 
     "Ordering a collection of events" should {
       "Sort the later ones first" in {

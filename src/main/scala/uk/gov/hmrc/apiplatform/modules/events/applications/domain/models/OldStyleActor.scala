@@ -20,8 +20,7 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
   *
   * The gatekeeper users typically have an id of "admin@gatekeeper"
   *
-  * These should NEVER be used on newer events and deliberately are not part of any class hierarchy with the Actor
-  * trait.
+  * These should NEVER be used on newer events and deliberately are not part of any class hierarchy with the Actor trait.
   */
 @Deprecated
 sealed trait OldStyleActor

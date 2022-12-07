@@ -29,25 +29,25 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
 
   private implicit val fmt = localDateTimeFormats
 
-  implicit val collaboratorAddedFormats = Json.format[CollaboratorAdded]
+  implicit val collaboratorAddedFormats   = Json.format[CollaboratorAdded]
   implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemoved]
 
-  implicit val teamMemberAddedEventFormats = Json.format[TeamMemberAddedEvent]
+  implicit val teamMemberAddedEventFormats   = Json.format[TeamMemberAddedEvent]
   implicit val teamMemberRemovedEventFormats = Json.format[TeamMemberRemovedEvent]
 
-  implicit val clientSecretAddedFormats = Json.format[ClientSecretAdded]
+  implicit val clientSecretAddedFormats   = Json.format[ClientSecretAdded]
   implicit val clientSecretRemovedFormats = Json.format[ClientSecretRemoved]
 
-  implicit val clientSecretAddedEventFormats = Json.format[ClientSecretAddedEvent]
+  implicit val clientSecretAddedEventFormats   = Json.format[ClientSecretAddedEvent]
   implicit val clientSecretRemovedEventFormats = Json.format[ClientSecretRemovedEvent]
 
-  implicit val apiSubscribedFormats = Json.format[ApiSubscribed]
+  implicit val apiSubscribedFormats   = Json.format[ApiSubscribed]
   implicit val apiUnsubscribedFormats = Json.format[ApiUnsubscribed]
 
-  implicit val apiSubscribedEventFormats = Json.format[ApiSubscribedEvent]
+  implicit val apiSubscribedEventFormats   = Json.format[ApiSubscribedEvent]
   implicit val apiUnsubscribedEventFormats = Json.format[ApiUnsubscribedEvent]
 
-  implicit val productionAppNameChangedEventFormats = Json.format[ProductionAppNameChangedEvent]
+  implicit val productionAppNameChangedEventFormats             = Json.format[ProductionAppNameChangedEvent]
   implicit val productionAppPrivacyPolicyLocationChangedFormats = Json.format[ProductionAppPrivacyPolicyLocationChanged]
 
   implicit val productionLegacyAppPrivacyPolicyLocationChangedFormats =
@@ -58,68 +58,67 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
 
   implicit val productionLegacyAppTermsConditionsLocationChangedFormats =
     Json.format[ProductionLegacyAppTermsConditionsLocationChanged]
-  implicit val responsibleIndividualSetFormats = Json.format[ResponsibleIndividualSet]
+  implicit val responsibleIndividualSetFormats                          = Json.format[ResponsibleIndividualSet]
 
-  implicit val responsibleIndividualChangedFormats = Json.format[ResponsibleIndividualChanged]
+  implicit val responsibleIndividualChangedFormats       = Json.format[ResponsibleIndividualChanged]
   implicit val responsibleIndividualChangedToSelfFormats = Json.format[ResponsibleIndividualChangedToSelf]
-  implicit val applicationStateChangedFormats = Json.format[ApplicationStateChanged]
+  implicit val applicationStateChangedFormats            = Json.format[ApplicationStateChanged]
 
   implicit val responsibleIndividualVerificationStartedFormats = Json.format[ResponsibleIndividualVerificationStarted]
-  implicit val responsibleIndividualDeclinedFormats = Json.format[ResponsibleIndividualDeclined]
-  implicit val responsibleIndividualDeclinedUpdateFormats = Json.format[ResponsibleIndividualDeclinedUpdate]
-  implicit val responsibleIndividualDidNotVerifyFormats = Json.format[ResponsibleIndividualDidNotVerify]
+  implicit val responsibleIndividualDeclinedFormats            = Json.format[ResponsibleIndividualDeclined]
+  implicit val responsibleIndividualDeclinedUpdateFormats      = Json.format[ResponsibleIndividualDeclinedUpdate]
+  implicit val responsibleIndividualDidNotVerifyFormats        = Json.format[ResponsibleIndividualDidNotVerify]
 
   implicit val applicationApprovalRequestDeclinedFormats = Json.format[ApplicationApprovalRequestDeclined]
 
-  implicit val redirectUrisUpdatedEventFormats = Json.format[RedirectUrisUpdatedEvent]
-  implicit val redirectUrisUpdatedFormats = Json.format[RedirectUrisUpdated]
+  implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
+  implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdated]
   implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
   private sealed trait EventType
 
   private object EventTypes {
 
-    case object COLLABORATOR_ADDED extends EventType
+    case object COLLABORATOR_ADDED   extends EventType
     case object COLLABORATOR_REMOVED extends EventType
 
-    case object TEAM_MEMBER_ADDED extends EventType
+    case object TEAM_MEMBER_ADDED   extends EventType
     case object TEAM_MEMBER_REMOVED extends EventType
 
-    case object CLIENT_SECRET_ADDED extends EventType
+    case object CLIENT_SECRET_ADDED    extends EventType
     case object CLIENT_SECRET_ADDED_V2 extends EventType
 
     case object CLIENT_SECRET_REMOVED_V2 extends EventType
-    case object CLIENT_SECRET_REMOVED extends EventType
+    case object CLIENT_SECRET_REMOVED    extends EventType
 
-    case object API_SUBSCRIBED_V2 extends EventType
+    case object API_SUBSCRIBED_V2   extends EventType
     case object API_UNSUBSCRIBED_V2 extends EventType
 
-    case object API_SUBSCRIBED extends EventType
+    case object API_SUBSCRIBED   extends EventType
     case object API_UNSUBSCRIBED extends EventType
 
-    case object RESPONSIBLE_INDIVIDUAL_SET extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_CHANGED extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_SET                  extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_CHANGED              extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF      extends EventType
     case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_STARTED extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DECLINED extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED             extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE      extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY       extends EventType
 
     case object APPLICATION_APPROVAL_REQUEST_DECLINED extends EventType
-    case object APPLICATION_STATE_CHANGED extends EventType
+    case object APPLICATION_STATE_CHANGED             extends EventType
 
-    case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED extends EventType
-    case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED extends EventType
-    case object PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED extends EventType
+    case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED          extends EventType
+    case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED        extends EventType
+    case object PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED   extends EventType
     case object PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED extends EventType
-    case object PROD_APP_NAME_CHANGED extends EventType
-    case object REDIRECT_URIS_UPDATED extends EventType
-    case object REDIRECT_URIS_UPDATED_V2 extends EventType
-    case object PPNS_CALLBACK_URI_UPDATED extends EventType
+    case object PROD_APP_NAME_CHANGED                             extends EventType
+    case object REDIRECT_URIS_UPDATED                             extends EventType
+    case object REDIRECT_URIS_UPDATED_V2                          extends EventType
+    case object PPNS_CALLBACK_URI_UPDATED                         extends EventType
   }
 
-  implicit val abstractApplicationEventFormats
-      : OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
+  implicit val abstractApplicationEventFormats: OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
     .and[ProductionAppPrivacyPolicyLocationChanged](EventTypes.PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
     .and[ProductionLegacyAppPrivacyPolicyLocationChanged](

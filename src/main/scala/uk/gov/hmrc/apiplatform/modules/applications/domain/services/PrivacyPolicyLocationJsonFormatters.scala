@@ -21,9 +21,9 @@ import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 import uk.gov.hmrc.play.json.Union
 
 trait PrivacyPolicyLocationJsonFormatters {
-  private implicit val noneProvidedFormat = Json.format[PrivacyPolicyLocations.NoneProvided.type]
+  private implicit val noneProvidedFormat      = Json.format[PrivacyPolicyLocations.NoneProvided.type]
   private implicit val inDesktopSoftwareFormat = Json.format[PrivacyPolicyLocations.InDesktopSoftware.type]
-  private implicit val urlFormat = Json.format[PrivacyPolicyLocations.Url]
+  private implicit val urlFormat               = Json.format[PrivacyPolicyLocations.Url]
 
   implicit val privacyPolicyLocationFormat = Union.from[PrivacyPolicyLocation]("privacyPolicyType")
     .and[PrivacyPolicyLocations.NoneProvided.type]("noneProvided")

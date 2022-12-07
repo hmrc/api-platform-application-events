@@ -23,5 +23,5 @@ sealed trait Collaborator {
 
 object Collaborators {
   case class Administrator(id: String, email: LaxEmailAddress) extends Collaborator
-  case class Developer(id: String, email: LaxEmailAddress) extends Collaborator
+  case class Developer(id: String, email: LaxEmailAddress)     extends Collaborator
 }

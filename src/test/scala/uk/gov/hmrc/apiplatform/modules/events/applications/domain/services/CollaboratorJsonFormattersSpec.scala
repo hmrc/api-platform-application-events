@@ -21,7 +21,7 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
 
-  val anId = "12345"
+  val anId    = "12345"
   val anEmail = LaxEmailAddress("bob@smith.com")
 
   "CollaboratorsJsonFormatters" when {
@@ -31,8 +31,8 @@ class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
     "given an administrator" should {
       "produce json" in {
         testToJson[Collaborator](Collaborators.Administrator(anId, anEmail))(
-          ("role" -> "ADMINISTRATOR"),
-          ("id" -> anId),
+          ("role"  -> "ADMINISTRATOR"),
+          ("id"    -> anId),
           ("email" -> "bob@smith.com")
         )
       }
@@ -48,8 +48,8 @@ class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
     "given an developer" should {
       "produce json" in {
         testToJson[Collaborator](Collaborators.Developer(anId, anEmail))(
-          ("role" -> "DEVELOPER"),
-          ("id" -> anId),
+          ("role"  -> "DEVELOPER"),
+          ("id"    -> anId),
           ("email" -> "bob@smith.com")
         )
       }
