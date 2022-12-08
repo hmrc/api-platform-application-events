@@ -16,18 +16,41 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-sealed trait EventTag
+sealed abstract class EventTag(val description: String)
 
 object EventTags {
-  case object SUBSCRIPTION    extends EventTag
-  case object COLLABORATOR    extends EventTag
-  case object CLIENT_SECRET   extends EventTag
-  case object PPNS_CALLBACK   extends EventTag
-  case object REDIRECT_URIS   extends EventTag
-  case object APP_NAME        extends EventTag
-  case object TERMS_OF_USE    extends EventTag
-  case object POLICY_LOCATION extends EventTag
+  case object SUBSCRIPTION         extends EventTag("API subscription")
+  case object APP_NAME             extends EventTag("Application name")
+  case object PPNS_CALLBACK        extends EventTag("Callback URL")
+  case object CLIENT_SECRET        extends EventTag("Client secret")
+  case object PRIVACY_POLICY       extends EventTag("Privacy Policy URL")
+  case object TEAM_MEMBER          extends EventTag("Team member")
+  case object TERMS_AND_CONDITIONS extends EventTag("Terms and Conditions URL")
+  case object REDIRECT_URIS        extends EventTag("Redirect URL")
+  case object TERMS_OF_USE         extends EventTag("Terms of Use")
 
+  val ALL = Set(SUBSCRIPTION, APP_NAME, PPNS_CALLBACK, CLIENT_SECRET, PRIVACY_POLICY, TERMS_AND_CONDITIONS, TEAM_MEMBER, REDIRECT_URIS, TERMS_OF_USE)
+
+  /*
+   * Used for display purposes
+   */
+  private val lookupDescription: Map[String, EventTag] = ALL.map(et => et.description -> et).toMap
+
+  def fromDescription(text: String): Option[EventTag] =
+    lookupDescription.get(text)
+
+  /*
+   * Used for Json only
+   */
+  private val lookupName: Map[String, EventTag] = ALL.map(et => et.toString() -> et).toMap
+
+  def fromString(text:String): Option[EventTag] =
+    lookupName.get(text)
+
+
+  /*
+   * Resolve event to an eventTag
+   */
   def tag(evt: AbstractApplicationEvent): EventTag = evt match {
     case _: ApiSubscribedEvent |
         _: ApiSubscribed |
@@ -36,7 +59,7 @@ object EventTags {
     case _: CollaboratorAdded |
         _: CollaboratorRemoved |
         _: TeamMemberAddedEvent |
-        _: TeamMemberRemovedEvent => COLLABORATOR
+        _: TeamMemberRemovedEvent => TEAM_MEMBER
     case _: ClientSecretAdded |
         _: ClientSecretRemoved |
         _: ClientSecretAddedEvent |
@@ -55,31 +78,8 @@ object EventTags {
         _: ApplicationApprovalRequestDeclined => TERMS_OF_USE
     case _: ProductionAppNameChangedEvent => APP_NAME
     case _: ProductionAppPrivacyPolicyLocationChanged |
-        _: ProductionAppTermsConditionsLocationChanged |
-        _: ProductionLegacyAppPrivacyPolicyLocationChanged |
-        _: ProductionLegacyAppTermsConditionsLocationChanged => POLICY_LOCATION
-  }
-
-  def fromString(tag: String): Option[EventTag] = tag match {
-    case "SUBSCRIPTION"    => Some(SUBSCRIPTION)
-    case "COLLABORATOR"    => Some(COLLABORATOR)
-    case "CLIENT_SECRET"   => Some(CLIENT_SECRET)
-    case "PPNS_CALLBACK"   => Some(PPNS_CALLBACK)
-    case "REDIRECT_URIS"   => Some(REDIRECT_URIS)
-    case "TERMS_OF_USE"    => Some(TERMS_OF_USE)
-    case "APP_NAME"        => Some(APP_NAME)
-    case "POLICY_LOCATION" => Some(POLICY_LOCATION)
-    case _                 => None
-  }
-
-  def describe(tag: EventTag): String = tag match {
-    case SUBSCRIPTION    => "Subscription"
-    case COLLABORATOR    => "Collaborator"
-    case CLIENT_SECRET   => "Client Secret"
-    case PPNS_CALLBACK   => "PPNS Callback"
-    case REDIRECT_URIS   => "Redirect URI"
-    case TERMS_OF_USE    => "Terms of Use"
-    case APP_NAME        => "Application Name"
-    case POLICY_LOCATION => "Policy Locations"
+        _: ProductionLegacyAppPrivacyPolicyLocationChanged => PRIVACY_POLICY
+    case _: ProductionAppTermsConditionsLocationChanged |
+        _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
   }
 }
