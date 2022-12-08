@@ -25,19 +25,33 @@ import java.time.LocalDateTime
 class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
 
   "EventTags" when {
-    "given APP_NAME" should {
-      "convert to text" in {
-        EventTags.APP_NAME.toString() shouldBe "APP_NAME"
+    "converting to and from description" should {
+      "work for ALL event tags" in {
+        EventTags.ALL.foreach(et => EventTags.fromDescription(et.description) shouldBe Some(et))
+      }
+      "work for ALL descriptions" in {
+        EventTags.ALL.map(et => et.description).foreach(d => EventTags.fromDescription(d).map(_.description) shouldBe Some(d))
       }
 
-      "convert from text" in {
-        EventTags.fromString("APP_NAME").value shouldBe EventTags.APP_NAME
+      "reject rubbish" in {
+        EventTags.fromDescription("BOBBINS") shouldBe None
+      }
+    }
+
+    "converting to and from toString" should {
+      "work for ALL event tags" in {
+        EventTags.ALL.foreach(et => EventTags.fromString(et.toString()) shouldBe Some(et))
+      }
+      "work for ALL toStrings" in {
+        EventTags.ALL.map(et => et.toString()).foreach(s => EventTags.fromString(s).map(_.toString()) shouldBe Some(s))
       }
 
-      "describe it" in {
-        EventTags.describe(EventTags.APP_NAME) shouldBe "Application Name"
+      "reject rubbish" in {
+        EventTags.fromString("BOBBINS") shouldBe None
       }
+    }
 
+    "given an application name change" should {
       "Correctly tag event" in {
         val evt = ProductionAppNameChangedEvent(
           EventId.random,
@@ -53,10 +67,4 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
       }
     }
   }
-  "given rubbish" should {
-    "find none for convert from text" in {
-      EventTags.fromString("BOBBINS") shouldBe None
-    }
-  }
-
 }
