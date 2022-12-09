@@ -364,3 +364,34 @@ case class ApplicationApprovalRequestDeclined(
     requestingAdminName: String,
     requestingAdminEmail: LaxEmailAddress
   ) extends ApplicationEvent
+
+case class ApplicationDeleted(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: LocalDateTime,
+    actor: Actor,
+    clientId: ClientId,
+    wso2ApplicationName: String,
+    reasons: String
+  ) extends ApplicationEvent  
+
+case class ApplicationDeletedByGatekeeper(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: LocalDateTime,
+    actor: Actor,
+    clientId: ClientId,
+    wso2ApplicationName: String,
+    reasons: String,
+    requestingAdminEmail: LaxEmailAddress
+  ) extends ApplicationEvent
+
+case class ProductionCredentialsApplicationDeleted(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: LocalDateTime,
+    actor: Actor,
+    clientId: ClientId,
+    wso2ApplicationName: String,
+    reasons: String
+  ) extends ApplicationEvent
