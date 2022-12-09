@@ -75,6 +75,7 @@ object EventTags {
         _: ResponsibleIndividualSet |
         _: ResponsibleIndividualVerificationStarted |
         _: ApplicationStateChanged |
+        _: ProductionCredentialsApplicationDeleted |
         _: ApplicationApprovalRequestDeclined => TERMS_OF_USE
     case _: ProductionAppNameChangedEvent => APP_NAME
     case _: ProductionAppPrivacyPolicyLocationChanged |
