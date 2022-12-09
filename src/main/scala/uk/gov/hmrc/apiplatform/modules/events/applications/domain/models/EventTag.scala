@@ -28,8 +28,9 @@ object EventTags {
   case object TERMS_AND_CONDITIONS extends EventTag("Terms and Conditions URL")
   case object REDIRECT_URIS        extends EventTag("Redirect URL")
   case object TERMS_OF_USE         extends EventTag("Terms of Use")
+  case object APP_LIFECYCLE        extends EventTag("Application lifecycle")
 
-  val ALL = Set(SUBSCRIPTION, APP_NAME, PPNS_CALLBACK, CLIENT_SECRET, PRIVACY_POLICY, TERMS_AND_CONDITIONS, TEAM_MEMBER, REDIRECT_URIS, TERMS_OF_USE)
+  val ALL = Set(SUBSCRIPTION, APP_NAME, PPNS_CALLBACK, CLIENT_SECRET, PRIVACY_POLICY, TERMS_AND_CONDITIONS, TEAM_MEMBER, REDIRECT_URIS, TERMS_OF_USE, APP_LIFECYCLE)
 
   /*
    * Used for display purposes
@@ -75,8 +76,10 @@ object EventTags {
         _: ResponsibleIndividualSet |
         _: ResponsibleIndividualVerificationStarted |
         _: ApplicationStateChanged |
-        _: ProductionCredentialsApplicationDeleted |
-        _: ApplicationApprovalRequestDeclined => TERMS_OF_USE
+        _: ApplicationApprovalRequestDeclined |
+        _: ProductionCredentialsApplicationDeleted => TERMS_OF_USE
+    case _: ApplicationDeleted |
+        _: ApplicationDeletedByGatekeeper => APP_LIFECYCLE
     case _: ProductionAppNameChangedEvent => APP_NAME
     case _: ProductionAppPrivacyPolicyLocationChanged |
         _: ProductionLegacyAppPrivacyPolicyLocationChanged => PRIVACY_POLICY

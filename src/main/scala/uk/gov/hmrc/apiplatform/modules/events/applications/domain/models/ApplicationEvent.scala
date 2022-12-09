@@ -383,7 +383,7 @@ case class ApplicationDeletedByGatekeeper(
     clientId: ClientId,
     wso2ApplicationName: String,
     reasons: String,
-    requestingAdminEmail: String
+    requestingAdminEmail: LaxEmailAddress
   ) extends ApplicationEvent
 
 case class ProductionCredentialsApplicationDeleted(
