@@ -43,7 +43,7 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
 
         val es = List[AbstractApplicationEvent](e2, e3, e1)
 
-        es.sorted shouldBe List(e3, e2, e1)
+        es.sorted shouldBe List(e1, e2, e3)
       }
     }
   }
