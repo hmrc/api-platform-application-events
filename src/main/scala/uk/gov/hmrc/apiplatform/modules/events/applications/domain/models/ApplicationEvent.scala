@@ -39,7 +39,7 @@ object AbstractApplicationEvent {
   implicit val orderEvents: Ordering[AbstractApplicationEvent] = new Ordering[AbstractApplicationEvent]() {
 
     override def compare(x: AbstractApplicationEvent, y: AbstractApplicationEvent): Int =
-      x.eventDateTime.compareTo(y.eventDateTime)
+      y.eventDateTime.compareTo(x.eventDateTime)
   }
 }
 
