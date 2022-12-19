@@ -90,8 +90,7 @@ case class ProductionAppPrivacyPolicyLocationChanged(
     eventDateTime: LocalDateTime,
     actor: Actor,
     oldLocation: PrivacyPolicyLocation,
-    newLocation: PrivacyPolicyLocation,
-    requestingAdminEmail: LaxEmailAddress
+    newLocation: PrivacyPolicyLocation
   ) extends ApplicationEvent
 
 case class ProductionLegacyAppPrivacyPolicyLocationChanged(
@@ -100,8 +99,7 @@ case class ProductionLegacyAppPrivacyPolicyLocationChanged(
     eventDateTime: LocalDateTime,
     actor: Actor,
     oldUrl: String,
-    newUrl: String,
-    requestingAdminEmail: LaxEmailAddress
+    newUrl: String
   ) extends ApplicationEvent
 
 case class ProductionAppTermsConditionsLocationChanged(
@@ -110,8 +108,7 @@ case class ProductionAppTermsConditionsLocationChanged(
     eventDateTime: LocalDateTime,
     actor: Actor,
     oldLocation: TermsAndConditionsLocation,
-    newLocation: TermsAndConditionsLocation,
-    requestingAdminEmail: LaxEmailAddress
+    newLocation: TermsAndConditionsLocation
   ) extends ApplicationEvent
 
 case class ProductionLegacyAppTermsConditionsLocationChanged(
@@ -120,8 +117,7 @@ case class ProductionLegacyAppTermsConditionsLocationChanged(
     eventDateTime: LocalDateTime,
     actor: Actor,
     oldUrl: String,
-    newUrl: String,
-    requestingAdminEmail: LaxEmailAddress
+    newUrl: String
   ) extends ApplicationEvent
 
 case class ClientSecretAdded(
