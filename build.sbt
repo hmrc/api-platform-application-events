@@ -18,7 +18,6 @@ lazy val library = (project in file("."))
     name                             := "api-platform-application-events",
     majorVersion                     := 0,
     isPublicArtefact                 := true,
-    targetJvm                        := "jvm-1.8",
     libraryDependencies ++= LibraryDependencies()
   )
   .settings(
