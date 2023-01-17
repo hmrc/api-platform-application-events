@@ -45,9 +45,8 @@ object EventTags {
    */
   private val lookupName: Map[String, EventTag] = ALL.map(et => et.toString() -> et).toMap
 
-  def fromString(text:String): Option[EventTag] =
+  def fromString(text: String): Option[EventTag] =
     lookupName.get(text)
-
 
   /*
    * Resolve event to an eventTag

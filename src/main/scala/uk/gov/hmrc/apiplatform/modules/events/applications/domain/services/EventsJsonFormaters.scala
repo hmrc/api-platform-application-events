@@ -71,8 +71,8 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
 
   implicit val applicationApprovalRequestDeclinedFormats = Json.format[ApplicationApprovalRequestDeclined]
 
-  implicit val applicationDeletedFormats = Json.format[ApplicationDeleted]
-  implicit val applicationDeletedByGatekeeperFormats = Json.format[ApplicationDeletedByGatekeeper]
+  implicit val applicationDeletedFormats                      = Json.format[ApplicationDeleted]
+  implicit val applicationDeletedByGatekeeperFormats          = Json.format[ApplicationDeletedByGatekeeper]
   implicit val productionCredentialsApplicationDeletedFormats = Json.format[ProductionCredentialsApplicationDeleted]
 
   implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
@@ -112,9 +112,9 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     case object APPLICATION_APPROVAL_REQUEST_DECLINED extends EventType
     case object APPLICATION_STATE_CHANGED             extends EventType
 
-    case object APPLICATION_DELETED                               extends EventType
-    case object APPLICATION_DELETED_BY_GATEKEEPER                 extends EventType
-    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED        extends EventType
+    case object APPLICATION_DELETED                        extends EventType
+    case object APPLICATION_DELETED_BY_GATEKEEPER          extends EventType
+    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED extends EventType
 
     case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED          extends EventType
     case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED        extends EventType

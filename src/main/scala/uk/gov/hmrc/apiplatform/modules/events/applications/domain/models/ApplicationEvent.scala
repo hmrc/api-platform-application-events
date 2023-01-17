@@ -369,7 +369,7 @@ case class ApplicationDeleted(
     clientId: ClientId,
     wso2ApplicationName: String,
     reasons: String
-  ) extends ApplicationEvent  
+  ) extends ApplicationEvent
 
 case class ApplicationDeletedByGatekeeper(
     id: EventId,
