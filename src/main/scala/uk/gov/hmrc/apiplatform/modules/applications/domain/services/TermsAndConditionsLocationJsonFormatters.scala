@@ -17,8 +17,9 @@
 package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
 import play.api.libs.json._
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 import uk.gov.hmrc.play.json.Union
+
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 
 trait TermsAndConditionsLocationJsonFormatters {
   private implicit val noneProvidedFormat      = Json.format[TermsAndConditionsLocations.NoneProvided.type]

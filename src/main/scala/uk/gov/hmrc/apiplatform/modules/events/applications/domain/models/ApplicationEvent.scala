@@ -17,8 +17,9 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.LocalDateTime
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
+
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 
 sealed trait AbstractApplicationEvent {
   def id: EventId

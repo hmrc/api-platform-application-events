@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-import uk.gov.hmrc.play.json.Union
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.play.json.Union
+
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 trait CollaboratorJsonFormatters extends CommonJsonFormatters {
   private sealed trait Role

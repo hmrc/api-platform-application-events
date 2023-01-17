@@ -16,9 +16,11 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers
 import java.time.LocalDateTime
+
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 
 class AppliationEventSpec extends AnyWordSpec with Matchers {

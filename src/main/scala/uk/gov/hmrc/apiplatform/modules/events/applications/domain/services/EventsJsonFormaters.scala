@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.domain.services._
-import uk.gov.hmrc.play.json.Union
-import play.api.libs.json.{EnvReads, EnvWrites, Json, OFormat}
 import java.time.LocalDateTime
-import play.api.libs.json.Format
+
+import play.api.libs.json.{EnvReads, EnvWrites, Format, Json, OFormat}
+import uk.gov.hmrc.play.json.Union
+
+import uk.gov.hmrc.apiplatform.modules.applications.domain.services._
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) extends ActorJsonFormatters
     with OldStyleActorJsonFormatters with CollaboratorJsonFormatters

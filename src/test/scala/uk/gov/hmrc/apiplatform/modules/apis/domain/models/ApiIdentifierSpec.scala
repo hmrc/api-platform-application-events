@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.apiplatform.modules.apis.domain.models
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
-import play.api.libs.json.Json
-import play.api.libs.json.JsString
 import org.scalatest.Inspectors
+
+import play.api.libs.json.{JsString, Json}
+
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class ApiIdentifierSpec extends JsonFormattersSpec with Inspectors {
   val aContext       = ApiContext("c1")
