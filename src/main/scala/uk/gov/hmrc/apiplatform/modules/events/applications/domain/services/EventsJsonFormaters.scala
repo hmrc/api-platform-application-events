@@ -28,6 +28,8 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
     with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
 
+  // scalastyle:off number.of.types
+  // scalastyle:off number.of.methods
   private implicit val fmt = localDateTimeFormats
 
   implicit val collaboratorAddedFormats   = Json.format[CollaboratorAdded]
@@ -125,6 +127,8 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     case object REDIRECT_URIS_UPDATED                             extends EventType
     case object REDIRECT_URIS_UPDATED_V2                          extends EventType
     case object PPNS_CALLBACK_URI_UPDATED                         extends EventType
+    // scalastyle:on number.of.types
+    // scalastyle:on number.of.methods
   }
 
   implicit val abstractApplicationEventFormats: OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")

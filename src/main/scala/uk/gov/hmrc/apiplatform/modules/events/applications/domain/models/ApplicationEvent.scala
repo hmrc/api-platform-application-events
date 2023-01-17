@@ -21,6 +21,8 @@ import java.time.LocalDateTime
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 
+// scalastyle:off number.of.types
+
 sealed trait AbstractApplicationEvent {
   def id: EventId
   def applicationId: ApplicationId
@@ -392,3 +394,5 @@ case class ProductionCredentialsApplicationDeleted(
     wso2ApplicationName: String,
     reasons: String
   ) extends ApplicationEvent
+
+// scalastyle:on number.of.types
