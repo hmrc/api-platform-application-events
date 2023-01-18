@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,11 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.LocalDateTime
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
+
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
+
+// scalastyle:off number.of.types
 
 sealed trait AbstractApplicationEvent {
   def id: EventId
@@ -369,7 +372,7 @@ case class ApplicationDeleted(
     clientId: ClientId,
     wso2ApplicationName: String,
     reasons: String
-  ) extends ApplicationEvent  
+  ) extends ApplicationEvent
 
 case class ApplicationDeletedByGatekeeper(
     id: EventId,
@@ -391,3 +394,5 @@ case class ProductionCredentialsApplicationDeleted(
     wso2ApplicationName: String,
     reasons: String
   ) extends ApplicationEvent
+
+// scalastyle:on number.of.types

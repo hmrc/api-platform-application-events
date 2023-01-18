@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,13 +45,13 @@ object EventTags {
    */
   private val lookupName: Map[String, EventTag] = ALL.map(et => et.toString() -> et).toMap
 
-  def fromString(text:String): Option[EventTag] =
+  def fromString(text: String): Option[EventTag] =
     lookupName.get(text)
-
 
   /*
    * Resolve event to an eventTag
    */
+  // scalastyle:off cyclomatic.complexity
   def tag(evt: AbstractApplicationEvent): EventTag = evt match {
     case _: ApiSubscribedEvent |
         _: ApiSubscribed |
@@ -86,4 +86,5 @@ object EventTags {
     case _: ProductionAppTermsConditionsLocationChanged |
         _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
   }
+  // scalastyle:on cyclomatic.complexity
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.apiplatform.modules.apis.domain.models
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
-import play.api.libs.json.Json
-import play.api.libs.json.JsString
 import org.scalatest.Inspectors
+
+import play.api.libs.json.{JsString, Json}
+
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class ApiIdentifierSpec extends JsonFormattersSpec with Inspectors {
   val aContext       = ApiContext("c1")
