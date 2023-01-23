@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.common.domain.models
+
+import play.api.libs.json.Json
 
 /** LaxEmailAddress is a wrapper to string but designed to carry the idea of an email address
   *
   * NO verification takes place !
   */
 final case class LaxEmailAddress(value: String) extends AnyVal
+
+object LaxEmailAddress {
+  implicit val formatter = Json.valueFormat[LaxEmailAddress]
+}

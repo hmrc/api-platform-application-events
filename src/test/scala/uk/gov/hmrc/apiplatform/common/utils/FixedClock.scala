@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.common.domain.services
+package uk.gov.hmrc.apiplatform.common.utils
 
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import java.time.temporal.ChronoUnit
+import java.time.{Clock, Instant, LocalDateTime, ZoneOffset}
 
-import play.api.libs.json._
+trait FixedClock {
 
-trait JsonFormattersSpec extends AnyWordSpec with Matchers {
+  val utc = ZoneOffset.UTC
 
-  def testToJson[T](in: T)(fields: (String, String)*)(implicit wrt: Writes[T]) = {
-    val f: Seq[(String, JsValue)] = fields.map { case (k, v) => (k -> JsString(v)) }
-    Json.toJson(in) shouldBe JsObject(f)
+  val clock = Clock.fixed(Instant.ofEpochMilli(1650878658447L), utc)
+
+  def clockMinusHours(hours: Long) = {
+    val newInstant = LocalDateTime
+      .ofInstant(clock.instant(), utc)
+      .minusHours(hours)
+      .toInstant(utc)
+    Clock.fixed(newInstant, utc)
   }
+}
 
-  def testFromJson[T](text: String)(expected: T)(implicit rdr: Reads[T]) = {
-    Json.parse(text).validate[T] shouldBe JsSuccess(expected)
-  }
+object FixedClock extends FixedClock {
+  val now = LocalDateTime.now(clock).truncatedTo(ChronoUnit.MILLIS)
+
+  val instant = now.toInstant(ZoneOffset.UTC)
 }

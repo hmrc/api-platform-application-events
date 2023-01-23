@@ -20,8 +20,9 @@ import org.scalatest.OptionValues
 
 import play.api.libs.json._
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{Actor, Actors, LaxEmailAddress}
+import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{Actor, Actors}
+import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
 
 class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 

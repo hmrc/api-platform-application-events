@@ -18,13 +18,22 @@ package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 
-case class Collaborator(
-  emailAddress: String,
-  role: Role.Role,
-  userId: UserId
-  )
+import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
+
+sealed trait Collaborator {
+  def id: UserId
+  def email: LaxEmailAddress
+}
+
+object Collaborators {
+  sealed trait Role
+
+  object Roles {
+    case object ADMINISTRATOR extends Role
+    case object DEVELOPER     extends Role
+  }
+
   
-object Collaborator {
-  import play.api.libs.json.Json
-  implicit val format = Json.format[Collaborator]
+  case class Administrator(id: UserId, email: LaxEmailAddress) extends Collaborator
+  case class Developer(id: UserId, email: LaxEmailAddress)     extends Collaborator
 }

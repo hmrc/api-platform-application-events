@@ -19,8 +19,9 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 import play.api.libs.json.Json
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId   = EventId.random
@@ -56,7 +57,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                             |"eventType": "COLLABORATOR_REMOVED",
                             |"actor":{"user": "123454654", "actorType": "GATEKEEPER"},
                             |"collaborator": {
-                            |  "userId": "1234",
+                            |  "userId": "${UserId.random.value.toString()}",
                             |  "emailAddress": "bob@smith.com",
                             |  "role": "ADMINISTRATOR"
                             |},

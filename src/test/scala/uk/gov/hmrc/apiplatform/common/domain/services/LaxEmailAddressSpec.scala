@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.common.domain.services
 
-sealed trait Collaborator {
-  def userId: String
-  def emailAddress: LaxEmailAddress
-}
+import play.api.libs.json._
 
-object Collaborators {
-  case class Administrator(userId: String, emailAddress: LaxEmailAddress) extends Collaborator
-  case class Developer(userId: String, emailAddress: LaxEmailAddress)     extends Collaborator
+import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
+
+class LaxEmailAddressSpec extends JsonFormattersSpec {
+
+  val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
+
+  "LaxEmailAddress Json Formatting" when {
+
+    "given an lax email address" should {
+      "produce json" in {
+        Json.toJson(LaxEmailAddress("quark")) shouldBe JsString("quark")
+      }
+
+      "read json" in {
+        Json.parse(""" "quark" """).as[LaxEmailAddress] shouldBe LaxEmailAddress("quark")
+      }
+    }
+  }
 }
