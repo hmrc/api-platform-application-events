@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.common.domain.models
 
-sealed trait Collaborator {
-  def id: String
-  def email: LaxEmailAddress
-}
+import play.api.libs.json.Json
 
-object Collaborators {
-  case class Administrator(id: String, email: LaxEmailAddress) extends Collaborator
-  case class Developer(id: String, email: LaxEmailAddress)     extends Collaborator
+/** LaxEmailAddress is a wrapper to string but designed to carry the idea of an email address
+  *
+  * NO verification takes place !
+  */
+final case class LaxEmailAddress(value: String) extends AnyVal
+
+object LaxEmailAddress {
+  implicit val formatter = Json.valueFormat[LaxEmailAddress]
 }

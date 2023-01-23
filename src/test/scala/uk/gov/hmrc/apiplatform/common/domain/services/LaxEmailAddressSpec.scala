@@ -14,10 +14,26 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.common.domain.services
 
-/** LaxEmailAddress is a wrapper to string but designed to carry the idea of an email address
-  *
-  * NO verification takes place !
-  */
-final case class LaxEmailAddress(value: String) extends AnyVal
+import play.api.libs.json._
+
+import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
+
+class LaxEmailAddressSpec extends JsonFormattersSpec {
+
+  val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
+
+  "LaxEmailAddress Json Formatting" when {
+
+    "given an lax email address" should {
+      "produce json" in {
+        Json.toJson(LaxEmailAddress("quark")) shouldBe JsString("quark")
+      }
+
+      "read json" in {
+        Json.parse(""" "quark" """).as[LaxEmailAddress] shouldBe LaxEmailAddress("quark")
+      }
+    }
+  }
+}

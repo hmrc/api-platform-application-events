@@ -22,6 +22,9 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
+import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
+import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.Collaborators
 
 class AppliationEventSpec extends AnyWordSpec with Matchers {
 
@@ -31,7 +34,8 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
     val anEmail         = LaxEmailAddress("bob@smith.com")
     val aRole           = "ADMINISTRATOR"
     val appId           = ApplicationId.random
-    val aCollaborator   = Collaborators.Developer("123", anEmail)
+    val aUserId         = UserId.random
+    val aCollaborator   = Collaborators.Developer(aUserId, anEmail)
 
     "Ordering a collection of events" should {
       "Sort the later ones first" in {

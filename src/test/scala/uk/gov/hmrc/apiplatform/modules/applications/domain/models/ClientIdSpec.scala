@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsString, Json}
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
 
-trait CommonJsonFormatters {
+class ClientIdSpec extends JsonFormattersSpec {
+  val aClientId = ClientId.random
 
-  implicit val eventIdJf = Json.valueFormat[EventId]
+  "ClientId" should {
+    "convert to json" in {
+
+      Json.toJson(aClientId) shouldBe JsString(aClientId.value.toString())
+    }
+
+    "read from json" in {
+      testFromJson[ClientId](s""""${aClientId.value.toString}"""")(aClientId)
+    }
+  }
 }
-
-object CommonJsonFormatters extends CommonJsonFormatters

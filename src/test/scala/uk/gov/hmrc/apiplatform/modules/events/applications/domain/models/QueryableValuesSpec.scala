@@ -18,7 +18,7 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import play.api.libs.json._
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
 
 class QueryableValuesSpec extends JsonFormattersSpec {
 
