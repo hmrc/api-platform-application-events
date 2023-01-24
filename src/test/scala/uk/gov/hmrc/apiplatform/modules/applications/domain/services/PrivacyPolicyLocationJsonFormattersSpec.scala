@@ -17,7 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{PrivacyPolicyLocation, PrivacyPolicyLocations}
-import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class PrivacyPolicyLocationJsonFormattersSpec extends JsonFormattersSpec {
 

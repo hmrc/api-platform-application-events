@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.common.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.services
 
 import play.api.libs.json._
 
-import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 
 class LaxEmailAddressSpec extends JsonFormattersSpec {
 

@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
-import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
-import play.api.libs.json.Json
-import play.api.libs.json.JsString
+import play.api.libs.json.{JsString, Json}
 
-import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 
 class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
 
-  val anId    = UserId.random
+  val anId     = UserId.random
   val idAsText = anId.value.toString()
-  val anEmail = LaxEmailAddress("bob@smith.com")
+  val anEmail  = LaxEmailAddress("bob@smith.com")
 
   "CollaboratorJsonFormatters" when {
 
@@ -69,7 +68,7 @@ class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
     }
   }
   "CollaboratorsRoleJsonFormatters" when {
-    
+
     import CollaboratorJsonFormatters._
 
     "given administrator role" should {
@@ -79,7 +78,7 @@ class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
 
       "read json" in {
         testFromJson[Collaborators.Role](s""""ADMINISTRATOR"""")(Collaborators.Roles.ADMINISTRATOR)
-      }  
+      }
     }
 
     "given developer role" should {
@@ -89,7 +88,7 @@ class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
 
       "read json" in {
         testFromJson[Collaborators.Role](s""""DEVELOPER"""")(Collaborators.Roles.DEVELOPER)
-      }  
+      }
     }
   }
 }

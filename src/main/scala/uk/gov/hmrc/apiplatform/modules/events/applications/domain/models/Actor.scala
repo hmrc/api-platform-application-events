@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+
 /** Actor refers to actors that triggered an event
   */
 sealed trait Actor

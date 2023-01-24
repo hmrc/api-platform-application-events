@@ -16,11 +16,10 @@
 
 package uk.gov.hmrc.apiplatform.modules.applications.domain.services
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Json, OFormat, _}
 import uk.gov.hmrc.play.json.Union
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{Collaborator, Collaborators}
-import play.api.libs.json._
 
 trait CollaboratorJsonFormatters {
 
@@ -32,7 +31,7 @@ trait CollaboratorJsonFormatters {
     .and[Collaborators.Developer](Collaborators.Roles.DEVELOPER.toString)
     .format
 
-  implicit val developerJF = Json.format[Collaborators.Roles.DEVELOPER.type]
+  implicit val developerJF      = Json.format[Collaborators.Roles.DEVELOPER.type]
   implicit val administratorsJF = Json.format[Collaborators.Roles.ADMINISTRATOR.type]
 
   implicit val collaboratorsRoleJf: Format[Collaborators.Role] = new Format[Collaborators.Role] {
@@ -40,12 +39,11 @@ trait CollaboratorJsonFormatters {
     override def writes(o: Collaborators.Role): JsValue = JsString(o.toString)
 
     override def reads(json: JsValue): JsResult[Collaborators.Role] = json match {
-      case JsString("DEVELOPER") => JsSuccess(Collaborators.Roles.DEVELOPER)
+      case JsString("DEVELOPER")     => JsSuccess(Collaborators.Roles.DEVELOPER)
       case JsString("ADMINISTRATOR") => JsSuccess(Collaborators.Roles.ADMINISTRATOR)
-      case _ => JsError(s"Cannot read role")
+      case _                         => JsError(s"Cannot read role")
     }
 
-    
   }
 }
 

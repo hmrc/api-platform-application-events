@@ -18,7 +18,7 @@ package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
 import play.api.libs.json.{JsString, Json}
 
-import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
 class ClientIdSpec extends JsonFormattersSpec {
   val aClientId = ClientId.random

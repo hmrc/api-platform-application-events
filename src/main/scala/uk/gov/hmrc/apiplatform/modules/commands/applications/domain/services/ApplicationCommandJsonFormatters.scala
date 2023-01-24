@@ -17,15 +17,14 @@
 package uk.gov.hmrc.apiplatform.modules.commands.applications.domain.services
 
 import play.api.libs.json.Json
-
-import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.models._
 import uk.gov.hmrc.play.json.Union
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.services._
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.services.CollaboratorJsonFormatters
+import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.services._
 
 trait ApplicationCommandJsonFormatters extends ActorJsonFormatters with CollaboratorJsonFormatters {
-  
+
   implicit val addCollaboratorFormatter              = Json.format[AddCollaborator]
   implicit val addCollaboratorUpdateRequestFormatter = Json.format[AddCollaboratorRequest]
   implicit val removeCollaboratorFormatter           = Json.format[RemoveCollaborator]

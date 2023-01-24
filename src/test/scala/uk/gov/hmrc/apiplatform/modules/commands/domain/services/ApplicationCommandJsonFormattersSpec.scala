@@ -16,26 +16,26 @@
 
 package uk.gov.hmrc.apiplatform.modules.commands.domain.services
 
-import uk.gov.hmrc.apiplatform.common.domain.services.JsonFormattersSpec
-import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
-import uk.gov.hmrc.apiplatform.common.domain.models.LaxEmailAddress
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Actors
-import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.services.ApplicationCommandJsonFormatters
-import uk.gov.hmrc.apiplatform.common.utils.FixedClock
 import play.api.libs.json._
+
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.services.ApplicationCommandJsonFormatters
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
+import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Actors
 
 class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
 
-  val aUserId    = UserId.random
-  val idAsText = aUserId.value.toString()
-  val anEmail = LaxEmailAddress("bob@smith.com")
-  val anAppId = ApplicationId.random
+  val aUserId     = UserId.random
+  val idAsText    = aUserId.value.toString()
+  val anEmail     = LaxEmailAddress("bob@smith.com")
+  val anAppId     = ApplicationId.random
   val appIdAsText = anAppId.value.toString()
-  val anActor = Actors.GatekeeperUser("bob smith")
-  val aTimestamp = "2022-04-25T09:24:18.447Z"
-
+  val anActor     = Actors.GatekeeperUser("bob smith")
+  val aTimestamp  = "2022-04-25T09:24:18.447Z"
 
   "ApplicationCommandJsonFormatters" when {
 
@@ -43,7 +43,7 @@ class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
 
     "given an AddCollaborator command" should {
       val addMe = Collaborators.Administrator(aUserId, anEmail)
-      val cmd = AddCollaborator(anActor, addMe, Set.empty, FixedClock.instant)
+      val cmd   = AddCollaborator(anActor, addMe, Set.empty, FixedClock.instant)
 
       "produce json" in {
         // actor: Actor,  collaborator: Collaborator, adminsToEmail:Set[LaxEmailAddress], timestamp: Instant

@@ -29,5 +29,5 @@ case class ClientSecret(
 
 object ClientSecret {
   import play.api.libs.json.Json
-  implicit val format     = Json.format[ClientSecret]
+  implicit val format = Json.format[ClientSecret]
 }
