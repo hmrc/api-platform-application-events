@@ -32,13 +32,13 @@ class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
       "produce json" in {
         testToJson[Collaborator](Collaborators.Administrator(anId, anEmail))(
           ("role"  -> "ADMINISTRATOR"),
-          ("id"    -> anId),
-          ("email" -> "bob@smith.com")
+          ("userId"    -> anId),
+          ("emailAddress" -> "bob@smith.com")
         )
       }
 
       "read json" in {
-        testFromJson[Collaborator]("""{"role":"ADMINISTRATOR","id":"12345","email":"bob@smith.com"}""")(Collaborators.Administrator(
+        testFromJson[Collaborator]("""{"role":"ADMINISTRATOR","userId":"12345","emailAddress":"bob@smith.com"}""")(Collaborators.Administrator(
           anId,
           anEmail
         ))
@@ -49,13 +49,13 @@ class CollaboratorJsonFormattersSpec extends JsonFormattersSpec {
       "produce json" in {
         testToJson[Collaborator](Collaborators.Developer(anId, anEmail))(
           ("role"  -> "DEVELOPER"),
-          ("id"    -> anId),
-          ("email" -> "bob@smith.com")
+          ("userId"    -> anId),
+          ("emailAddress" -> "bob@smith.com")
         )
       }
 
       "read json" in {
-        testFromJson[Collaborator]("""{"role":"DEVELOPER","id":"12345","email":"bob@smith.com"}""")(Collaborators.Developer(
+        testFromJson[Collaborator]("""{"role":"DEVELOPER","userId":"12345","emailAddress":"bob@smith.com"}""")(Collaborators.Developer(
           anId,
           anEmail
         ))
