@@ -48,12 +48,12 @@ class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
       "produce json" in {
         // actor: Actor,  collaborator: Collaborator, adminsToEmail:Set[LaxEmailAddress], timestamp: Instant
         Json.toJson[ApplicationCommand](cmd).toString shouldBe
-          s"""{"actor":{"user":"bob smith","actorType":"GATEKEEPER"},"collaborator":{"id":"${idAsText}","email":"${anEmail.value}","role":"ADMINISTRATOR"},"adminsToEmail":[],"timestamp":"$aTimestamp","updateType":"addCollaborator"}"""
+          s"""{"actor":{"user":"bob smith","actorType":"GATEKEEPER"},"collaborator":{"userId":"${idAsText}","emailAddress":"${anEmail.value}","role":"ADMINISTRATOR"},"adminsToEmail":[],"timestamp":"$aTimestamp","updateType":"addCollaborator"}"""
       }
 
       "read json" in {
         testFromJson[ApplicationCommand](
-          s"""{"actor":{"user":"bob smith","actorType":"GATEKEEPER"},"collaborator":{"id":"${idAsText}","email":"${anEmail.value}","role":"ADMINISTRATOR"},"adminsToEmail":[],"timestamp":"$aTimestamp","updateType":"addCollaborator"}"""
+          s"""{"actor":{"user":"bob smith","actorType":"GATEKEEPER"},"collaborator":{"userId":"${idAsText}","emailAddress":"${anEmail.value}","role":"ADMINISTRATOR"},"adminsToEmail":[],"timestamp":"$aTimestamp","updateType":"addCollaborator"}"""
         )(cmd)
       }
     }

@@ -20,8 +20,8 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 
 sealed trait Collaborator {
-  def id: UserId
-  def email: LaxEmailAddress
+  def userId: UserId
+  def emailAddress: LaxEmailAddress
 }
 
 object Collaborators {
@@ -32,6 +32,6 @@ object Collaborators {
     case object DEVELOPER     extends Role
   }
 
-  case class Administrator(id: UserId, email: LaxEmailAddress) extends Collaborator
-  case class Developer(id: UserId, email: LaxEmailAddress)     extends Collaborator
+  case class Administrator(userId: UserId, emailAddress: LaxEmailAddress) extends Collaborator
+  case class Developer(userId: UserId, emailAddress: LaxEmailAddress)     extends Collaborator
 }
