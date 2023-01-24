@@ -17,11 +17,11 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 sealed trait Collaborator {
-  def id: String
-  def email: LaxEmailAddress
+  def userId: String
+  def emailAddress: LaxEmailAddress
 }
 
 object Collaborators {
-  case class Administrator(id: String, email: LaxEmailAddress) extends Collaborator
-  case class Developer(id: String, email: LaxEmailAddress)     extends Collaborator
+  case class Administrator(userId: String, emailAddress: LaxEmailAddress) extends Collaborator
+  case class Developer(userId: String, emailAddress: LaxEmailAddress)     extends Collaborator
 }

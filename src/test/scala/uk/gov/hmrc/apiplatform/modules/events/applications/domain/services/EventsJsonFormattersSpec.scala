@@ -56,8 +56,8 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                             |"eventType": "COLLABORATOR_REMOVED",
                             |"actor":{"user": "123454654", "actorType": "GATEKEEPER"},
                             |"collaborator": {
-                            |  "id": "1234",
-                            |  "email": "bob@smith.com",
+                            |  "userId": "1234",
+                            |  "emailAddress": "bob@smith.com",
                             |  "role": "ADMINISTRATOR"
                             |},
                             |"verifiedAdminsToEmail": []
