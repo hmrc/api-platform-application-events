@@ -27,6 +27,14 @@ sealed trait Collaborator {
   def isDeveloper: Boolean = ! isAdministrator
 }
 
+object Collaborator {
+
+  def apply(emailAddress: LaxEmailAddress, role: Collaborators.Role, userId: UserId): Collaborator = role match {
+    case Collaborators.Roles.ADMINISTRATOR => Collaborators.Administrator(userId, emailAddress)
+    case Collaborators.Roles.DEVELOPER     => Collaborators.Developer(userId, emailAddress)
+  }
+}
+
 object Collaborators {
   sealed trait Role
 
