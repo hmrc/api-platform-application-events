@@ -22,6 +22,9 @@ import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 sealed trait Collaborator {
   def userId: UserId
   def emailAddress: LaxEmailAddress
+
+  def isAdministrator: Boolean
+  def isDeveloper: Boolean = ! isAdministrator
 }
 
 object Collaborators {
@@ -32,6 +35,11 @@ object Collaborators {
     case object DEVELOPER     extends Role
   }
 
-  case class Administrator(userId: UserId, emailAddress: LaxEmailAddress) extends Collaborator
-  case class Developer(userId: UserId, emailAddress: LaxEmailAddress)     extends Collaborator
+  case class Administrator(userId: UserId, emailAddress: LaxEmailAddress) extends Collaborator {
+    val isAdministrator = true
+  }
+
+  case class Developer(userId: UserId, emailAddress: LaxEmailAddress)     extends Collaborator {
+    val isAdministrator = false
+  }
 }
