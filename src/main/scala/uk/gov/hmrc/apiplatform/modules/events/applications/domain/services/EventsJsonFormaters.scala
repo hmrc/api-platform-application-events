@@ -24,6 +24,8 @@ import uk.gov.hmrc.play.json.Union
 import uk.gov.hmrc.apiplatform.modules.applications.domain.services.{CollaboratorJsonFormatters, _}
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.ActorJsonFormatters
+
 abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) extends ActorJsonFormatters
     with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
     with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {

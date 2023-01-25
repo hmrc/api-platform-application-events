@@ -21,7 +21,7 @@ import uk.gov.hmrc.play.json.Union
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.services.CollaboratorJsonFormatters
 import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.services._
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.ActorJsonFormatters
 
 trait ApplicationCommandJsonFormatters extends ActorJsonFormatters with CollaboratorJsonFormatters {
 

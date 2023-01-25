@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.services
 
 import org.scalatest.OptionValues
 
 import play.api.libs.json._
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{Actor, Actors}
+import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 
 class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 

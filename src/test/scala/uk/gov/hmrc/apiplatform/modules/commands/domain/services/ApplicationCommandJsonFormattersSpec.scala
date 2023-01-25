@@ -25,7 +25,7 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Actors
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
 class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
 

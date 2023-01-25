@@ -21,6 +21,9 @@ import java.time.LocalDateTime
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
+
 // scalastyle:off number.of.types
 
 sealed trait AbstractApplicationEvent {

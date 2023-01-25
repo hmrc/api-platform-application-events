@@ -25,6 +25,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
 
   "EventTags" when {

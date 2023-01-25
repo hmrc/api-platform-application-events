@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.services
 
 import play.api.libs.json._
 import uk.gov.hmrc.play.json.Union
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actor, Actors}
 
-trait ActorJsonFormatters extends CommonJsonFormatters {
+trait ActorJsonFormatters {
   private sealed trait ActorType
 
   private object ActorTypes {

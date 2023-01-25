@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
-
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+package uk.gov.hmrc.apiplatform.modules.common.domain.models
 
 /** Actor refers to actors that triggered an event
   */

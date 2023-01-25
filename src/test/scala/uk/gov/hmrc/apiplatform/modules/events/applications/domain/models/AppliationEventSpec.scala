@@ -25,6 +25,7 @@ import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 class AppliationEventSpec extends AnyWordSpec with Matchers {
 
   "AbstractApplicationEvent" when {
