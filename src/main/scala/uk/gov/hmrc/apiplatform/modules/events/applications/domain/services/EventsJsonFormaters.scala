@@ -26,9 +26,12 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.ActorJsonFormatters
 
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatters
 abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) extends ActorJsonFormatters
     with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
     with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
+
+  implicit val eventIdJf = Json.valueFormat[EventId]
 
   // scalastyle:off number.of.types
   // scalastyle:off number.of.methods

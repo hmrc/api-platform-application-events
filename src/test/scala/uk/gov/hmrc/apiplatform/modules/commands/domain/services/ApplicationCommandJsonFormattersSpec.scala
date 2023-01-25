@@ -36,6 +36,7 @@ class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
   val appIdAsText = anAppId.value.toString()
   val anActor     = Actors.GatekeeperUser("bob smith")
   val aTimestamp  = "2022-04-25T09:24:18.447Z"
+  val anUnsafeTimestamp = "2022-04-25T09:24:18.447"
 
   "ApplicationCommandJsonFormatters" when {
 
@@ -56,6 +57,12 @@ class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
           s"""{"actor":{"user":"bob smith","actorType":"GATEKEEPER"},"collaborator":{"userId":"${idAsText}","emailAddress":"${anEmail.value}","role":"ADMINISTRATOR"},"adminsToEmail":[],"timestamp":"$aTimestamp","updateType":"addCollaborator"}"""
         )(cmd)
       }
+
+      "read unsafe json" in {
+        testFromJson[ApplicationCommand](
+          s"""{"actor":{"user":"bob smith","actorType":"GATEKEEPER"},"collaborator":{"userId":"${idAsText}","emailAddress":"${anEmail.value}","role":"ADMINISTRATOR"},"adminsToEmail":[],"timestamp":"$anUnsafeTimestamp","updateType":"addCollaborator"}"""
+        )(cmd)
+      }
     }
 
     "given an AddCollaboratorRequest command" should {
@@ -72,5 +79,6 @@ class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
         )(cmd)
       }
     }
+
   }
 }

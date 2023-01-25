@@ -22,8 +22,9 @@ import uk.gov.hmrc.play.json.Union
 import uk.gov.hmrc.apiplatform.modules.applications.domain.services.CollaboratorJsonFormatters
 import uk.gov.hmrc.apiplatform.modules.commands.applications.domain.models._
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.ActorJsonFormatters
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatters
 
-trait ApplicationCommandJsonFormatters extends ActorJsonFormatters with CollaboratorJsonFormatters {
+trait ApplicationCommandJsonFormatters extends ActorJsonFormatters with CollaboratorJsonFormatters with CommonJsonFormatters {
 
   implicit val addCollaboratorFormatter              = Json.format[AddCollaborator]
   implicit val addCollaboratorUpdateRequestFormatter = Json.format[AddCollaboratorRequest]

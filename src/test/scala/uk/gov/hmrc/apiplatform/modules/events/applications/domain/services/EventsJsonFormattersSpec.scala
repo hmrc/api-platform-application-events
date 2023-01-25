@@ -22,6 +22,7 @@ import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import play.api.libs.json.JsString
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId   = EventId.random
@@ -30,6 +31,18 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
   "EventsInterServiceCallJsonFormatters" when {
     import EventsInterServiceCallJsonFormatters._
+
+    "given an event id" should {
+      val uuid = java.util.UUID.randomUUID
+
+      "produce json" in {
+        Json.toJson(EventId(uuid)) shouldBe JsString(uuid.toString)
+      }
+
+      "read json" in {
+        Json.parse(s""" "${uuid.toString}" """).as[EventId] shouldBe EventId(uuid)
+      }
+    }
 
     "given an old style team member added event" should {
       "convert from json" in {
