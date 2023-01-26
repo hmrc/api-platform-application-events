@@ -23,6 +23,7 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
 import java.time.Instant
 
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 // scalastyle:off number.of.types
 
 sealed trait AbstractApplicationEvent {
@@ -250,7 +251,7 @@ case class ResponsibleIndividualChanged(
     previousResponsibleIndividualEmail: LaxEmailAddress,
     newResponsibleIndividualName: String,
     newResponsibleIndividualEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     code: String,
     requestingAdminName: String,
@@ -264,7 +265,7 @@ case class ResponsibleIndividualChangedToSelf(
     actor: Actor,
     previousResponsibleIndividualName: String,
     previousResponsibleIndividualEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     requestingAdminName: String,
     requestingAdminEmail: LaxEmailAddress
@@ -277,7 +278,7 @@ case class ResponsibleIndividualSet(
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     code: String,
     requestingAdminName: String,
@@ -305,7 +306,7 @@ case class ResponsibleIndividualVerificationStarted(
     requestingAdminEmail: LaxEmailAddress,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     verificationId: String
   ) extends ApplicationEvent
@@ -317,7 +318,7 @@ case class ResponsibleIndividualDeclined(
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     code: String,
     requestingAdminName: String,
@@ -331,7 +332,7 @@ case class ResponsibleIndividualDeclinedUpdate(
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     code: String,
     requestingAdminName: String,
@@ -345,7 +346,7 @@ case class ResponsibleIndividualDidNotVerify(
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     code: String,
     requestingAdminName: String,
@@ -359,7 +360,7 @@ case class ApplicationApprovalRequestDeclined(
     actor: Actor,
     decliningUserName: String,
     decliningUserEmail: LaxEmailAddress,
-    submissionId: String,
+    submissionId: SubmissionId,
     submissionIndex: Int,
     reasons: String,
     requestingAdminName: String,
