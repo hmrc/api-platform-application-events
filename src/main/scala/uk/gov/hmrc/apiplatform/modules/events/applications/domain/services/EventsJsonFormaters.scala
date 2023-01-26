@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import java.time.LocalDateTime
-
 import play.api.libs.json.{EnvReads, EnvWrites, Format, Json, OFormat}
 import uk.gov.hmrc.play.json.Union
 
@@ -26,14 +24,17 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.ActorJsonFormatters
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatters
+import java.time.Instant
 
-abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) 
+abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) 
     extends ActorJsonFormatters
     with OldStyleActorJsonFormatters
     with CollaboratorJsonFormatters
     with PrivacyPolicyLocationJsonFormatters
     with TermsAndConditionsLocationJsonFormatters 
     with CommonJsonFormatters {
+
+  private implicit val fmt = instantFormatter
 
   implicit val eventIdJf = Json.valueFormat[EventId]
 
@@ -179,17 +180,16 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     .format
 }
 
-object LocalDateTimeFormatter extends EnvWrites with EnvReads {
+private object InstantJsonFormatter extends EnvWrites with EnvReads with CommonJsonFormatters {
   import play.api.libs.json._
 
-  implicit val writer: Writes[LocalDateTime] = DefaultLocalDateTimeWrites
+  val writer: Writes[Instant] = DefaultInstantWrites
+  val reader: Reads[Instant] = tolerantInstantReader
 
-  implicit val reader: Reads[LocalDateTime] = DefaultLocalDateTimeReads
-
-  implicit val format: Format[LocalDateTime] = Format(reader, writer)
+  implicit val format: Format[Instant] = Format(reader, writer)
 }
 
-object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(LocalDateTimeFormatter.format)
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantJsonFormatter.format)
 
 /*
  *  For mongo use the following
