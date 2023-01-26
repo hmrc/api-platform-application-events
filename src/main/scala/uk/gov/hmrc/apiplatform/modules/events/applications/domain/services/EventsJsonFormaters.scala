@@ -25,17 +25,20 @@ import uk.gov.hmrc.apiplatform.modules.applications.domain.services.{Collaborato
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.ActorJsonFormatters
-
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatters
-abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) extends ActorJsonFormatters
-    with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
-    with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
+
+abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) 
+    extends ActorJsonFormatters
+    with OldStyleActorJsonFormatters
+    with CollaboratorJsonFormatters
+    with PrivacyPolicyLocationJsonFormatters
+    with TermsAndConditionsLocationJsonFormatters 
+    with CommonJsonFormatters {
 
   implicit val eventIdJf = Json.valueFormat[EventId]
 
   // scalastyle:off number.of.types
   // scalastyle:off number.of.methods
-  private implicit val fmt = localDateTimeFormats
 
   implicit val collaboratorAddedFormats   = Json.format[CollaboratorAdded]
   implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemoved]
@@ -192,7 +195,7 @@ object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(LocalDa
  *  For mongo use the following
  *
  *  object EventsMongoJsonFormatters extends EventsJsonFormatters {
- *     implicit val localDateTimeFormats = MongoJavatimeFormats.localDateTimeFormat
+ *     implicit val instantJsonFormatter = MongoJavatimeFormats.instantFormat
  *  }
  *
  */

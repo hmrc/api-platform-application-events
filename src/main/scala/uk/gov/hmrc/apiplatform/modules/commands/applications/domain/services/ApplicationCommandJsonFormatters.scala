@@ -43,7 +43,6 @@ trait ApplicationCommandJsonFormatters extends ActorJsonFormatters with Collabor
     .and[UnsubscribeFromApi]("unsubscribeFromApi")
     .and[UpdateRedirectUris]("updateRedirectUris")
     .format
-
 }
 
 object ApplicationCommandJsonFormatters extends ApplicationCommandJsonFormatters

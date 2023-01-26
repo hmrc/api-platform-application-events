@@ -16,20 +16,19 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import java.time.LocalDateTime
-
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
+import java.time.Instant
 
 // scalastyle:off number.of.types
 
 sealed trait AbstractApplicationEvent {
   def id: EventId
   def applicationId: ApplicationId
-  def eventDateTime: LocalDateTime
+  def eventDateTime: Instant
 }
 
 sealed trait OldStyleApplicationEvent extends AbstractApplicationEvent {
@@ -52,7 +51,7 @@ object AbstractApplicationEvent {
 case class PpnsCallBackUriUpdatedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     boxId: String,
     boxName: String,
@@ -63,7 +62,7 @@ case class PpnsCallBackUriUpdatedEvent(
 case class RedirectUrisUpdated(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     oldRedirectUris: List[String],
     newRedirectUris: List[String]
@@ -74,7 +73,7 @@ case class RedirectUrisUpdated(
 case class RedirectUrisUpdatedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     oldRedirectUris: String,
     newRedirectUris: String
@@ -83,7 +82,7 @@ case class RedirectUrisUpdatedEvent(
 case class ProductionAppNameChangedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     oldAppName: String,
     newAppName: String,
@@ -93,7 +92,7 @@ case class ProductionAppNameChangedEvent(
 case class ProductionAppPrivacyPolicyLocationChanged(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     oldLocation: PrivacyPolicyLocation,
     newLocation: PrivacyPolicyLocation
@@ -102,7 +101,7 @@ case class ProductionAppPrivacyPolicyLocationChanged(
 case class ProductionLegacyAppPrivacyPolicyLocationChanged(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     oldUrl: String,
     newUrl: String
@@ -111,7 +110,7 @@ case class ProductionLegacyAppPrivacyPolicyLocationChanged(
 case class ProductionAppTermsConditionsLocationChanged(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     oldLocation: TermsAndConditionsLocation,
     newLocation: TermsAndConditionsLocation
@@ -120,7 +119,7 @@ case class ProductionAppTermsConditionsLocationChanged(
 case class ProductionLegacyAppTermsConditionsLocationChanged(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     oldUrl: String,
     newUrl: String
@@ -129,7 +128,7 @@ case class ProductionLegacyAppTermsConditionsLocationChanged(
 case class ClientSecretAdded(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     clientSecretId: String,
     clientSecretName: String
@@ -138,7 +137,7 @@ case class ClientSecretAdded(
 case class ClientSecretRemoved(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     clientSecretId: String,
     clientSecretName: String
@@ -149,7 +148,7 @@ case class ClientSecretRemoved(
 case class ClientSecretAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     clientSecretId: String
   ) extends OldStyleApplicationEvent
@@ -159,7 +158,7 @@ case class ClientSecretAddedEvent(
 case class ClientSecretRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     clientSecretId: String
   ) extends OldStyleApplicationEvent
@@ -167,7 +166,7 @@ case class ClientSecretRemovedEvent(
 case class CollaboratorAdded(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     collaborator: Collaborator,
     verifiedAdminsToEmail: Set[LaxEmailAddress]
@@ -176,7 +175,7 @@ case class CollaboratorAdded(
 case class CollaboratorRemoved(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     collaborator: Collaborator,
     verifiedAdminsToEmail: Set[LaxEmailAddress]
@@ -187,7 +186,7 @@ case class CollaboratorRemoved(
 case class TeamMemberAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     teamMemberEmail: LaxEmailAddress,
     teamMemberRole: String
@@ -198,7 +197,7 @@ case class TeamMemberAddedEvent(
 case class TeamMemberRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     teamMemberEmail: LaxEmailAddress,
     teamMemberRole: String
@@ -207,7 +206,7 @@ case class TeamMemberRemovedEvent(
 case class ApiSubscribed(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     apiIdentifier: ApiIdentifier
   ) extends ApplicationEvent
@@ -215,7 +214,7 @@ case class ApiSubscribed(
 case class ApiUnsubscribed(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     apiIdentifier: ApiIdentifier
   ) extends ApplicationEvent
@@ -225,7 +224,7 @@ case class ApiUnsubscribed(
 case class ApiSubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     context: String,
     version: String
@@ -236,7 +235,7 @@ case class ApiSubscribedEvent(
 case class ApiUnsubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: OldStyleActor,
     context: String,
     version: String
@@ -245,7 +244,7 @@ case class ApiUnsubscribedEvent(
 case class ResponsibleIndividualChanged(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     previousResponsibleIndividualName: String,
     previousResponsibleIndividualEmail: LaxEmailAddress,
@@ -261,7 +260,7 @@ case class ResponsibleIndividualChanged(
 case class ResponsibleIndividualChangedToSelf(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     previousResponsibleIndividualName: String,
     previousResponsibleIndividualEmail: LaxEmailAddress,
@@ -274,7 +273,7 @@ case class ResponsibleIndividualChangedToSelf(
 case class ResponsibleIndividualSet(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
@@ -288,7 +287,7 @@ case class ResponsibleIndividualSet(
 case class ApplicationStateChanged(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     oldAppState: String,
     newAppState: String,
@@ -300,7 +299,7 @@ case class ResponsibleIndividualVerificationStarted(
     id: EventId,
     applicationId: ApplicationId,
     applicationName: String,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     requestingAdminName: String,
     requestingAdminEmail: LaxEmailAddress,
@@ -314,7 +313,7 @@ case class ResponsibleIndividualVerificationStarted(
 case class ResponsibleIndividualDeclined(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
@@ -328,7 +327,7 @@ case class ResponsibleIndividualDeclined(
 case class ResponsibleIndividualDeclinedUpdate(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
@@ -342,7 +341,7 @@ case class ResponsibleIndividualDeclinedUpdate(
 case class ResponsibleIndividualDidNotVerify(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     responsibleIndividualName: String,
     responsibleIndividualEmail: LaxEmailAddress,
@@ -356,7 +355,7 @@ case class ResponsibleIndividualDidNotVerify(
 case class ApplicationApprovalRequestDeclined(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     decliningUserName: String,
     decliningUserEmail: LaxEmailAddress,
@@ -370,7 +369,7 @@ case class ApplicationApprovalRequestDeclined(
 case class ApplicationDeleted(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     clientId: ClientId,
     wso2ApplicationName: String,
@@ -380,7 +379,7 @@ case class ApplicationDeleted(
 case class ApplicationDeletedByGatekeeper(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     clientId: ClientId,
     wso2ApplicationName: String,
@@ -391,7 +390,7 @@ case class ApplicationDeletedByGatekeeper(
 case class ProductionCredentialsApplicationDeleted(
     id: EventId,
     applicationId: ApplicationId,
-    eventDateTime: LocalDateTime,
+    eventDateTime: Instant,
     actor: Actor,
     clientId: ClientId,
     wso2ApplicationName: String,

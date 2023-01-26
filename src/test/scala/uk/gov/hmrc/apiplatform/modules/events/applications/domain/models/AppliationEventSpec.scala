@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import java.time.LocalDateTime
-
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -26,6 +24,8 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 class AppliationEventSpec extends AnyWordSpec with Matchers {
 
   "AbstractApplicationEvent" when {
@@ -39,9 +39,9 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
 
     "Ordering a collection of events" should {
       "Sort the later ones first" in {
-        val time1 = LocalDateTime.now()
-        val time2 = time1.minusDays(2)
-        val time3 = time1.minusDays(3)
+        val time1 = Instant.now()
+        val time2 = time1.minus(2, ChronoUnit.DAYS)
+        val time3 = time1.minus(3, ChronoUnit.DAYS)
 
         val e1 = TeamMemberRemovedEvent(EventId.random, appId, time1, anOldStyleActor, anEmail, aRole)
         val e2 = TeamMemberAddedEvent(EventId.random, appId, time2, anOldStyleActor, anEmail, aRole)
