@@ -79,6 +79,5 @@ class ApplicationCommandJsonFormattersSpec extends JsonFormattersSpec {
         )(cmd)
       }
     }
-
   }
 }

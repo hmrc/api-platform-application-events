@@ -36,8 +36,6 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant])
 
   private implicit val fmt = instantFormatter
 
-  implicit val eventIdJf = Json.valueFormat[EventId]
-
   // scalastyle:off number.of.types
   // scalastyle:off number.of.methods
 
