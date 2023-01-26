@@ -54,13 +54,16 @@ object ApiVersion {
   }
 }
 
-final case class ApiIdentifier(context: ApiContext, version: ApiVersion)
+final case class ApiIdentifier(context: ApiContext, version: ApiVersion) {
+    def asText(separator: String): String = s"${context.value}$separator${version.value}"
+}
 
 object ApiIdentifier {
   implicit val apiIdentifierFormat = Json.format[ApiIdentifier]
 
   def random = ApiIdentifier(ApiContext.random, ApiVersion.random)
 
+  
   // When we drop 2.12 support we can use : -
   // Ordering.by[ApiIdentifier, String](_.context.value)
   //  .orElseBy(_.version.value)

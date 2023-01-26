@@ -23,7 +23,9 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
   * These should NEVER be used on newer events and deliberately are not part of any class hierarchy with the Actor trait.
   */
 @Deprecated
-sealed trait OldStyleActor
+sealed trait OldStyleActor {
+  def id: String
+}
 
 object OldStyleActors {
 
@@ -53,5 +55,7 @@ object OldStyleActors {
     * @param id
     *   the job name or instance of the job possibly as a UUID
     */
-  case object Unknown extends OldStyleActor
+  case object Unknown extends OldStyleActor {
+    val id = "UNKNOWN"
+  }
 }

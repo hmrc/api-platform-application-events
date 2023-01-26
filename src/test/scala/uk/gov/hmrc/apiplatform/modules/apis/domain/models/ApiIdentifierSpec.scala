@@ -77,6 +77,10 @@ class ApiIdentifierSpec extends JsonFormattersSpec with Inspectors {
 
   "ApiIdentifier" should {
 
+    "convert to simple text" in {
+      anApiIdentifer.asText("--") shouldBe "c1--1.0"
+    }
+
     "convert to json" in {
 
       testToJson(anApiIdentifer)(("context" -> "c1"), ("version" -> "1.0"))
