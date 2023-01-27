@@ -61,10 +61,11 @@ object EventTags {
         _: CollaboratorRemoved |
         _: TeamMemberAddedEvent |
         _: TeamMemberRemovedEvent => TEAM_MEMBER
-    case _: ClientSecretAdded |
-        _: ClientSecretRemoved |
-        _: ClientSecretAddedEvent |
-        _: ClientSecretRemovedEvent => CLIENT_SECRET
+    case _: ClientSecretAddedV2 |
+         _: ClientSecretAddedV3 |
+         _: ClientSecretRemoved |
+         _: ClientSecretAddedEvent |
+         _: ClientSecretRemovedEvent => CLIENT_SECRET
     case _: PpnsCallBackUriUpdatedEvent   => PPNS_CALLBACK
     case _: RedirectUrisUpdated |
         _: RedirectUrisUpdatedEvent => REDIRECT_URIS

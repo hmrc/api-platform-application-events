@@ -123,7 +123,7 @@ case class ProductionLegacyAppTermsConditionsLocationChanged(
     newUrl: String
   ) extends ApplicationEvent
 
-case class ClientSecretAdded(
+case class ClientSecretAddedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: LocalDateTime,
@@ -131,6 +131,15 @@ case class ClientSecretAdded(
     clientSecretId: String,
     clientSecretName: String
   ) extends ApplicationEvent
+
+   case class ClientSecretAddedV3(
+       id: EventId,
+       applicationId: ApplicationId,
+       eventDateTime: LocalDateTime,
+       actor: Actor,
+       secretValue: String,
+       clientSecret: ClientSecret
+     ) extends ApplicationEvent
 
 case class ClientSecretRemoved(
     id: EventId,

@@ -38,7 +38,8 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
   implicit val teamMemberAddedEventFormats   = Json.format[TeamMemberAddedEvent]
   implicit val teamMemberRemovedEventFormats = Json.format[TeamMemberRemovedEvent]
 
-  implicit val clientSecretAddedFormats   = Json.format[ClientSecretAdded]
+  implicit val clientSecretAddedV2Formats   = Json.format[ClientSecretAddedV2]
+  implicit val clientSecretAddedV3Formats   = Json.format[ClientSecretAddedV3]
   implicit val clientSecretRemovedFormats = Json.format[ClientSecretRemoved]
 
   implicit val clientSecretAddedEventFormats   = Json.format[ClientSecretAddedEvent]
@@ -94,6 +95,8 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
 
     case object CLIENT_SECRET_ADDED    extends EventType
     case object CLIENT_SECRET_ADDED_V2 extends EventType
+    case object CLIENT_SECRET_ADDED_V3 extends EventType
+
 
     case object CLIENT_SECRET_REMOVED_V2 extends EventType
     case object CLIENT_SECRET_REMOVED    extends EventType
@@ -155,7 +158,8 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     .and[ProductionCredentialsApplicationDeleted](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED.toString)
     .and[ApiSubscribed](EventTypes.API_SUBSCRIBED_V2.toString)
     .and[ApiUnsubscribed](EventTypes.API_UNSUBSCRIBED_V2.toString)
-    .and[ClientSecretAdded](EventTypes.CLIENT_SECRET_ADDED_V2.toString)
+    .and[ClientSecretAddedV2](EventTypes.CLIENT_SECRET_ADDED_V2.toString)
+    .and[ClientSecretAddedV3](EventTypes.CLIENT_SECRET_ADDED_V3.toString)
     .and[ClientSecretRemoved](EventTypes.CLIENT_SECRET_REMOVED_V2.toString)
     .and[CollaboratorAdded](EventTypes.COLLABORATOR_ADDED.toString)
     .and[CollaboratorRemoved](EventTypes.COLLABORATOR_REMOVED.toString)
