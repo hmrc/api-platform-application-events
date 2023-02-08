@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import java.time.{LocalDateTime, ZoneOffset}
-import java.{util => ju}
+final case class SubmissionId(value: String) extends AnyVal
 
-case class ClientSecret(
-    name: String,
-    createdOn: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC),
-    lastAccess: Option[LocalDateTime] = None,
-    id: String = ju.UUID.randomUUID().toString,
-    hashedSecret: String
-  )
-
-object ClientSecret {
+object SubmissionId {
   import play.api.libs.json.Json
-  implicit val format = Json.format[ClientSecret]
+  
+  def random: SubmissionId = SubmissionId(java.util.UUID.randomUUID.toString())
+
+  implicit val submissionIdJf = Json.valueFormat[SubmissionId]
 }

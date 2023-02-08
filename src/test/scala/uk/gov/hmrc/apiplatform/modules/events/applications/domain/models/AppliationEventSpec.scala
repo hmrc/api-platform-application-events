@@ -45,7 +45,7 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
 
         val e1 = TeamMemberRemovedEvent(EventId.random, appId, time1, anOldStyleActor, anEmail, aRole)
         val e2 = TeamMemberAddedEvent(EventId.random, appId, time2, anOldStyleActor, anEmail, aRole)
-        val e3 = CollaboratorAdded(EventId.random, appId, time3, anActor, aCollaborator, Set.empty)
+        val e3 = CollaboratorAddedV2(EventId.random, appId, time3, anActor, aCollaborator, Set.empty)
 
         val es = List[AbstractApplicationEvent](e2, e3, e1)
 

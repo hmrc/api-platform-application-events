@@ -24,7 +24,8 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
 import java.time.Instant
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
-// scalastyle:off number.of.types
+
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.SubmissionId// scalastyle:off number.of.types
 
 sealed trait AbstractApplicationEvent {
   def id: EventId
@@ -60,7 +61,7 @@ case class PpnsCallBackUriUpdatedEvent(
     newCallbackUrl: String
   ) extends OldStyleApplicationEvent
 
-case class RedirectUrisUpdated(
+case class RedirectUrisUpdatedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
@@ -126,7 +127,7 @@ case class ProductionLegacyAppTermsConditionsLocationChanged(
     newUrl: String
   ) extends ApplicationEvent
 
-case class ClientSecretAdded(
+case class ClientSecretAddedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
@@ -135,7 +136,7 @@ case class ClientSecretAdded(
     clientSecretName: String
   ) extends ApplicationEvent
 
-case class ClientSecretRemoved(
+case class ClientSecretRemovedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
@@ -164,7 +165,7 @@ case class ClientSecretRemovedEvent(
     clientSecretId: String
   ) extends OldStyleApplicationEvent
 
-case class CollaboratorAdded(
+case class CollaboratorAddedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
@@ -173,7 +174,7 @@ case class CollaboratorAdded(
     verifiedAdminsToEmail: Set[LaxEmailAddress]
   ) extends ApplicationEvent
 
-case class CollaboratorRemoved(
+case class CollaboratorRemovedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
@@ -204,7 +205,7 @@ case class TeamMemberRemovedEvent(
     teamMemberRole: String
   ) extends OldStyleApplicationEvent
 
-case class ApiSubscribed(
+case class ApiSubscribedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
@@ -212,7 +213,7 @@ case class ApiSubscribed(
     apiIdentifier: ApiIdentifier
   ) extends ApplicationEvent
 
-case class ApiUnsubscribed(
+case class ApiUnsubscribedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,

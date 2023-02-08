@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import play.api.libs.json.{JsString, Json}
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
 
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.SubmissionId
 class SubmissionIdSpec extends JsonFormattersSpec {
   val aSubmissionId = SubmissionId.random
 
