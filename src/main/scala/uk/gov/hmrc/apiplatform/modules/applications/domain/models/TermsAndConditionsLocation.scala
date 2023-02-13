@@ -16,10 +16,37 @@
 
 package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
-sealed trait TermsAndConditionsLocation
+
+
+sealed trait TermsAndConditionsLocation {
+  def describe() : String = TermsAndConditionsLocations.describe(this)
+}
 
 object TermsAndConditionsLocations {
   case object NoneProvided      extends TermsAndConditionsLocation
   case object InDesktopSoftware extends TermsAndConditionsLocation
   case class Url(value: String) extends TermsAndConditionsLocation
+  
+  def describe(termsAndConditionsLocation: TermsAndConditionsLocation): String = {
+    termsAndConditionsLocation match {
+      case InDesktopSoftware => "In desktop software"
+      case Url(value)        => value
+      case _                 => "None provided"
+    }
+  }
+}
+
+object TermsAndConditionsLocation {
+  import play.api.libs.json.Json
+  import uk.gov.hmrc.play.json.Union
+  
+  private implicit val noneProvidedFormat      = Json.format[TermsAndConditionsLocations.NoneProvided.type]
+  private implicit val inDesktopSoftwareFormat = Json.format[TermsAndConditionsLocations.InDesktopSoftware.type]
+  private implicit val urlFormat               = Json.format[TermsAndConditionsLocations.Url]
+
+  implicit val termsAndConditionsLocationFormat = Union.from[TermsAndConditionsLocation]("termsAndConditionsType")
+    .and[TermsAndConditionsLocations.NoneProvided.type]("noneProvided")
+    .and[TermsAndConditionsLocations.InDesktopSoftware.type]("inDesktop")
+    .and[TermsAndConditionsLocations.Url]("url")
+    .format
 }

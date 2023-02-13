@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.common.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.models
 
 import org.scalatest.OptionValues
 
 import play.api.libs.json._
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
-class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
+class ActorSpec extends JsonFormattersSpec with OptionValues {
 
   val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
   val bobSmithUserName     = "bob smith"
 
-  "ActorJsonFormatters" when {
-
-    import ActorJsonFormatters._
+  "Actor JsonFormatters" when {
 
     "given a gatekeeper user" should {
       "produce json" in {
@@ -46,14 +45,14 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 
     "given a collaborator actor" should {
       "produce json" in {
-        testToJson[Actor](Actors.Collaborator(bobSmithEmailAddress))(
+        testToJson[Actor](Actors.AppCollaborator(bobSmithEmailAddress))(
           ("actorType" -> "COLLABORATOR"),
           ("email"     -> "bob@smith.com")
         )
       }
 
       "read json" in {
-        testFromJson[Actor]("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.Collaborator(bobSmithEmailAddress))
+        testFromJson[Actor]("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
       }
     }
 

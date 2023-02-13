@@ -23,9 +23,12 @@ import play.api.libs.json.Json
   * NO verification takes place !
   */
 final case class LaxEmailAddress(value: String) extends AnyVal {
-  def toLowerCase(): LaxEmailAddress = LaxEmailAddress(this.value.toLowerCase())
+  def normalise(): LaxEmailAddress = this.copy(value = value.toLowerCase())
+
+  def equalsIgnoreCase(other: LaxEmailAddress): Boolean = this.value.equalsIgnoreCase(other.value)
 }
 
 object LaxEmailAddress {
+
   implicit val formatter = Json.valueFormat[LaxEmailAddress]
 }

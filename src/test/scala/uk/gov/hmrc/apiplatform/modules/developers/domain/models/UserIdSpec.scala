@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.developers.domain.models
 
-import play.api.libs.json.{JsString, Json}
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers
 
-import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
-
-class ApplicationIdSpec extends JsonFormattersSpec {
-  val anAppId = ApplicationId.random
-
-  "ApplicationId" should {
-    "convert to json" in {
-
-      Json.toJson(anAppId) shouldBe JsString(anAppId.value.toString())
+class UserIdSpec extends AnyWordSpec with Matchers {
+  "UserId" should {
+    "generate a random value" in {
+      UserId.random should not be UserId.random
     }
 
-    "read from json" in {
-      testFromJson[ApplicationId](s""""${anAppId.value.toString}"""")(anAppId)
+    "convert to and from text" in {
+      val in = UserId.random
+      
+      UserId.fromString(in.asText) shouldBe Some(in)
     }
   }
 }

@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{TermsAndConditionsLocation, TermsAndConditionsLocations}
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class TermsAndConditionsLocationJsonFormattersSpec extends JsonFormattersSpec {
 
   "TermsAndConditionsLocationJsonFormatters" when {
-
-    import TermsAndConditionsLocationJsonFormatters._
 
     "given a location of none provided" should {
       "produce json" in {

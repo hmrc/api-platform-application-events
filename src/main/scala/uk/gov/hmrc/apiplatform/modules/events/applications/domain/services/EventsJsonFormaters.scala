@@ -19,19 +19,13 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 import play.api.libs.json.{EnvReads, EnvWrites, Format, Json, OFormat}
 import uk.gov.hmrc.play.json.Union
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.services.{CollaboratorJsonFormatters, _}
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.ActorJsonFormatters
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatters
 import java.time.Instant
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) 
-    extends ActorJsonFormatters
-    with OldStyleActorJsonFormatters
-    with CollaboratorJsonFormatters
-    with PrivacyPolicyLocationJsonFormatters
-    with TermsAndConditionsLocationJsonFormatters 
+    extends OldStyleActorJsonFormatters
     with CommonJsonFormatters {
 
   private implicit val fmt = instantFormatter

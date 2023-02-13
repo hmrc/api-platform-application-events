@@ -25,24 +25,45 @@ sealed trait Collaborator {
 
   def isAdministrator: Boolean
   def isDeveloper: Boolean = ! isAdministrator
+
+  final def normalise: Collaborator = Collaborator.normalise(this)
+
+  final def describeRole: String = Collaborator.describeRole(this)
 }
 
 object Collaborator {
 
-  def apply(emailAddress: LaxEmailAddress, role: Collaborators.Role, userId: UserId): Collaborator = role match {
-    case Collaborators.Roles.ADMINISTRATOR => Collaborators.Administrator(userId, emailAddress)
-    case Collaborators.Roles.DEVELOPER     => Collaborators.Developer(userId, emailAddress)
-  }
-}
+  private sealed trait Role
 
-object Collaborators {
-  sealed trait Role
-
-  object Roles {
+  private object Roles {
     case object ADMINISTRATOR extends Role
     case object DEVELOPER     extends Role
   }
 
+  def normalise(me: Collaborator): Collaborator = me match {
+    case a: Collaborators.Administrator => a.copy(emailAddress = a.emailAddress.normalise())
+    case d: Collaborators.Developer => d.copy(emailAddress = d.emailAddress.normalise())
+  }
+
+  def describeRole(me: Collaborator): String = me match {
+    case a: Collaborators.Administrator => Roles.ADMINISTRATOR.toString
+    case d: Collaborators.Developer => Roles.DEVELOPER.toString
+  }
+
+  import play.api.libs.json.Json
+  import play.api.libs.json.OFormat
+  import uk.gov.hmrc.play.json.Union
+  
+  implicit val administratorJf = Json.format[Collaborators.Administrator]
+  implicit val developersJf    = Json.format[Collaborators.Developer]
+
+  implicit val collaboratorJf: OFormat[Collaborator] = Union.from[Collaborator]("role")
+    .and[Collaborators.Administrator](Roles.ADMINISTRATOR.toString)
+    .and[Collaborators.Developer](Roles.DEVELOPER.toString)
+    .format
+}
+
+object Collaborators {
   case class Administrator(userId: UserId, emailAddress: LaxEmailAddress) extends Collaborator {
     val isAdministrator = true
   }

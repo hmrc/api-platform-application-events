@@ -19,7 +19,7 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 import play.api.libs.json.Json
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 import play.api.libs.json.JsString

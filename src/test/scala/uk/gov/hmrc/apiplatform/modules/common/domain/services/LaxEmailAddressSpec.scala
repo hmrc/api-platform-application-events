@@ -19,14 +19,24 @@ package uk.gov.hmrc.apiplatform.modules.common.domain.services
 import play.api.libs.json._
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class LaxEmailAddressSpec extends JsonFormattersSpec {
 
   val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
 
-  "LaxEmailAddress Json Formatting" when {
-
-    "given an lax email address" should {
+  "LaxEmailAddress" when {
+    "creating a lax email address" should {
+      "normalise the text" in {
+        LaxEmailAddress("BOB@smith.com").normalise().value shouldBe "bob@smith.com"
+      }
+    }
+    "comparing case insensitive" should {
+      "match" in {
+        LaxEmailAddress("BOB@smith.com").equalsIgnoreCase(bobSmithEmailAddress) shouldBe true
+      }
+    }
+    "format a lax email address" should {
       "produce json" in {
         Json.toJson(LaxEmailAddress("quark")) shouldBe JsString("quark")
       }

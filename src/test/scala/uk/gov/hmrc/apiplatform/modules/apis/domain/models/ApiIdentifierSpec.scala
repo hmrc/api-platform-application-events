@@ -20,7 +20,7 @@ import org.scalatest.Inspectors
 
 import play.api.libs.json.{JsString, Json}
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class ApiIdentifierSpec extends JsonFormattersSpec with Inspectors {
   val aContext       = ApiContext("c1")

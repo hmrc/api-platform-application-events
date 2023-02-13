@@ -20,24 +20,103 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
-class CollaboratorSpec extends AnyWordSpec with Matchers {
+class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec{
   
-  "Collborator" should {
-    val email = LaxEmailAddress("bob")
-    val userId = UserId.random
+  "Collborator" when {
+    "creating" should {
+      val email = LaxEmailAddress("bob")
+      val userId = UserId.random
 
-    "create an administrator" in {
-      val result = Collaborator(email, Collaborators.Roles.ADMINISTRATOR, userId) 
-      result.isAdministrator shouldBe true
-      result.isDeveloper shouldBe false
-      result shouldBe Collaborators.Administrator(userId, email)
+      "create an administrator" in {
+        val result = Collaborators.Administrator(userId, email) 
+        result.isAdministrator shouldBe true
+        result.isDeveloper shouldBe false
+        result shouldBe Collaborators.Administrator(userId, email)
+      }
+      "create a developer" in {
+        val result = Collaborators.Developer(userId, email)
+        result.isAdministrator shouldBe false
+        result.isDeveloper shouldBe true
+        result shouldBe Collaborators.Developer(userId, email)
+      }
     }
-    "create a developer" in {
-      val result = Collaborator(email, Collaborators.Roles.DEVELOPER, userId)
-      result.isAdministrator shouldBe false
-      result.isDeveloper shouldBe true
-      result shouldBe Collaborators.Developer(userId, email)
+
+    "given an administrator" should {
+      val anId     = UserId.random
+      val idAsText = anId.value.toString()
+      val anEmail  = LaxEmailAddress("bob@smith.com")
+      val admin: Collaborator = Collaborators.Administrator(anId, anEmail)
+
+      "describe it's role" in {
+        admin.describeRole shouldBe "ADMINISTRATOR"
+      }
+
+      "normalise an email address" in {
+        val mixedCaseEmail = LaxEmailAddress(anEmail.value.capitalize)
+        val admin: Collaborator = Collaborators.Administrator(anId, mixedCaseEmail)
+
+        admin.normalise.emailAddress shouldBe anEmail
+      }
+
+      "be an admin" in {
+        admin.isAdministrator shouldBe true
+      }
+
+      "but not a developer" in {
+        admin.isDeveloper shouldBe false
+      }
+
+      "produce json" in {
+        testToJson[Collaborator](admin)(
+          ("role"  -> "ADMINISTRATOR"),
+          ("userId"    -> idAsText),
+          ("emailAddress" -> "bob@smith.com")
+        )
+      }
+
+      "read json" in {
+        testFromJson[Collaborator](s"""{"role":"ADMINISTRATOR","userId":"$idAsText","emailAddress":"bob@smith.com"}""")(admin)
+      }
+    }
+
+    "given an developer" should {
+      val anId     = UserId.random
+      val idAsText = anId.value.toString()
+      val anEmail  = LaxEmailAddress("bob@smith.com")
+      val developer: Collaborator = Collaborators.Developer(anId, anEmail)
+     
+      "describe it's role" in {
+        developer.describeRole shouldBe "DEVELOPER"
+      }
+
+      "normalise an email address" in {
+        val mixedCaseEmail = LaxEmailAddress(anEmail.value.capitalize)
+        val developer: Collaborator = Collaborators.Developer(anId, mixedCaseEmail)
+
+        developer.normalise.emailAddress shouldBe anEmail
+      }
+
+      "a developer" in {
+        developer.isDeveloper shouldBe true
+      }
+
+      "but not an admin" in {
+        developer.isAdministrator shouldBe false
+      }
+
+      "produce json" in {
+        testToJson[Collaborator](developer)(
+          ("role"  -> "DEVELOPER"),
+          ("userId"    -> idAsText),
+          ("emailAddress" -> "bob@smith.com")
+        )
+      }
+
+      "read json" in {
+        testFromJson[Collaborator](s"""{"role":"DEVELOPER","userId":"$idAsText","emailAddress":"bob@smith.com"}""")(developer)
+      }
     }
   }
 }

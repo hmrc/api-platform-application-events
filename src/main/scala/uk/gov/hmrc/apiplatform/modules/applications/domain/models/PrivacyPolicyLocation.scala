@@ -16,10 +16,36 @@
 
 package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
-sealed trait PrivacyPolicyLocation
+sealed trait PrivacyPolicyLocation {
+  def describe(): String = PrivacyPolicyLocations.describe(this)
+}
 
 object PrivacyPolicyLocations {
   case object NoneProvided      extends PrivacyPolicyLocation
   case object InDesktopSoftware extends PrivacyPolicyLocation
   case class Url(value: String) extends PrivacyPolicyLocation
+
+  
+  def describe(privacyPolicyLocation: PrivacyPolicyLocation): String = {
+    privacyPolicyLocation match {
+      case InDesktopSoftware => "In desktop software"
+      case Url(value)        => value
+      case _                 => "None provided"
+    }
+  }
+}
+
+object PrivacyPolicyLocation {
+  import play.api.libs.json.Json
+  import uk.gov.hmrc.play.json.Union
+  
+  private implicit val noneProvidedFormat      = Json.format[PrivacyPolicyLocations.NoneProvided.type]
+  private implicit val inDesktopSoftwareFormat = Json.format[PrivacyPolicyLocations.InDesktopSoftware.type]
+  private implicit val urlFormat               = Json.format[PrivacyPolicyLocations.Url]
+
+  implicit val privacyPolicyLocationFormat = Union.from[PrivacyPolicyLocation]("privacyPolicyType")
+    .and[PrivacyPolicyLocations.NoneProvided.type]("noneProvided")
+    .and[PrivacyPolicyLocations.InDesktopSoftware.type]("inDesktop")
+    .and[PrivacyPolicyLocations.Url]("url")
+    .format
 }
