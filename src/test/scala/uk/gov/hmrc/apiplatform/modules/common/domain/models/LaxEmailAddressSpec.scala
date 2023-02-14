@@ -18,7 +18,6 @@ package uk.gov.hmrc.apiplatform.modules.common.domain.models
 
 import play.api.libs.json._
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class LaxEmailAddressSpec extends JsonFormattersSpec {

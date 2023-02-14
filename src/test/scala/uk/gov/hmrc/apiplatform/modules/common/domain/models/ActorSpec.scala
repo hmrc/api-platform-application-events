@@ -20,7 +20,6 @@ import org.scalatest.OptionValues
 
 import play.api.libs.json._
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class ActorSpec extends JsonFormattersSpec with OptionValues {
