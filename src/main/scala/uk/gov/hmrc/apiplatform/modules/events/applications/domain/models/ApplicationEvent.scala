@@ -25,7 +25,8 @@ import java.time.Instant
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.SubmissionId// scalastyle:off number.of.types
+// scalastyle:off number.of.types
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
 sealed trait AbstractApplicationEvent {
   def id: EventId
@@ -131,7 +132,7 @@ case class ClientSecretAddedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: Actor,
+    actor: Actors.AppCollaborator,
     clientSecretId: String,
     clientSecretName: String
   ) extends ApplicationEvent
@@ -140,7 +141,7 @@ case class ClientSecretRemovedV2(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: Actor,
+    actor: Actors.AppCollaborator,
     clientSecretId: String,
     clientSecretName: String
   ) extends ApplicationEvent
@@ -382,7 +383,7 @@ case class ApplicationDeletedByGatekeeper(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: Actor,
+    actor: Actors.GatekeeperUser,
     clientId: ClientId,
     wso2ApplicationName: String,
     reasons: String,

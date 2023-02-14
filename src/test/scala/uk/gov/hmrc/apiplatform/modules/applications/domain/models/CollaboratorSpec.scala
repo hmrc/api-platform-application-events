@@ -54,7 +54,7 @@ class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec
       }
 
       "normalise an email address" in {
-        val mixedCaseEmail = LaxEmailAddress(anEmail.value.capitalize)
+        val mixedCaseEmail = LaxEmailAddress(anEmail.text.capitalize)
         val admin: Collaborator = Collaborators.Administrator(anId, mixedCaseEmail)
 
         admin.normalise.emailAddress shouldBe anEmail
@@ -92,7 +92,7 @@ class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec
       }
 
       "normalise an email address" in {
-        val mixedCaseEmail = LaxEmailAddress(anEmail.value.capitalize)
+        val mixedCaseEmail = LaxEmailAddress(anEmail.text.capitalize)
         val developer: Collaborator = Collaborators.Developer(anId, mixedCaseEmail)
 
         developer.normalise.emailAddress shouldBe anEmail

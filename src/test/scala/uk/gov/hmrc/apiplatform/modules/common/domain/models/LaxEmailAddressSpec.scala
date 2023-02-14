@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.common.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.models
 
 import play.api.libs.json._
 
@@ -28,7 +28,7 @@ class LaxEmailAddressSpec extends JsonFormattersSpec {
   "LaxEmailAddress" when {
     "creating a lax email address" should {
       "normalise the text" in {
-        LaxEmailAddress("BOB@smith.com").normalise().value shouldBe "bob@smith.com"
+        LaxEmailAddress("BOB@smith.com").normalise().text shouldBe "bob@smith.com"
       }
     }
     "comparing case insensitive" should {

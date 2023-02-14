@@ -22,7 +22,7 @@ final case class EventId(value: UUID) extends AnyVal
 
 object EventId {
   def random: EventId = EventId(UUID.randomUUID())
-  
+
   import play.api.libs.json.Json
   implicit val eventIdJf = Json.valueFormat[EventId]
 }

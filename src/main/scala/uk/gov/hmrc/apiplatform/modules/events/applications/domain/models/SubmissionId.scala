@@ -20,7 +20,7 @@ final case class SubmissionId(value: String) extends AnyVal
 
 object SubmissionId {
   import play.api.libs.json.Json
-  
+
   def random: SubmissionId = SubmissionId(java.util.UUID.randomUUID.toString())
 
   implicit val submissionIdJf = Json.valueFormat[SubmissionId]
