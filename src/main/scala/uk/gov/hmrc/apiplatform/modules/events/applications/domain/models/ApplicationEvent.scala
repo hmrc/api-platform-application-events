@@ -211,7 +211,8 @@ case class ApiSubscribedV2(
     applicationId: ApplicationId,
     eventDateTime: Instant,
     actor: Actor,
-    apiIdentifier: ApiIdentifier
+    context: ApiContext,
+    version: ApiVersion
   ) extends ApplicationEvent
 
 case class ApiUnsubscribedV2(
@@ -219,10 +220,11 @@ case class ApiUnsubscribedV2(
     applicationId: ApplicationId,
     eventDateTime: Instant,
     actor: Actor,
-    apiIdentifier: ApiIdentifier
+    context: ApiContext,
+    version: ApiVersion
   ) extends ApplicationEvent
 
-/** DEPRECATED Use ApiSubscribed instead
+/** DEPRECATED Use ApiSubscribedV2 instead
   */
 case class ApiSubscribedEvent(
     id: EventId,
@@ -233,7 +235,7 @@ case class ApiSubscribedEvent(
     version: String
   ) extends OldStyleApplicationEvent
 
-/** DEPRECATED Use ApiUnsubscribed instead
+/** DEPRECATED Use ApiUnsubscribedV2 instead
   */
 case class ApiUnsubscribedEvent(
     id: EventId,
