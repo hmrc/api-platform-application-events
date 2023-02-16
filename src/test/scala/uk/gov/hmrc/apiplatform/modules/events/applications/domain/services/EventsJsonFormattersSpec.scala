@@ -17,8 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
-
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, ClientId}
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
@@ -26,6 +25,7 @@ import play.api.libs.json.JsString
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.SubmissionId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
+
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 
@@ -88,7 +88,70 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
     }
 
-   "given a ResponsibleIndividualChanged event" should {
+
+    "given a new add client secret event" should {
+      val instantVal = Instant.now()
+      val jsonText =
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"email":"dog@dog.com","actorType":"COLLABORATOR"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_ADDED_V2"}"""
+
+      "convert from json" in {
+
+        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+
+        evt shouldBe a[ClientSecretAddedV2]
+      }
+
+      "convert to correctJson" in {
+        val event: AbstractApplicationEvent = ClientSecretAddedV2(eventId, anAppId, instantVal, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
+
+        val eventJSonString = Json.toJson(event).toString()
+        eventJSonString shouldBe jsonText
+      }
+    }
+
+    "given a new remove client secret event" should {
+      val instantVal = Instant.now()
+      val jsonText =
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"email":"dog@dog.com","actorType":"COLLABORATOR"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_REMOVED_V2"}"""
+
+      "convert from json" in {
+
+        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+
+        evt shouldBe a[ClientSecretRemovedV2]
+      }
+
+      "convert to correctJson" in {
+        val event: AbstractApplicationEvent = ClientSecretRemovedV2(eventId, anAppId, instantVal, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
+
+        val eventJSonString = Json.toJson(event).toString()
+        eventJSonString shouldBe jsonText
+      }
+    }
+
+
+    "given a new application deleted by gatekeeper event" should {
+      val instantVal = Instant.now()
+      val clientId = ClientId.random
+      val jsonText =
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"user":"someUser","actorType":"GATEKEEPER"},"clientId":"$clientId.value.","wso2ApplicationName":"someApplicationName","reasons":"some reason or other","requestingAdminEmail":"dog@dog.com","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
+
+      "convert from json" in {
+
+        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+
+        evt shouldBe a[ApplicationDeletedByGatekeeper]
+      }
+
+      "convert to correctJson" in {
+        val event: AbstractApplicationEvent = ApplicationDeletedByGatekeeper(eventId, anAppId, instantVal, Actors.GatekeeperUser("someUser"), clientId, "wsoAppicationName", "some reason or other", LaxEmailAddress("dog@dog.com"))
+
+        val eventJSonString = Json.toJson(event).toString()
+        eventJSonString shouldBe jsonText
+      }
+    }
+
+    "given a ResponsibleIndividualChanged event" should {
     val submissionId = SubmissionId.random
     val now = Instant.now
     val actor = Actors.GatekeeperUser("Dave")
