@@ -134,7 +134,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       val instantVal = Instant.now()
       val clientId = ClientId.random
       val jsonText =
-        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"user":"someUser","actorType":"GATEKEEPER"},"clientId":"$clientId.value.","wso2ApplicationName":"someApplicationName","reasons":"some reason or other","requestingAdminEmail":"dog@dog.com","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"user":"someUser","actorType":"GATEKEEPER"},"clientId":"${clientId.value}","wso2ApplicationName":"someApplicationName","reasons":"some reason or other","requestingAdminEmail":"dog@dog.com","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
 
       "convert from json" in {
 
