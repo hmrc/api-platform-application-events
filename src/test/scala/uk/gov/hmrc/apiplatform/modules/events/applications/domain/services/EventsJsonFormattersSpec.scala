@@ -28,11 +28,19 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
 import java.time.Instant
 import java.time.format.DateTimeFormatter
+import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId   = EventId.random
   val anAppId   = ApplicationId.random
   val appIdText = anAppId.value.toString()
+  val instant = FixedClock.instant
+  val instantText = FixedClock.now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+
+  // Whilst we can read Z or no Z we ouput a Z
+  implicit class JsonZoneSyntax(in: String) {
+    def butWithZ = in.replaceAll(instantText, s"${instantText}Z")
+  }
 
   "EventsInterServiceCallJsonFormatters" when {
     import EventsInterServiceCallJsonFormatters._
@@ -50,11 +58,26 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
     }
 
     "given an old style team member added event" should {
-      "convert from json" in {
+      "convert from json with timezone Z" in {
         val jsonText = raw"""
               {"id": "${eventId.value}",
                             |"applicationId": "$appIdText",
                             |"eventDateTime": "2014-01-01T13:13:34.441Z",
+                            |"eventType": "TEAM_MEMBER_ADDED",
+                            |"actor":{"id": "123454654", "actorType": "GATEKEEPER"},
+                            |"teamMemberEmail": "bob@bob.com",
+                            |"teamMemberRole": "ADMIN"}""".stripMargin
+
+        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+
+        evt shouldBe a[TeamMemberAddedEvent]
+      }
+
+      "convert from json without timezone Z" in {
+        val jsonText = raw"""
+              {"id": "${eventId.value}",
+                            |"applicationId": "$appIdText",
+                            |"eventDateTime": "2014-01-01T13:13:34.441",
                             |"eventType": "TEAM_MEMBER_ADDED",
                             |"actor":{"id": "123454654", "actorType": "GATEKEEPER"},
                             |"teamMemberEmail": "bob@bob.com",
@@ -90,9 +113,8 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
 
     "given a new add client secret event" should {
-      val instantVal = Instant.now()
       val jsonText =
-        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"email":"dog@dog.com","actorType":"COLLABORATOR"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_ADDED_V2"}"""
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"dog@dog.com"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_ADDED_V2"}"""
 
       "convert from json" in {
 
@@ -102,17 +124,16 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
 
       "convert to correctJson" in {
-        val event: AbstractApplicationEvent = ClientSecretAddedV2(eventId, anAppId, instantVal, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
+        val event: AbstractApplicationEvent = ClientSecretAddedV2(eventId, anAppId, instant, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
 
         val eventJSonString = Json.toJson(event).toString()
-        eventJSonString shouldBe jsonText
+        eventJSonString shouldBe jsonText.butWithZ
       }
     }
 
     "given a new remove client secret event" should {
-      val instantVal = Instant.now()
       val jsonText =
-        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"email":"dog@dog.com","actorType":"COLLABORATOR"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_REMOVED_V2"}"""
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"dog@dog.com"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_REMOVED_V2"}"""
 
       "convert from json" in {
 
@@ -122,19 +143,18 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
 
       "convert to correctJson" in {
-        val event: AbstractApplicationEvent = ClientSecretRemovedV2(eventId, anAppId, instantVal, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
+        val event: AbstractApplicationEvent = ClientSecretRemovedV2(eventId, anAppId, instant, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
 
         val eventJSonString = Json.toJson(event).toString()
-        eventJSonString shouldBe jsonText
+        eventJSonString shouldBe jsonText.butWithZ
       }
     }
 
 
     "given a new application deleted by gatekeeper event" should {
-      val instantVal = Instant.now()
       val clientId = ClientId.random
       val jsonText =
-        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"${instantVal.toString}","actor":{"user":"someUser","actorType":"GATEKEEPER"},"clientId":"${clientId.value}","wso2ApplicationName":"someApplicationName","reasons":"some reason or other","requestingAdminEmail":"dog@dog.com","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"user":"someUser"},"clientId":"${clientId.value}","wso2ApplicationName":"someApplicationName","reasons":"some reason or other","requestingAdminEmail":"dog@dog.com","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
 
       "convert from json" in {
 
@@ -144,18 +164,18 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
 
       "convert to correctJson" in {
-        val event: AbstractApplicationEvent = ApplicationDeletedByGatekeeper(eventId, anAppId, instantVal, Actors.GatekeeperUser("someUser"), clientId, "wsoAppicationName", "some reason or other", LaxEmailAddress("dog@dog.com"))
+        val event: AbstractApplicationEvent = ApplicationDeletedByGatekeeper(eventId, anAppId, instant, Actors.GatekeeperUser("someUser"), clientId, "someApplicationName", "some reason or other", LaxEmailAddress("dog@dog.com"))
 
         val eventJSonString = Json.toJson(event).toString()
-        eventJSonString shouldBe jsonText
+        eventJSonString shouldBe jsonText.butWithZ
       }
     }
 
     "given a ResponsibleIndividualChanged event" should {
     val submissionId = SubmissionId.random
     val now = Instant.now
-    val actor = Actors.GatekeeperUser("Dave")
     val nowText = DateTimeFormatter.ISO_INSTANT.format(now)
+    val actor = Actors.GatekeeperUser("Dave")
     
     val jsonText = raw"""{
                       |"id":"${eventId.value}",

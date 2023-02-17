@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.models
 
-import play.api.libs.json._
-import uk.gov.hmrc.play.json.Union
+/** OldStyleActor refers to actors who triggered the older events created before rework in 2022
+  *
+  * The gatekeeper users typically have an id of "admin@gatekeeper"
+  *
+  * These should NEVER be used on newer events and deliberately are not part of any class hierarchy with the Actor trait.
+  */
+@Deprecated
+sealed trait OldStyleActor {
+  def id: String
+}
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-
-trait OldStyleActorJsonFormatters {
+object  OldStyleActor {
+  import play.api.libs.json.{Json, OFormat}
+  import uk.gov.hmrc.play.json.Union
+ 
   private sealed trait ActorType
 
   private object ActorTypes {
@@ -44,4 +53,35 @@ trait OldStyleActorJsonFormatters {
     .format
 }
 
-object OldStyleActorJsonFormatters extends OldStyleActorJsonFormatters
+object OldStyleActors {
+
+  /** A third party developer as a collaborator on an app
+    *
+    * @param id
+    *   the developers email address
+    */
+  case class Collaborator(id: String) extends OldStyleActor
+
+  /** A gatekeeper stride user (typically SDST)
+    *
+    * @param id
+    *   the stride users fullname in theory but in practice always "admin@gatekeeper"
+    */
+  case class GatekeeperUser(id: String) extends OldStyleActor
+
+  /** An automated job
+    *
+    * @param id
+    *   the job name or instance of the job possibly as a UUID
+    */
+  case class ScheduledJob(id: String) extends OldStyleActor
+
+  /** Unknown source - probably 3rd party code such as PPNS invocations
+    *
+    * @param id
+    *   the job name or instance of the job possibly as a UUID
+    */
+  case object Unknown extends OldStyleActor {
+    val id = "UNKNOWN"
+  }
+}

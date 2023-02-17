@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.models
 
 import play.api.libs.json.{JsString, Json}
 
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{OldStyleActor, OldStyleActors}
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{OldStyleActor, OldStyleActors}
 
-class OldStyleActorJsonFormattersSpec extends JsonFormattersSpec {
+class OldStyleActorSpec extends JsonFormattersSpec {
 
-  "OldStyleActorJsonFormatters" when {
-
-    import OldStyleActorJsonFormatters._
+  "OldStyleActor Json Formatting" when {
 
     "given a gatekeeper user" should {
       "produce json" in {

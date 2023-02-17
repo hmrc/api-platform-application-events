@@ -28,6 +28,7 @@ import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 // scalastyle:off number.of.types
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.OldStyleActor
 sealed trait AbstractApplicationEvent {
   def id: EventId
   def applicationId: ApplicationId

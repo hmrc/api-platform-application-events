@@ -26,6 +26,8 @@ import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.OldStyleActors
+
 class AppliationEventSpec extends AnyWordSpec with Matchers {
 
   "AbstractApplicationEvent" when {

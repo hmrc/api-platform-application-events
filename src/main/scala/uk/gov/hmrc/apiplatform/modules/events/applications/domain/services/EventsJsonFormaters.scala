@@ -25,8 +25,7 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatte
 import java.time.Instant
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) 
-    extends OldStyleActorJsonFormatters
-    with CommonJsonFormatters {
+    extends CommonJsonFormatters {
 
   private implicit val fmt = instantFormatter
 
