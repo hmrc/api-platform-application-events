@@ -22,16 +22,13 @@ import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, Collaborators}
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
-
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.OldStyleActors
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
 class AppliationEventSpec extends AnyWordSpec with Matchers {
 
   "AbstractApplicationEvent" when {
-    val anOldStyleActor = OldStyleActors.Unknown
     val anActor         = Actors.Unknown
     val anEmail         = LaxEmailAddress("bob@smith.com")
     val aRole           = "ADMINISTRATOR"
@@ -45,11 +42,11 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
         val time2 = time1.minus(2, ChronoUnit.DAYS)
         val time3 = time1.minus(3, ChronoUnit.DAYS)
 
-        val e1 = TeamMemberRemovedEvent(EventId.random, appId, time1, anOldStyleActor, anEmail, aRole)
-        val e2 = TeamMemberAddedEvent(EventId.random, appId, time2, anOldStyleActor, anEmail, aRole)
+        val e1 = TeamMemberRemovedEvent(EventId.random, appId, time1, anActor, anEmail, aRole)
+        val e2 = TeamMemberAddedEvent(EventId.random, appId, time2, anActor, anEmail, aRole)
         val e3 = CollaboratorAddedV2(EventId.random, appId, time3, anActor, aCollaborator, Set.empty)
 
-        val es = List[AbstractApplicationEvent](e2, e3, e1)
+        val es = List[ApplicationEvent](e2, e3, e1)
 
         es.sorted shouldBe List(e1, e2, e3)
       }

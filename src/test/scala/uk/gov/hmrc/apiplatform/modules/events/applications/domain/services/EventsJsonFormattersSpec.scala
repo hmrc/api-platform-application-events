@@ -17,7 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, ClientId, SubmissionId}
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, ClientId}
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
@@ -27,6 +27,7 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
+import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId   = EventId.random
@@ -66,7 +67,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                             |"teamMemberEmail": "bob@bob.com",
                             |"teamMemberRole": "ADMIN"}""".stripMargin
 
-        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+        val evt = Json.parse(jsonText).as[ApplicationEvent]
 
         evt shouldBe a[TeamMemberAddedEvent]
       }
@@ -81,7 +82,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                             |"teamMemberEmail": "bob@bob.com",
                             |"teamMemberRole": "ADMIN"}""".stripMargin
 
-        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+        val evt = Json.parse(jsonText).as[ApplicationEvent]
 
         evt shouldBe a[TeamMemberAddedEvent]
       }
@@ -103,7 +104,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                             |"verifiedAdminsToEmail": []
                             |}""".stripMargin
 
-        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+        val evt = Json.parse(jsonText).as[ApplicationEvent]
 
         evt shouldBe a[CollaboratorRemovedV2]
       }
@@ -116,13 +117,13 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
       "convert from json" in {
 
-        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+        val evt = Json.parse(jsonText).as[ApplicationEvent]
 
         evt shouldBe a[ClientSecretAddedV2]
       }
 
       "convert to correctJson" in {
-        val event: AbstractApplicationEvent = ClientSecretAddedV2(eventId, anAppId, instant, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
+        val event: ApplicationEvent = ClientSecretAddedV2(eventId, anAppId, instant, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
 
         val eventJSonString = Json.toJson(event).toString()
         eventJSonString shouldBe jsonText.butWithZ
@@ -135,13 +136,13 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
       "convert from json" in {
 
-        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+        val evt = Json.parse(jsonText).as[ApplicationEvent]
 
         evt shouldBe a[ClientSecretRemovedV2]
       }
 
       "convert to correctJson" in {
-        val event: AbstractApplicationEvent = ClientSecretRemovedV2(eventId, anAppId, instant, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
+        val event: ApplicationEvent = ClientSecretRemovedV2(eventId, anAppId, instant, Actors.AppCollaborator(LaxEmailAddress("dog@dog.com")), "someClientId", "someClientSecretName")
 
         val eventJSonString = Json.toJson(event).toString()
         eventJSonString shouldBe jsonText.butWithZ
@@ -156,13 +157,13 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
       "convert from json" in {
 
-        val evt = Json.parse(jsonText).as[AbstractApplicationEvent]
+        val evt = Json.parse(jsonText).as[ApplicationEvent]
 
         evt shouldBe a[ApplicationDeletedByGatekeeper]
       }
 
       "convert to correctJson" in {
-        val event: AbstractApplicationEvent = ApplicationDeletedByGatekeeper(eventId, anAppId, instant, Actors.GatekeeperUser("someUser"), clientId, "someApplicationName", "some reason or other", LaxEmailAddress("dog@dog.com"))
+        val event: ApplicationEvent = ApplicationDeletedByGatekeeper(eventId, anAppId, instant, Actors.GatekeeperUser("someUser"), clientId, "someApplicationName", "some reason or other", LaxEmailAddress("dog@dog.com"))
 
         val eventJSonString = Json.toJson(event).toString()
         eventJSonString shouldBe jsonText.butWithZ
@@ -193,7 +194,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                       |"eventType":"RESPONSIBLE_INDIVIDUAL_CHANGED"
                       |}""".stripMargin.stripLineEnd
 
-      val evt: AbstractApplicationEvent = 
+      val evt: ApplicationEvent = 
           ResponsibleIndividualChanged(
             eventId,
             anAppId,
@@ -211,7 +212,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
         )
 
       "convert from json" in {
-        val evtOut = Json.parse(jsonText).as[AbstractApplicationEvent]
+        val evtOut = Json.parse(jsonText).as[ApplicationEvent]
 
         evtOut shouldBe a[ResponsibleIndividualChanged]
       }

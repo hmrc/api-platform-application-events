@@ -131,7 +131,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant])
     // scalastyle:on number.of.methods
   }
 
-  implicit val abstractApplicationEventFormats: OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
+  implicit val abstractApplicationEventFormats: OFormat[ApplicationEvent] = Union.from[ApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
     .and[ProductionAppPrivacyPolicyLocationChanged](EventTypes.PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
     .and[ProductionLegacyAppPrivacyPolicyLocationChanged](

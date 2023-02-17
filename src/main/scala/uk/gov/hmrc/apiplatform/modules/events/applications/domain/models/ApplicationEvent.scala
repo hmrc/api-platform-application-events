@@ -24,30 +24,22 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
 import java.time.Instant
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
+import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
 
 // scalastyle:off number.of.types
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.OldStyleActor
-sealed trait AbstractApplicationEvent {
+sealed trait ApplicationEvent {
   def id: EventId
   def applicationId: ApplicationId
   def eventDateTime: Instant
-}
-
-sealed trait OldStyleApplicationEvent extends AbstractApplicationEvent {
-  def actor: OldStyleActor
-}
-
-sealed trait ApplicationEvent extends AbstractApplicationEvent {
   def actor: Actor
 }
+object ApplicationEvent {
 
-object AbstractApplicationEvent {
+  implicit val orderEvents: Ordering[ApplicationEvent] = new Ordering[ApplicationEvent]() {
 
-  implicit val orderEvents: Ordering[AbstractApplicationEvent] = new Ordering[AbstractApplicationEvent]() {
-
-    override def compare(x: AbstractApplicationEvent, y: AbstractApplicationEvent): Int =
+    override def compare(x: ApplicationEvent, y: ApplicationEvent): Int =
       y.eventDateTime.compareTo(x.eventDateTime)
   }
 }
@@ -56,12 +48,12 @@ case class PpnsCallBackUriUpdatedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     boxId: String,
     boxName: String,
     oldCallbackUrl: String,
     newCallbackUrl: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 case class RedirectUrisUpdatedV2(
     id: EventId,
@@ -78,10 +70,10 @@ case class RedirectUrisUpdatedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     oldRedirectUris: String,
     newRedirectUris: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 case class ProductionAppNameChangedEvent(
     id: EventId,
@@ -153,9 +145,9 @@ case class ClientSecretAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     clientSecretId: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 /** DEPRECATED Use ClientSecretRemoved instead
   */
@@ -163,9 +155,9 @@ case class ClientSecretRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     clientSecretId: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 case class CollaboratorAddedV2(
     id: EventId,
@@ -191,10 +183,10 @@ case class TeamMemberAddedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     teamMemberEmail: LaxEmailAddress,
     teamMemberRole: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 /** DEPRECATED Use CollaboratorRemoved instead
   */
@@ -202,10 +194,10 @@ case class TeamMemberRemovedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     teamMemberEmail: LaxEmailAddress,
     teamMemberRole: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 case class ApiSubscribedV2(
     id: EventId,
@@ -231,10 +223,10 @@ case class ApiSubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     context: String,
     version: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 /** DEPRECATED Use ApiUnsubscribedV2 instead
   */
@@ -242,10 +234,10 @@ case class ApiUnsubscribedEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
-    actor: OldStyleActor,
+    actor: Actor,
     context: String,
     version: String
-  ) extends OldStyleApplicationEvent
+  ) extends ApplicationEvent
 
 case class ResponsibleIndividualChanged(
     id: EventId,

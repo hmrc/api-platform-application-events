@@ -52,7 +52,7 @@ object EventTags {
    * Resolve event to an eventTag
    */
   // scalastyle:off cyclomatic.complexity
-  def tag(evt: AbstractApplicationEvent): EventTag = evt match {
+  def tag(evt: ApplicationEvent): EventTag = evt match {
     case _: ApiSubscribedEvent |
         _: ApiSubscribedV2 |
         _: ApiUnsubscribedEvent |
