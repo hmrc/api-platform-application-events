@@ -40,6 +40,10 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
       "read json" in {
         testFromJson[Actor]("""{"actorType":"GATEKEEPER","user":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
       }
+
+      "read old style json" in {
+        testFromJson[Actor]("""{"actorType":"GATEKEEPER","id":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
+      }
     }
 
     "given a collaborator actor" should {
@@ -53,6 +57,10 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
       "read json" in {
         testFromJson[Actor]("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
       }
+
+      "read old style json" in {
+        testFromJson[Actor]("""{"actorType":"COLLABORATOR","id":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
+      }
     }
 
     "given a scheduled job actor" should {
@@ -65,6 +73,10 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
 
       "read json" in {
         testFromJson[Actor]("""{"actorType":"SCHEDULED_JOB","jobId":"DeleteAllAppsBwaHaHa"}""")(Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))
+      }
+
+      "read old style json" in {
+        testFromJson[Actor]("""{"actorType":"SCHEDULED_JOB","id":"DeleteAllAppsBwaHaHa"}""")(Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))
       }
     }
 

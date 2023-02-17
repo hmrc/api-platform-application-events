@@ -19,7 +19,6 @@ package uk.gov.hmrc.apiplatform.modules.common.domain.models
 import play.api.libs.json.{JsString, Json}
 
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.{OldStyleActor, OldStyleActors}
 
 class OldStyleActorSpec extends JsonFormattersSpec {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
 final case class SubmissionId(value: String) extends AnyVal
 

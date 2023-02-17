@@ -28,7 +28,10 @@ trait JsonFormattersSpec extends AnyWordSpec with Matchers {
     Json.toJson(in) shouldBe JsObject(f)
   }
 
-  def testFromJson[T](text: String)(expected: T)(implicit rdr: Reads[T]) = {
-    Json.parse(text).validate[T] shouldBe JsSuccess(expected)
-  }
+  def testFromJson[T](text: String)(expected: T)(implicit rdr: Reads[T]) =
+    Json.parse(text).validate[T] match {
+      case JsSuccess(found, _) if (found == expected) => succeed
+      case JsSuccess(found, _)                        => fail(s"Did not get $expected (got $found instead)")
+      case _                                          => fail(s"Did not succeed")
+    }
 }
