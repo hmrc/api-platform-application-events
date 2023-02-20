@@ -52,21 +52,21 @@ object EventTags {
    * Resolve event to an eventTag
    */
   // scalastyle:off cyclomatic.complexity
-  def tag(evt: AbstractApplicationEvent): EventTag = evt match {
+  def tag(evt: ApplicationEvent): EventTag = evt match {
     case _: ApiSubscribedEvent |
-        _: ApiSubscribed |
+        _: ApiSubscribedV2 |
         _: ApiUnsubscribedEvent |
-        _: ApiUnsubscribed => SUBSCRIPTION
-    case _: CollaboratorAdded |
-        _: CollaboratorRemoved |
+        _: ApiUnsubscribedV2 => SUBSCRIPTION
+    case _: CollaboratorAddedV2 |
+        _: CollaboratorRemovedV2 |
         _: TeamMemberAddedEvent |
         _: TeamMemberRemovedEvent => TEAM_MEMBER
-    case _: ClientSecretAdded |
-        _: ClientSecretRemoved |
+    case _: ClientSecretAddedV2 |
+        _: ClientSecretRemovedV2 |
         _: ClientSecretAddedEvent |
         _: ClientSecretRemovedEvent => CLIENT_SECRET
     case _: PpnsCallBackUriUpdatedEvent   => PPNS_CALLBACK
-    case _: RedirectUrisUpdated |
+    case _: RedirectUrisUpdatedV2 |
         _: RedirectUrisUpdatedEvent => REDIRECT_URIS
     case _: ResponsibleIndividualChanged |
         _: ResponsibleIndividualChangedToSelf |

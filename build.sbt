@@ -37,3 +37,7 @@ lazy val library = Project(appName, file("."))
   .settings(
     Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT")
   )
+
+  commands += Command.command("testAll") { state =>
+      "test" :: state
+  }

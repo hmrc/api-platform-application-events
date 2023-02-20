@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.developers.domain.models
 
-sealed trait Collaborator {
-  def userId: String
-  def emailAddress: LaxEmailAddress
-}
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers
 
-object Collaborators {
-  case class Administrator(userId: String, emailAddress: LaxEmailAddress) extends Collaborator
-  case class Developer(userId: String, emailAddress: LaxEmailAddress)     extends Collaborator
+class UserIdSpec extends AnyWordSpec with Matchers {
+  "UserId" should {
+    "generate a random value" in {
+      UserId.random should not be UserId.random
+    }
+
+    "convert to and from text" in {
+      val in = UserId.random
+      
+      UserId.fromString(in.asText) shouldBe Some(in)
+    }
+  }
 }

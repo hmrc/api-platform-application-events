@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
-import java.util.UUID
+import play.api.libs.json.{JsString, Json}
 
-final case class EventId(value: UUID) extends AnyVal
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
-object EventId {
-  def random: EventId = EventId(UUID.randomUUID())
+class ClientIdSpec extends JsonFormattersSpec {
+  val aClientId = ClientId.random
 
-  import play.api.libs.json.Json
-  implicit val eventIdJf = Json.valueFormat[EventId]
+  "ClientId" should {
+    "convert to json" in {
+
+      Json.toJson(aClientId) shouldBe JsString(aClientId.value.toString())
+    }
+
+    "read from json" in {
+      testFromJson[ClientId](s""""${aClientId.value.toString}"""")(aClientId)
+    }
+  }
 }

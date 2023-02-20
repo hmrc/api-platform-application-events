@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.developers.domain.models
 
-import java.util.UUID
+import java.{util => ju}
+import scala.util.control.NonFatal
 
-final case class EventId(value: UUID) extends AnyVal
+case class UserId(value: ju.UUID) extends AnyVal {
+  def asText: String = value.toString
+}
 
-object EventId {
-  def random: EventId = EventId(UUID.randomUUID())
-
+object UserId {
   import play.api.libs.json.Json
-  implicit val eventIdJf = Json.valueFormat[EventId]
+
+  implicit val userIdFormat = Json.valueFormat[UserId]
+
+  def random: UserId = UserId(ju.UUID.randomUUID())
+
+  def fromString(raw: String): Option[UserId] = {
+    try {
+      Some(UserId(ju.UUID.fromString(raw)))
+    } catch {
+      case NonFatal(e) => None
+    }
+  }
 }

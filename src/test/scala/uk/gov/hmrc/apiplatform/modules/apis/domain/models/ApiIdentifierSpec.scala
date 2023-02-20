@@ -20,7 +20,7 @@ import org.scalatest.Inspectors
 
 import play.api.libs.json.{JsString, Json}
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class ApiIdentifierSpec extends JsonFormattersSpec with Inspectors {
   val aContext       = ApiContext("c1")
@@ -76,6 +76,10 @@ class ApiIdentifierSpec extends JsonFormattersSpec with Inspectors {
   }
 
   "ApiIdentifier" should {
+
+    "convert to simple text" in {
+      anApiIdentifer.asText("--") shouldBe "c1--1.0"
+    }
 
     "convert to json" in {
 

@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.models
 
 import org.scalatest.OptionValues
 
 import play.api.libs.json._
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.JsonFormattersSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{Actor, Actors, LaxEmailAddress}
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
-class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
+class ActorSpec extends JsonFormattersSpec with OptionValues {
 
   val bobSmithEmailAddress = LaxEmailAddress("bob@smith.com")
   val bobSmithUserName     = "bob smith"
 
-  "ActorJsonFormatters" when {
-
-    import ActorJsonFormatters._
+  "Actor JsonFormatters" when {
 
     "given a gatekeeper user" should {
       "produce json" in {
@@ -39,22 +36,50 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
           ("user"      -> bobSmithUserName)
         )
       }
+        
+      "produce type only json" in {
+        testToJson[Actors.GatekeeperUser](Actors.GatekeeperUser(bobSmithUserName))(
+          ("user"      -> bobSmithUserName)
+        )
+      }
 
       "read json" in {
         testFromJson[Actor]("""{"actorType":"GATEKEEPER","user":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
+      }
+
+      "read old style json" in {
+        testFromJson[Actor]("""{"actorType":"GATEKEEPER","id":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
+      }
+      
+      "read as just a gatekeeper user" in {
+        testFromJson[Actors.GatekeeperUser]("""{"id":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
       }
     }
 
     "given a collaborator actor" should {
       "produce json" in {
-        testToJson[Actor](Actors.Collaborator(bobSmithEmailAddress))(
+        testToJson[Actor](Actors.AppCollaborator(bobSmithEmailAddress))(
           ("actorType" -> "COLLABORATOR"),
           ("email"     -> "bob@smith.com")
         )
       }
 
+      "produce type only json" in {
+        testToJson[Actors.AppCollaborator](Actors.AppCollaborator(bobSmithEmailAddress))(
+          ("email"     -> "bob@smith.com")
+        )
+      }
+
       "read json" in {
-        testFromJson[Actor]("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.Collaborator(bobSmithEmailAddress))
+        testFromJson[Actor]("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
+      }
+
+      "read old style json" in {
+        testFromJson[Actor]("""{"actorType":"COLLABORATOR","id":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
+      }
+        
+      "read as just an app collaborator" in {
+        testFromJson[Actors.AppCollaborator]("""{"id":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
       }
     }
 
@@ -68,6 +93,10 @@ class ActorJsonFormattersSpec extends JsonFormattersSpec with OptionValues {
 
       "read json" in {
         testFromJson[Actor]("""{"actorType":"SCHEDULED_JOB","jobId":"DeleteAllAppsBwaHaHa"}""")(Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))
+      }
+
+      "read old style json" in {
+        testFromJson[Actor]("""{"actorType":"SCHEDULED_JOB","id":"DeleteAllAppsBwaHaHa"}""")(Actors.ScheduledJob("DeleteAllAppsBwaHaHa"))
       }
     }
 

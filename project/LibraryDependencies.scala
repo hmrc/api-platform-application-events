@@ -4,7 +4,7 @@ object LibraryDependencies {
   def apply() = compileDependencies ++ testDependencies
 
   lazy val compileDependencies = Seq(
-    "uk.gov.hmrc"             %% "play-json-union-formatter"      % "1.17.0-play-28"
+    "uk.gov.hmrc"             %% "play-json-union-formatter"      % "1.18.0-play-28"
   )
 
   lazy val testDependencies = Seq(

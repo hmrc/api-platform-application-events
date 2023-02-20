@@ -16,36 +16,36 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import java.time.LocalDateTime
-
 import play.api.libs.json.{EnvReads, EnvWrites, Format, Json, OFormat}
 import uk.gov.hmrc.play.json.Union
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.services._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
-abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime]) extends ActorJsonFormatters
-    with OldStyleActorJsonFormatters with CollaboratorJsonFormatters
-    with PrivacyPolicyLocationJsonFormatters with TermsAndConditionsLocationJsonFormatters with CommonJsonFormatters {
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatters
+import java.time.Instant
+
+abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) 
+    extends CommonJsonFormatters {
+
+  private implicit val fmt = instantFormatter
 
   // scalastyle:off number.of.types
   // scalastyle:off number.of.methods
-  private implicit val fmt = localDateTimeFormats
 
-  implicit val collaboratorAddedFormats   = Json.format[CollaboratorAdded]
-  implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemoved]
+  implicit val collaboratorAddedFormats   = Json.format[CollaboratorAddedV2]
+  implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemovedV2]
 
   implicit val teamMemberAddedEventFormats   = Json.format[TeamMemberAddedEvent]
   implicit val teamMemberRemovedEventFormats = Json.format[TeamMemberRemovedEvent]
 
-  implicit val clientSecretAddedFormats   = Json.format[ClientSecretAdded]
-  implicit val clientSecretRemovedFormats = Json.format[ClientSecretRemoved]
+  implicit val clientSecretAddedFormats   = Json.format[ClientSecretAddedV2]
+  implicit val clientSecretRemovedFormats = Json.format[ClientSecretRemovedV2]
 
   implicit val clientSecretAddedEventFormats   = Json.format[ClientSecretAddedEvent]
   implicit val clientSecretRemovedEventFormats = Json.format[ClientSecretRemovedEvent]
 
-  implicit val apiSubscribedFormats   = Json.format[ApiSubscribed]
-  implicit val apiUnsubscribedFormats = Json.format[ApiUnsubscribed]
+  implicit val apiSubscribedFormats   = Json.format[ApiSubscribedV2]
+  implicit val apiUnsubscribedFormats = Json.format[ApiUnsubscribedV2]
 
   implicit val apiSubscribedEventFormats   = Json.format[ApiSubscribedEvent]
   implicit val apiUnsubscribedEventFormats = Json.format[ApiUnsubscribedEvent]
@@ -79,7 +79,7 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
   implicit val productionCredentialsApplicationDeletedFormats = Json.format[ProductionCredentialsApplicationDeleted]
 
   implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
-  implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdated]
+  implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdatedV2]
   implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
   private sealed trait EventType
@@ -131,7 +131,7 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     // scalastyle:on number.of.methods
   }
 
-  implicit val abstractApplicationEventFormats: OFormat[AbstractApplicationEvent] = Union.from[AbstractApplicationEvent]("eventType")
+  implicit val abstractApplicationEventFormats: OFormat[ApplicationEvent] = Union.from[ApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
     .and[ProductionAppPrivacyPolicyLocationChanged](EventTypes.PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED.toString)
     .and[ProductionLegacyAppPrivacyPolicyLocationChanged](
@@ -153,14 +153,14 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     .and[ApplicationDeleted](EventTypes.APPLICATION_DELETED.toString)
     .and[ApplicationDeletedByGatekeeper](EventTypes.APPLICATION_DELETED_BY_GATEKEEPER.toString)
     .and[ProductionCredentialsApplicationDeleted](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED.toString)
-    .and[ApiSubscribed](EventTypes.API_SUBSCRIBED_V2.toString)
-    .and[ApiUnsubscribed](EventTypes.API_UNSUBSCRIBED_V2.toString)
-    .and[ClientSecretAdded](EventTypes.CLIENT_SECRET_ADDED_V2.toString)
-    .and[ClientSecretRemoved](EventTypes.CLIENT_SECRET_REMOVED_V2.toString)
-    .and[CollaboratorAdded](EventTypes.COLLABORATOR_ADDED.toString)
-    .and[CollaboratorRemoved](EventTypes.COLLABORATOR_REMOVED.toString)
+    .and[ApiSubscribedV2](EventTypes.API_SUBSCRIBED_V2.toString)
+    .and[ApiUnsubscribedV2](EventTypes.API_UNSUBSCRIBED_V2.toString)
+    .and[ClientSecretAddedV2](EventTypes.CLIENT_SECRET_ADDED_V2.toString)
+    .and[ClientSecretRemovedV2](EventTypes.CLIENT_SECRET_REMOVED_V2.toString)
+    .and[CollaboratorAddedV2](EventTypes.COLLABORATOR_ADDED.toString)
+    .and[CollaboratorRemovedV2](EventTypes.COLLABORATOR_REMOVED.toString)
     .and[RedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
-    .and[RedirectUrisUpdated](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
+    .and[RedirectUrisUpdatedV2](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
     .and[PpnsCallBackUriUpdatedEvent](EventTypes.PPNS_CALLBACK_URI_UPDATED.toString)
     .and[ApiSubscribedEvent](EventTypes.API_SUBSCRIBED.toString)
     .and[ApiUnsubscribedEvent](EventTypes.API_UNSUBSCRIBED.toString)
@@ -171,23 +171,22 @@ abstract class EventsJsonFormatters(localDateTimeFormats: Format[LocalDateTime])
     .format
 }
 
-object LocalDateTimeFormatter extends EnvWrites with EnvReads {
+private object InstantJsonFormatter extends EnvWrites with EnvReads with CommonJsonFormatters {
   import play.api.libs.json._
 
-  implicit val writer: Writes[LocalDateTime] = DefaultLocalDateTimeWrites
+  val writer: Writes[Instant] = DefaultInstantWrites
+  val reader: Reads[Instant] = tolerantInstantReader
 
-  implicit val reader: Reads[LocalDateTime] = DefaultLocalDateTimeReads
-
-  implicit val format: Format[LocalDateTime] = Format(reader, writer)
+  implicit val format: Format[Instant] = Format(reader, writer)
 }
 
-object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(LocalDateTimeFormatter.format)
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantJsonFormatter.format)
 
 /*
  *  For mongo use the following
  *
  *  object EventsMongoJsonFormatters extends EventsJsonFormatters {
- *     implicit val localDateTimeFormats = MongoJavatimeFormats.localDateTimeFormat
+ *     implicit val instantJsonFormatter = MongoJavatimeFormats.instantFormat
  *  }
  *
  */

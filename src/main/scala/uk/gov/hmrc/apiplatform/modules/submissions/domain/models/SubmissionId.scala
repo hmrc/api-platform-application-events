@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
+package uk.gov.hmrc.apiplatform.modules.submissions.domain.models
 
-/** LaxEmailAddress is a wrapper to string but designed to carry the idea of an email address
-  *
-  * NO verification takes place !
-  */
-final case class LaxEmailAddress(value: String) extends AnyVal
+final case class SubmissionId(value: String) extends AnyVal
+
+object SubmissionId {
+  import play.api.libs.json.Json
+
+  def random: SubmissionId = SubmissionId(java.util.UUID.randomUUID.toString())
+
+  implicit val submissionIdJf = Json.valueFormat[SubmissionId]
+}

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
+package uk.gov.hmrc.apiplatform.modules.common.domain.services
 
-import play.api.libs.json.Json
-
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import play.api.libs.json.EnvReads
+import java.time.format.DateTimeFormatter
 
 trait CommonJsonFormatters {
-  implicit val laxEmailAddressJf = Json.valueFormat[LaxEmailAddress]
 
-  implicit val eventIdJf = Json.valueFormat[EventId]
+  private object READS extends EnvReads
+
+  implicit val tolerantInstantReader = READS.instantReads(DateTimeFormatter.ISO_INSTANT, (in) => if(in.last == 'Z') in else s"${in}Z")
 }
 
 object CommonJsonFormatters extends CommonJsonFormatters
