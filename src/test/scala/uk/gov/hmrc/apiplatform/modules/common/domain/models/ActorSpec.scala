@@ -36,6 +36,12 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
           ("user"      -> bobSmithUserName)
         )
       }
+        
+      "produce type only json" in {
+        testToJson[Actors.GatekeeperUser](Actors.GatekeeperUser(bobSmithUserName))(
+          ("user"      -> bobSmithUserName)
+        )
+      }
 
       "read json" in {
         testFromJson[Actor]("""{"actorType":"GATEKEEPER","user":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
@@ -43,6 +49,10 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
 
       "read old style json" in {
         testFromJson[Actor]("""{"actorType":"GATEKEEPER","id":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
+      }
+      
+      "read as just a gatekeeper user" in {
+        testFromJson[Actors.GatekeeperUser]("""{"id":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
       }
     }
 
@@ -54,12 +64,22 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
         )
       }
 
+      "produce type only json" in {
+        testToJson[Actors.AppCollaborator](Actors.AppCollaborator(bobSmithEmailAddress))(
+          ("email"     -> "bob@smith.com")
+        )
+      }
+
       "read json" in {
         testFromJson[Actor]("""{"actorType":"COLLABORATOR","email":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
       }
 
       "read old style json" in {
         testFromJson[Actor]("""{"actorType":"COLLABORATOR","id":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
+      }
+        
+      "read as just an app collaborator" in {
+        testFromJson[Actors.AppCollaborator]("""{"id":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
       }
     }
 

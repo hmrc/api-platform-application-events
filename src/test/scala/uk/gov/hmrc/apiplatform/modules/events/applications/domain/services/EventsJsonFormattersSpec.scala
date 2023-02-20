@@ -28,6 +28,8 @@ import java.time.Instant
 import java.time.format.DateTimeFormatter
 import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
+import uk.gov.hmrc.apiplatform.modules.apis.domain.models.ApiContext
+import uk.gov.hmrc.apiplatform.modules.apis.domain.models.ApiVersion
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId   = EventId.random
@@ -220,6 +222,22 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       "write to json" in {
         Json.toJson(evt).prettifier shouldBe Json.parse(jsonText).prettifier
       }
+    }
+        
+    "dump some json" in {
+      import LaxEmailAddress.StringSyntax
+
+      val e: ApplicationEvent =
+        ApiSubscribedV2(EventId.random, ApplicationId.random, FixedClock.instant, Actors.AppCollaborator("bob".toLaxEmail), ApiContext("bob"), ApiVersion("1.0"))
+
+      Json.toJson[Actor](e.actor).toString
+      val txt = Json.toJson(e).toString
+      println(txt)
+      val e2 = Json.parse(txt).as[ApplicationEvent]
+
+      println(e2)
+
+      e shouldBe e2
     }
   }
 }
