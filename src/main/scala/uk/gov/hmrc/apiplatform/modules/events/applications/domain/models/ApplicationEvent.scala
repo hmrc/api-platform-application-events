@@ -367,7 +367,6 @@ case class ApplicationApprovalRequestDeclined(
 case class TermsOfUsePassed(
     id: EventId,
     applicationId: ApplicationId,
-    applicationName: String,
     eventDateTime: Instant,
     actor: Actor,
     submissionId: SubmissionId,
