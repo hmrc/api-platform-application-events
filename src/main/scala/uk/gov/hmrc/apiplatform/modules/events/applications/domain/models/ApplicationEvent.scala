@@ -364,6 +364,16 @@ case class ApplicationApprovalRequestDeclined(
     requestingAdminEmail: LaxEmailAddress
   ) extends ApplicationEvent
 
+case class TermsOfUsePassed(
+    id: EventId,
+    applicationId: ApplicationId,
+    applicationName: String,
+    eventDateTime: Instant,
+    actor: Actor,
+    submissionId: SubmissionId,
+    submissionIndex: Int
+  ) extends ApplicationEvent
+
 case class ApplicationDeleted(
     id: EventId,
     applicationId: ApplicationId,
