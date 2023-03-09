@@ -77,6 +77,7 @@ object EventTags {
         _: ResponsibleIndividualVerificationStarted |
         _: ApplicationStateChanged |
         _: ApplicationApprovalRequestDeclined |
+        _: TermsOfUsePassed |
         _: ProductionCredentialsApplicationDeleted => TERMS_OF_USE
     case _: ApplicationDeleted |
         _: ApplicationDeletedByGatekeeper => APP_LIFECYCLE
