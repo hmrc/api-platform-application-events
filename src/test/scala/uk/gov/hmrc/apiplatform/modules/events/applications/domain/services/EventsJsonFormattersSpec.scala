@@ -172,6 +172,26 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
     }
 
+    "given a new terms of use passed event" should {
+      val submissionId = SubmissionId.random
+      val jsonText =
+        raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"some-user@example.com","actorType":"COLLABORATOR"},"submissionId":"${submissionId.value}","submissionIndex":0,"eventType":"TERMS_OF_USE_PASSED"}"""
+
+      "convert from json" in {
+
+        val evt = Json.parse(jsonText).as[ApplicationEvent]
+
+        evt shouldBe a[TermsOfUsePassed]
+      }
+
+      "convert to correctJson" in {
+        val event: ApplicationEvent = TermsOfUsePassed(eventId, anAppId, instant, Actors.AppCollaborator(LaxEmailAddress("some-user@example.com")), submissionId, 0)
+
+        val eventJSonString = Json.toJson(event).toString()
+        eventJSonString shouldBe jsonText.butWithZ
+      }
+    }
+
     "given a ResponsibleIndividualChanged event" should {
     val submissionId = SubmissionId.random
     val now = Instant.now
