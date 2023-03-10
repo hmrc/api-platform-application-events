@@ -193,12 +193,12 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
     }
 
     "given a ResponsibleIndividualChanged event" should {
-    val submissionId = SubmissionId.random
-    val now = Instant.now
-    val nowText = DateTimeFormatter.ISO_INSTANT.format(now)
-    val actor = Actors.GatekeeperUser("Dave")
+      val submissionId = SubmissionId.random
+      val now = Instant.now
+      val nowText = DateTimeFormatter.ISO_INSTANT.format(now)
+      val actor = Actors.GatekeeperUser("Dave")
     
-    val jsonText = raw"""{
+      val jsonText = raw"""{
                       |"id":"${eventId.value}",
                       |"applicationId":"$appIdText",
                       |"eventDateTime":"$nowText",
@@ -237,6 +237,50 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
         val evtOut = Json.parse(jsonText).as[ApplicationEvent]
 
         evtOut shouldBe a[ResponsibleIndividualChanged]
+      }
+    }
+
+    "given a ResponsibleIndividualDeclinedOrDidNotVerify event" should {
+      val submissionId = SubmissionId.random
+      val now = Instant.now
+      val nowText = DateTimeFormatter.ISO_INSTANT.format(now)
+      val actor = Actors.GatekeeperUser("Dave")
+    
+      val jsonText = raw"""{
+                      |"id":"${eventId.value}",
+                      |"applicationId":"$appIdText",
+                      |"eventDateTime":"$nowText",
+                      |"actor":{"id":"123454654","user":"Dave","actorType":"GATEKEEPER"},
+                      |"responsibleIndividualName":"Bob",
+                      |"responsibleIndividualEmail":"Bob@Smith.com",
+                      |"submissionId":"${submissionId.value}",
+                      |"submissionIndex": 1,
+                      |"code":"1234",
+                      |"requestingAdminName":"Dave",
+                      |"requestingAdminEmail":"Dave@Smith.com",
+                      |"teamMemberRole":"ADMIN",
+                      |"eventType":"RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY"
+                      |}""".stripMargin.stripLineEnd
+
+      val evt: ApplicationEvent = 
+          ResponsibleIndividualDeclinedOrDidNotVerify(
+            eventId,
+            anAppId,
+            now,
+            actor,
+            "Bob",
+            LaxEmailAddress("Bob@Smith.com"),
+            submissionId,
+            1,
+            "123",
+            "Dave",
+            LaxEmailAddress("Dave@Smith.com")
+        )
+
+      "convert from json" in {
+        val evtOut = Json.parse(jsonText).as[ApplicationEvent]
+
+        evtOut shouldBe a[ResponsibleIndividualDeclinedOrDidNotVerify]
       }
 
       "write to json" in {

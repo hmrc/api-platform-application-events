@@ -350,6 +350,20 @@ case class ResponsibleIndividualDidNotVerify(
     requestingAdminEmail: LaxEmailAddress
   ) extends ApplicationEvent
 
+case class ResponsibleIndividualDeclinedOrDidNotVerify(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    responsibleIndividualName: String,
+    responsibleIndividualEmail: LaxEmailAddress,
+    submissionId: SubmissionId,
+    submissionIndex: Int,
+    code: String,
+    requestingAdminName: String,
+    requestingAdminEmail: LaxEmailAddress
+  ) extends ApplicationEvent
+
 case class ApplicationApprovalRequestDeclined(
     id: EventId,
     applicationId: ApplicationId,
