@@ -258,7 +258,6 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                       |"code":"1234",
                       |"requestingAdminName":"Dave",
                       |"requestingAdminEmail":"Dave@Smith.com",
-                      |"teamMemberRole":"ADMIN",
                       |"eventType":"RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY"
                       |}""".stripMargin.stripLineEnd
 
