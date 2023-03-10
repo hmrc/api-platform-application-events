@@ -67,10 +67,11 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant])
   implicit val responsibleIndividualChangedToSelfFormats = Json.format[ResponsibleIndividualChangedToSelf]
   implicit val applicationStateChangedFormats            = Json.format[ApplicationStateChanged]
 
-  implicit val responsibleIndividualVerificationStartedFormats = Json.format[ResponsibleIndividualVerificationStarted]
-  implicit val responsibleIndividualDeclinedFormats            = Json.format[ResponsibleIndividualDeclined]
-  implicit val responsibleIndividualDeclinedUpdateFormats      = Json.format[ResponsibleIndividualDeclinedUpdate]
-  implicit val responsibleIndividualDidNotVerifyFormats        = Json.format[ResponsibleIndividualDidNotVerify]
+  implicit val responsibleIndividualVerificationStartedFormats    = Json.format[ResponsibleIndividualVerificationStarted]
+  implicit val responsibleIndividualDeclinedFormats               = Json.format[ResponsibleIndividualDeclined]
+  implicit val responsibleIndividualDeclinedUpdateFormats         = Json.format[ResponsibleIndividualDeclinedUpdate]
+  implicit val responsibleIndividualDidNotVerifyFormats           = Json.format[ResponsibleIndividualDidNotVerify]
+  implicit val responsibleIndividualDeclinedOrDidNotVerifyFormats = Json.format[ResponsibleIndividualDeclinedOrDidNotVerify]
 
   implicit val applicationApprovalRequestDeclinedFormats = Json.format[ApplicationApprovalRequestDeclined]
   implicit val termsOfUsePassedFormats                   = Json.format[TermsOfUsePassed]
@@ -105,13 +106,14 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant])
     case object API_SUBSCRIBED   extends EventType
     case object API_UNSUBSCRIBED extends EventType
 
-    case object RESPONSIBLE_INDIVIDUAL_SET                  extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_CHANGED              extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF      extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_STARTED extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DECLINED             extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE      extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY       extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_SET                        extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_CHANGED                    extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF            extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_STARTED       extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED                   extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE            extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY             extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY extends EventType
 
     case object APPLICATION_APPROVAL_REQUEST_DECLINED extends EventType
     case object TERMS_OF_USE_PASSED                   extends EventType
@@ -151,6 +153,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant])
     .and[ResponsibleIndividualDeclined](EventTypes.RESPONSIBLE_INDIVIDUAL_DECLINED.toString)
     .and[ResponsibleIndividualDeclinedUpdate](EventTypes.RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE.toString)
     .and[ResponsibleIndividualDidNotVerify](EventTypes.RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY.toString)
+    .and[ResponsibleIndividualDeclinedOrDidNotVerify](EventTypes.RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY.toString)
     .and[ApplicationApprovalRequestDeclined](EventTypes.APPLICATION_APPROVAL_REQUEST_DECLINED.toString)
     .and[TermsOfUsePassed](EventTypes.TERMS_OF_USE_PASSED.toString)
     .and[ApplicationDeleted](EventTypes.APPLICATION_DELETED.toString)

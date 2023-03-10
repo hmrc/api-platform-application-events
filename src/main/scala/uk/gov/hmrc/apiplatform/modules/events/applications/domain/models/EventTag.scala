@@ -73,6 +73,7 @@ object EventTags {
         _: ResponsibleIndividualDeclined |
         _: ResponsibleIndividualDeclinedUpdate |
         _: ResponsibleIndividualDidNotVerify |
+        _: ResponsibleIndividualDeclinedOrDidNotVerify |
         _: ResponsibleIndividualSet |
         _: ResponsibleIndividualVerificationStarted |
         _: ApplicationStateChanged |
