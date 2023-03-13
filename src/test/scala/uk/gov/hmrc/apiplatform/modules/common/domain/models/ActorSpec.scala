@@ -36,7 +36,7 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
           ("user"      -> bobSmithUserName)
         )
       }
-        
+
       "produce type only json" in {
         testToJson[Actors.GatekeeperUser](Actors.GatekeeperUser(bobSmithUserName))(
           ("user"      -> bobSmithUserName)
@@ -50,7 +50,7 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
       "read old style json" in {
         testFromJson[Actor]("""{"actorType":"GATEKEEPER","id":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
       }
-      
+
       "read as just a gatekeeper user" in {
         testFromJson[Actors.GatekeeperUser]("""{"id":"bob smith"}""")(Actors.GatekeeperUser(bobSmithUserName))
       }
@@ -77,7 +77,7 @@ class ActorSpec extends JsonFormattersSpec with OptionValues {
       "read old style json" in {
         testFromJson[Actor]("""{"actorType":"COLLABORATOR","id":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
       }
-        
+
       "read as just an app collaborator" in {
         testFromJson[Actors.AppCollaborator]("""{"id":"bob@smith.com"}""")(Actors.AppCollaborator(bobSmithEmailAddress))
       }

@@ -27,7 +27,7 @@ class UserIdSpec extends AnyWordSpec with Matchers {
 
     "convert to and from text" in {
       val in = UserId.random
-      
+
       UserId.fromString(in.asText) shouldBe Some(in)
     }
   }

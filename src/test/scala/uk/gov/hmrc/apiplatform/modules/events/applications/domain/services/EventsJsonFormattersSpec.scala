@@ -197,7 +197,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       val now = Instant.now
       val nowText = DateTimeFormatter.ISO_INSTANT.format(now)
       val actor = Actors.GatekeeperUser("Dave")
-    
+
       val jsonText = raw"""{
                       |"id":"${eventId.value}",
                       |"applicationId":"$appIdText",
@@ -245,7 +245,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       val now = Instant.now
       val nowText = DateTimeFormatter.ISO_INSTANT.format(now)
       val actor = Actors.GatekeeperUser("Dave")
-    
+
       val jsonText = raw"""{
                       |"id":"${eventId.value}",
                       |"applicationId":"$appIdText",
@@ -286,7 +286,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
         Json.toJson(evt).prettifier shouldBe Json.parse(jsonText).prettifier
       }
     }
-        
+
     "dump some json" in {
       import LaxEmailAddress.StringSyntax
 

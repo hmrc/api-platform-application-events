@@ -23,7 +23,7 @@ import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec{
-  
+
   "Collborator" when {
     "creating" should {
       val email = LaxEmailAddress("bob")
@@ -100,7 +100,7 @@ class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec
       val idAsText = anId.value.toString()
       val anEmail  = LaxEmailAddress("bob@smith.com")
       val developer: Collaborator = Collaborators.Developer(anId, anEmail)
-     
+
       "describe it's role" in {
         developer.describeRole shouldBe "DEVELOPER"
       }

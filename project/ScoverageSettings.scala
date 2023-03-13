@@ -1,5 +1,5 @@
 import scoverage.ScoverageKeys
-  
+
 object ScoverageSettings {
   def apply() = Seq(
     ScoverageKeys.coverageExcludedPackages := Seq(
