@@ -25,7 +25,7 @@ object PrivacyPolicyLocations {
   case object InDesktopSoftware extends PrivacyPolicyLocation
   case class Url(value: String) extends PrivacyPolicyLocation
 
-  
+
   def describe(privacyPolicyLocation: PrivacyPolicyLocation): String = {
     privacyPolicyLocation match {
       case InDesktopSoftware => "In desktop software"
@@ -38,7 +38,7 @@ object PrivacyPolicyLocations {
 object PrivacyPolicyLocation {
   import play.api.libs.json.Json
   import uk.gov.hmrc.play.json.Union
-  
+
   private implicit val noneProvidedFormat      = Json.format[PrivacyPolicyLocations.NoneProvided.type]
   private implicit val inDesktopSoftwareFormat = Json.format[PrivacyPolicyLocations.InDesktopSoftware.type]
   private implicit val urlFormat               = Json.format[PrivacyPolicyLocations.Url]

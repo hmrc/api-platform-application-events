@@ -63,7 +63,7 @@ class CommonJsonFormattersSpec extends AnyWordSpec with Matchers {
       import TypicalJsonFormatters._
       Json.toJson(instant).toString()
     }
-    
+
     "be readable to localdatetime" in {
       Json.fromJson[LocalDateTime](Json.parse(jsonText)) shouldBe JsSuccess(localDateTime)
     }

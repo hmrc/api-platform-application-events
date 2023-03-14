@@ -23,7 +23,7 @@ import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 
 class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec{
-  
+
   "Collborator" when {
     "creating" should {
       val email = LaxEmailAddress("bob")
@@ -41,6 +41,16 @@ class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec
         result.isDeveloper shouldBe true
         result shouldBe Collaborators.Developer(userId, email)
       }
+      "creating an admin via a role" in {
+        val result = Collaborator.apply(email, Collaborator.Roles.ADMINISTRATOR, userId)
+        result.isAdministrator shouldBe true
+        result shouldBe Collaborators.Administrator(userId, email)        
+      }
+      "creating a dev via a role" in {
+        val result = Collaborator.apply(email, Collaborator.Roles.DEVELOPER, userId)
+        result.isAdministrator shouldBe false
+        result shouldBe Collaborators.Developer(userId, email)        
+      }
     }
 
     "given an administrator" should {
@@ -51,6 +61,10 @@ class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec
 
       "describe it's role" in {
         admin.describeRole shouldBe "ADMINISTRATOR"
+      }
+
+      "provide the role" in {
+        admin.role shouldBe Collaborator.Roles.ADMINISTRATOR
       }
 
       "normalise an email address" in {
@@ -86,9 +100,13 @@ class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec
       val idAsText = anId.value.toString()
       val anEmail  = LaxEmailAddress("bob@smith.com")
       val developer: Collaborator = Collaborators.Developer(anId, anEmail)
-     
+
       "describe it's role" in {
         developer.describeRole shouldBe "DEVELOPER"
+      }
+
+      "provide the role" in {
+        developer.role shouldBe Collaborator.Roles.DEVELOPER
       }
 
       "normalise an email address" in {
@@ -116,6 +134,14 @@ class CollaboratorSpec extends AnyWordSpec with Matchers with JsonFormattersSpec
 
       "read json" in {
         testFromJson[Collaborator](s"""{"role":"DEVELOPER","userId":"$idAsText","emailAddress":"bob@smith.com"}""")(developer)
+      }
+    }
+
+    "Roles" should {
+      "convert from text" in {
+        Collaborator.Role("DEVELOPER") shouldBe Some(Collaborator.Roles.DEVELOPER)
+        Collaborator.Role("ADMINISTRATOR") shouldBe Some(Collaborator.Roles.ADMINISTRATOR)
+        Collaborator.Role("bobbins") shouldBe None
       }
     }
   }

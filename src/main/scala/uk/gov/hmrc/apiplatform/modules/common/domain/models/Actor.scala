@@ -55,9 +55,9 @@ object Actors {
 object Actor {
   import play.api.libs.json._
   import uk.gov.hmrc.play.json.Union
-  
+
   private sealed trait ActorType
-  
+
   private object ActorTypes {
     case object COLLABORATOR  extends ActorType
     case object GATEKEEPER    extends ActorType
@@ -68,7 +68,7 @@ object Actor {
   implicit val actorsCollaboratorWrites = Json.writes[Actors.AppCollaborator]
   implicit val actorsGatekeeerpUserWrites = Json.writes[Actors.GatekeeperUser]
   implicit val actorsScheduledJobWrites = Json.writes[Actors.ScheduledJob]
-  
+
   import play.api.libs.functional.syntax._
   import play.api.libs.json.Reads._
 

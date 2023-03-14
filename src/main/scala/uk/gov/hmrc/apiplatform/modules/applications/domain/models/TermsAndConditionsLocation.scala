@@ -26,7 +26,7 @@ object TermsAndConditionsLocations {
   case object NoneProvided      extends TermsAndConditionsLocation
   case object InDesktopSoftware extends TermsAndConditionsLocation
   case class Url(value: String) extends TermsAndConditionsLocation
-  
+
   def describe(termsAndConditionsLocation: TermsAndConditionsLocation): String = {
     termsAndConditionsLocation match {
       case InDesktopSoftware => "In desktop software"
@@ -39,7 +39,7 @@ object TermsAndConditionsLocations {
 object TermsAndConditionsLocation {
   import play.api.libs.json.Json
   import uk.gov.hmrc.play.json.Union
-  
+
   private implicit val noneProvidedFormat      = Json.format[TermsAndConditionsLocations.NoneProvided.type]
   private implicit val inDesktopSoftwareFormat = Json.format[TermsAndConditionsLocations.InDesktopSoftware.type]
   private implicit val urlFormat               = Json.format[TermsAndConditionsLocations.Url]

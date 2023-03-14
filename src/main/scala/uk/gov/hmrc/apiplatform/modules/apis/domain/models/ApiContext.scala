@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatform.modules.developers.domain.models
+package uk.gov.hmrc.apiplatform.modules.apis.domain.models
 
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers
+import scala.util.Random
+import play.api.libs.json.Json
 
-class UserIdSpec extends AnyWordSpec with Matchers {
-  "UserId" should {
-    "generate a random value" in {
-      UserId.random should not be UserId.random
-    }
+final case class ApiContext(value: String) extends AnyVal
 
-    "convert to and from text" in {
-      val in = UserId.random
+object ApiContext {
+  implicit val apiContextFormat = Json.valueFormat[ApiContext]
 
-      UserId.fromString(in.asText) shouldBe Some(in)
-    }
+  implicit val ordering: Ordering[ApiContext] = new Ordering[ApiContext] {
+    override def compare(x: ApiContext, y: ApiContext): Int = x.value.compareTo(y.value)
   }
+
+  def random = ApiContext(Random.alphanumeric.take(10).mkString)
 }
