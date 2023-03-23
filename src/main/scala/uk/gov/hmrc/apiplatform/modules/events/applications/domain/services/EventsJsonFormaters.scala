@@ -16,16 +16,15 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import play.api.libs.json.{EnvReads, EnvWrites, Format, Json, OFormat}
-import uk.gov.hmrc.play.json.Union
-
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.CommonJsonFormatters
 import java.time.Instant
 
-abstract class EventsJsonFormatters(instantFormatter: Format[Instant])
-    extends CommonJsonFormatters {
+import play.api.libs.json.{Format, Json, OFormat}
+import uk.gov.hmrc.play.json.Union
+
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+
+abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   private implicit val fmt = instantFormatter
 
@@ -176,17 +175,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant])
     .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
     .format
 }
-
-private object InstantJsonFormatter extends EnvWrites with EnvReads with CommonJsonFormatters {
-  import play.api.libs.json._
-
-  val writer: Writes[Instant] = DefaultInstantWrites
-  val reader: Reads[Instant] = tolerantInstantReader
-
-  implicit val format: Format[Instant] = Format(reader, writer)
-}
-
-object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantJsonFormatter.format)
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantFormatter.NoTimeZone.format)
 
 /*
  *  For mongo use the following

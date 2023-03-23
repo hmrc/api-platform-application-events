@@ -16,10 +16,8 @@
 
 package uk.gov.hmrc.apiplatform.modules.applications.domain.models
 
-
-
 sealed trait TermsAndConditionsLocation {
-  def describe() : String = TermsAndConditionsLocations.describe(this)
+  def describe(): String = TermsAndConditionsLocations.describe(this)
 }
 
 object TermsAndConditionsLocations {
