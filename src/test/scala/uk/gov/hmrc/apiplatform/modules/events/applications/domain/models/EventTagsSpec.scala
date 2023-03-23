@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
+import java.time.Instant
+
 import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, LaxEmailAddress}
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
-import java.time.Instant
 class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
 
   "EventTags" when {

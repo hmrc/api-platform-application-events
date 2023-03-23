@@ -16,18 +16,12 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
-
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
 import java.time.Instant
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
+import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, _}
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actor, Actors, LaxEmailAddress}
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
-
-// scalastyle:off number.of.types
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
 sealed trait ApplicationEvent {
   def id: EventId
@@ -35,7 +29,8 @@ sealed trait ApplicationEvent {
   def eventDateTime: Instant
   def actor: Actor
 }
-object ApplicationEvent {
+
+object ApplicationEvent       {
 
   implicit val orderEvents: Ordering[ApplicationEvent] = new Ordering[ApplicationEvent]() {
 

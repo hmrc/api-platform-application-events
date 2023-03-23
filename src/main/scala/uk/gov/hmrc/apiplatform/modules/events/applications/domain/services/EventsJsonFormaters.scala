@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
+import java.time.Instant
+
 import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.play.json.Union
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-
-import java.time.Instant
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 

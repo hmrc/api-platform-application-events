@@ -16,25 +16,25 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, Collaborators}
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, LaxEmailAddress}
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
-import java.time.Instant
-import java.time.temporal.ChronoUnit
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 
 class AppliationEventSpec extends AnyWordSpec with Matchers {
 
   "AbstractApplicationEvent" when {
-    val anActor         = Actors.Unknown
-    val anEmail         = LaxEmailAddress("bob@smith.com")
-    val aRole           = "ADMINISTRATOR"
-    val appId           = ApplicationId.random
-    val aUserId         = UserId.random
-    val aCollaborator   = Collaborators.Developer(aUserId, anEmail)
+    val anActor       = Actors.Unknown
+    val anEmail       = LaxEmailAddress("bob@smith.com")
+    val aRole         = "ADMINISTRATOR"
+    val appId         = ApplicationId.random
+    val aUserId       = UserId.random
+    val aCollaborator = Collaborators.Developer(aUserId, anEmail)
 
     "Ordering a collection of events" should {
       "Sort the later ones first" in {
