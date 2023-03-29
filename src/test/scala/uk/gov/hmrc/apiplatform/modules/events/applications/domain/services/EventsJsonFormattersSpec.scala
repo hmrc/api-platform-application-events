@@ -24,10 +24,11 @@ import play.api.libs.json.{JsString, Json}
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models.{ApiContext, ApiVersion}
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, ClientId}
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
-import uk.gov.hmrc.apiplatform.modules.common.utils.{FixedClock, JsonFormattersSpec}
+import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
+import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId            = EventId.random
@@ -281,11 +282,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
       Json.toJson[Actor](e.actor).toString
       val txt                 = Json.toJson(e).toString
-      println(txt)
       val e2                  = Json.parse(txt).as[ApplicationEvent]
-
-      println(e2)
-
       e shouldBe e2
     }
   }
