@@ -282,11 +282,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
       Json.toJson[Actor](e.actor).toString
       val txt                 = Json.toJson(e).toString
-      println(txt) // Do we need this <----
       val e2                  = Json.parse(txt).as[ApplicationEvent]
-
-      println(e2)
-
       e shouldBe e2
     }
   }
