@@ -67,6 +67,9 @@ object EventTags {
         _: ClientSecretRemovedEvent => CLIENT_SECRET
     case _: PpnsCallBackUriUpdatedEvent   => PPNS_CALLBACK
     case _: RedirectUrisUpdatedV2 |
+        _: RedirectUriAdded |
+        _: RedirectUriDeleted |
+        _: RedirectUriChanged |
         _: RedirectUrisUpdatedEvent => REDIRECT_URIS
     case _: ResponsibleIndividualChanged |
         _: ResponsibleIndividualChangedToSelf |

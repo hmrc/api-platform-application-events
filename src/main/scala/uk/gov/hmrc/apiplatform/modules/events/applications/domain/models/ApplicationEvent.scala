@@ -17,9 +17,8 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.Instant
-
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, _}
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, RedirectUri, _}
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actor, Actors, LaxEmailAddress}
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
 
@@ -30,7 +29,7 @@ sealed trait ApplicationEvent {
   def actor: Actor
 }
 
-object ApplicationEvent       {
+object ApplicationEvent {
 
   implicit val orderEvents: Ordering[ApplicationEvent] = new Ordering[ApplicationEvent]() {
 
@@ -38,6 +37,31 @@ object ApplicationEvent       {
       y.eventDateTime.compareTo(x.eventDateTime)
   }
 }
+
+case class RedirectUriAdded(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    newRedirectUri: RedirectUri
+  ) extends ApplicationEvent
+
+case class RedirectUriChanged(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    oldRedirectUri: RedirectUri,
+    newRedirectUri: RedirectUri
+  ) extends ApplicationEvent
+
+case class RedirectUriDeleted(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    deletedRedirectUri: RedirectUri
+  ) extends ApplicationEvent
 
 case class PpnsCallBackUriUpdatedEvent(
     id: EventId,
@@ -57,17 +81,6 @@ case class RedirectUrisUpdatedV2(
     actor: Actor,
     oldRedirectUris: List[String],
     newRedirectUris: List[String]
-  ) extends ApplicationEvent
-
-/** DEPRECATED Use RedirectUrisUpdated instead
-  */
-case class RedirectUrisUpdatedEvent(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    oldRedirectUris: String,
-    newRedirectUris: String
   ) extends ApplicationEvent
 
 case class ProductionAppNameChangedEvent(
@@ -134,26 +147,6 @@ case class ClientSecretRemovedV2(
     clientSecretName: String
   ) extends ApplicationEvent
 
-/** DEPRECATED Use ClientSecretAdded instead
-  */
-case class ClientSecretAddedEvent(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    clientSecretId: String
-  ) extends ApplicationEvent
-
-/** DEPRECATED Use ClientSecretRemoved instead
-  */
-case class ClientSecretRemovedEvent(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    clientSecretId: String
-  ) extends ApplicationEvent
-
 case class CollaboratorAddedV2(
     id: EventId,
     applicationId: ApplicationId,
@@ -172,28 +165,6 @@ case class CollaboratorRemovedV2(
     verifiedAdminsToEmail: Set[LaxEmailAddress]
   ) extends ApplicationEvent
 
-/** DEPRECATED Use CollaboratorAdded instead
-  */
-case class TeamMemberAddedEvent(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    teamMemberEmail: LaxEmailAddress,
-    teamMemberRole: String
-  ) extends ApplicationEvent
-
-/** DEPRECATED Use CollaboratorRemoved instead
-  */
-case class TeamMemberRemovedEvent(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    teamMemberEmail: LaxEmailAddress,
-    teamMemberRole: String
-  ) extends ApplicationEvent
-
 case class ApiSubscribedV2(
     id: EventId,
     applicationId: ApplicationId,
@@ -210,28 +181,6 @@ case class ApiUnsubscribedV2(
     actor: Actor,
     context: ApiContext,
     version: ApiVersion
-  ) extends ApplicationEvent
-
-/** DEPRECATED Use ApiSubscribedV2 instead
-  */
-case class ApiSubscribedEvent(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    context: String,
-    version: String
-  ) extends ApplicationEvent
-
-/** DEPRECATED Use ApiUnsubscribedV2 instead
-  */
-case class ApiUnsubscribedEvent(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    context: String,
-    version: String
   ) extends ApplicationEvent
 
 case class ResponsibleIndividualChanged(
@@ -411,6 +360,83 @@ case class ProductionCredentialsApplicationDeleted(
     clientId: ClientId,
     wso2ApplicationName: String,
     reasons: String
+  ) extends ApplicationEvent
+
+// *** DEPRECATED EVENTS ***
+
+/** DEPRECATED Use RedirectUrisUpdated instead
+  */
+case class RedirectUrisUpdatedEvent(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    oldRedirectUris: String,
+    newRedirectUris: String
+  ) extends ApplicationEvent
+
+/** DEPRECATED Use ClientSecretAdded instead
+  */
+case class ClientSecretAddedEvent(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    clientSecretId: String
+  ) extends ApplicationEvent
+
+/** DEPRECATED Use ClientSecretRemoved instead
+  */
+case class ClientSecretRemovedEvent(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    clientSecretId: String
+  ) extends ApplicationEvent
+
+/** DEPRECATED Use CollaboratorAdded instead
+  */
+case class TeamMemberAddedEvent(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    teamMemberEmail: LaxEmailAddress,
+    teamMemberRole: String
+  ) extends ApplicationEvent
+
+/** DEPRECATED Use CollaboratorRemoved instead
+  */
+case class TeamMemberRemovedEvent(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    teamMemberEmail: LaxEmailAddress,
+    teamMemberRole: String
+  ) extends ApplicationEvent
+
+/** DEPRECATED Use ApiSubscribedV2 instead
+  */
+case class ApiSubscribedEvent(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    context: String,
+    version: String
+  ) extends ApplicationEvent
+
+/** DEPRECATED Use ApiUnsubscribedV2 instead
+  */
+case class ApiUnsubscribedEvent(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    context: String,
+    version: String
   ) extends ApplicationEvent
 
 // scalastyle:on number.of.types
