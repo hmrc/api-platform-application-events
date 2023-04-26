@@ -81,6 +81,9 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
   implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdatedV2]
+  implicit val redirectUriAddedFormats            = Json.format[RedirectUriAdded]
+  implicit val redirectUriChangedFormats            = Json.format[RedirectUriChanged]
+  implicit val redirectUriDeletedFormats            = Json.format[RedirectUriDeleted]
   implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
   private sealed trait EventType
@@ -127,8 +130,13 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED   extends EventType
     case object PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED extends EventType
     case object PROD_APP_NAME_CHANGED                             extends EventType
+
     case object REDIRECT_URIS_UPDATED                             extends EventType
     case object REDIRECT_URIS_UPDATED_V2                          extends EventType
+    case object REDIRECT_URI_ADDED                          extends EventType
+    case object REDIRECT_URI_CHANGED                          extends EventType
+    case object REDIRECT_URI_DELETED                          extends EventType
+
     case object PPNS_CALLBACK_URI_UPDATED                         extends EventType
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
@@ -166,6 +174,9 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[CollaboratorRemovedV2](EventTypes.COLLABORATOR_REMOVED.toString)
     .and[RedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
     .and[RedirectUrisUpdatedV2](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
+    .and[RedirectUriAdded](EventTypes.REDIRECT_URI_ADDED.toString)
+    .and[RedirectUriChanged](EventTypes.REDIRECT_URI_CHANGED.toString)
+    .and[RedirectUriDeleted](EventTypes.REDIRECT_URI_DELETED.toString)
     .and[PpnsCallBackUriUpdatedEvent](EventTypes.PPNS_CALLBACK_URI_UPDATED.toString)
     .and[ApiSubscribedEvent](EventTypes.API_SUBSCRIBED.toString)
     .and[ApiUnsubscribedEvent](EventTypes.API_UNSUBSCRIBED.toString)
