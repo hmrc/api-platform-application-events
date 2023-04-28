@@ -23,6 +23,7 @@ import uk.gov.hmrc.play.json.Union
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import  uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
@@ -90,7 +91,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   private object EventTypes {
 
-    case object COLLABORATOR_ADDED   extends EventType
+    case object COLLABORATOR_ADDED  extends EventType
     case object COLLABORATOR_REMOVED extends EventType
 
     case object TEAM_MEMBER_ADDED   extends EventType
@@ -141,6 +142,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
   }
+
 
   implicit val abstractApplicationEventFormats: OFormat[ApplicationEvent] = Union.from[ApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)
