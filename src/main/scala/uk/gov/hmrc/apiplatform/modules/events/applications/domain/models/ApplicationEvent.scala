@@ -153,7 +153,7 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      collaborator: Collaborator,
+      collaborator: Collaborator
     ) extends ApplicationEvent
 
   case class CollaboratorRemovedV2(
@@ -161,7 +161,7 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      collaborator: Collaborator,
+      collaborator: Collaborator
     ) extends ApplicationEvent
 
   case class ApiSubscribedV2(

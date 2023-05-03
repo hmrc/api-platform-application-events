@@ -26,7 +26,6 @@ import uk.gov.hmrc.apiplatform.modules.common.utils.{FixedClock, JsonFormattersS
 import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
-
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId            = EventId.random
   val anAppId            = ApplicationId.random
@@ -37,6 +36,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
   "EventsInterServiceCallJsonFormatters" when {
     import EventsInterServiceCallJsonFormatters._
+    import ApplicationEvents._
 
     "given an event id" should {
       val uuid = java.util.UUID.randomUUID
@@ -84,8 +84,8 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
 
     "given a new style collaborator removed event" should {
       "convert from json" in {
-        val jsonText = raw"""
-              {"id": "${eventId.value}",
+        val jsonText = raw"""{
+                            |"id": "${eventId.value}",
                             |"applicationId": "$appIdText",
                             |"eventDateTime": "2014-01-01T13:13:34.441Z",
                             |"eventType": "COLLABORATOR_REMOVED",
@@ -94,8 +94,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
                             |  "userId": "${UserId.random.value.toString()}",
                             |  "emailAddress": "bob@smith.com",
                             |  "role": "ADMINISTRATOR"
-                            |},
-                            |"verifiedAdminsToEmail": []
+                            |}
                             |}""".stripMargin
 
         val evt = Json.parse(jsonText).as[ApplicationEvent]

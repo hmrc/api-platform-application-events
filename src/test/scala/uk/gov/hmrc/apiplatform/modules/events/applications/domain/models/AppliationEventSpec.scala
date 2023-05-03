@@ -42,9 +42,9 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
         val time2 = time1.minus(2, ChronoUnit.DAYS)
         val time3 = time1.minus(3, ChronoUnit.DAYS)
 
-        val e1 = TeamMemberRemovedEvent(EventId.random, appId, time1, anActor, anEmail, aRole)
-        val e2 = TeamMemberAddedEvent(EventId.random, appId, time2, anActor, anEmail, aRole)
-        val e3 = CollaboratorAddedV2(EventId.random, appId, time3, anActor, aCollaborator, Set.empty)
+        val e1 = ApplicationEvents.TeamMemberRemovedEvent(EventId.random, appId, time1, anActor, anEmail, aRole)
+        val e2 = ApplicationEvents.TeamMemberAddedEvent(EventId.random, appId, time2, anActor, anEmail, aRole)
+        val e3 = ApplicationEvents.CollaboratorAddedV2(EventId.random, appId, time3, anActor, aCollaborator)
 
         val es = List[ApplicationEvent](e2, e3, e1)
 
