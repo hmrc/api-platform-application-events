@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
+
 sealed abstract class EventTag(val description: String)
 
 object EventTags {

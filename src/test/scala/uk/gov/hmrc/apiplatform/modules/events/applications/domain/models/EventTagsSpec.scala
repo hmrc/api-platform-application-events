@@ -56,7 +56,7 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
 
     "given an application name change" should {
       "Correctly tag event" in {
-        val evt = ProductionAppNameChangedEvent(
+        val evt = ApplicationEvents.ProductionAppNameChangedEvent(
           EventId.random,
           ApplicationId.random,
           Instant.now(),
