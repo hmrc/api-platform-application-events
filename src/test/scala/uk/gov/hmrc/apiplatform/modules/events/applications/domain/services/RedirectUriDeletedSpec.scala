@@ -17,7 +17,8 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.{RedirectUriAdded, RedirectUriDeleted}
+
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUriDeleted
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class RedirectUriDeletedSpec extends EventSpec {
@@ -25,7 +26,7 @@ class RedirectUriDeletedSpec extends EventSpec {
   "RedirectUriAdded" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = RedirectUriDeleted(anEventId, anAppId, anInstant,appCollaborator, toChangeRedirectUri)
+    val event: ApplicationEvent = RedirectUriDeleted(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri)
 
     val jsonText =
       raw"""{"id":"${anEventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"deletedRedirectUri":"${toChangeRedirectUri.uri}","eventType":"REDIRECT_URI_DELETED"}"""

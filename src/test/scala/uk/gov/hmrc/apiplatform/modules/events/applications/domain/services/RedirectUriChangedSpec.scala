@@ -17,8 +17,8 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, LaxEmailAddress}
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.{RedirectUriAdded, RedirectUriChanged}
+
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUriChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class RedirectUriChangedSpec extends EventSpec {
@@ -27,7 +27,6 @@ class RedirectUriChangedSpec extends EventSpec {
     import EventsInterServiceCallJsonFormatters._
 
     val event: ApplicationEvent = RedirectUriChanged(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri, aRedirectUri)
-
 
     val jsonText =
       raw"""{"id":"${anEventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldRedirectUri":"${toChangeRedirectUri.uri}","newRedirectUri":"${aRedirectUri.uri}","eventType":"REDIRECT_URI_CHANGED"}"""

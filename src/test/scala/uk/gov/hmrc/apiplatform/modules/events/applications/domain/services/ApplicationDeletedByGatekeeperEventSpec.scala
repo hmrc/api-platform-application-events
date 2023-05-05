@@ -16,36 +16,35 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class ApplicationDeletedByGatekeeperEventSpec extends EventSpec {
 
-    "ApplicationDeletedByGatekeeper" should {
-        import EventsInterServiceCallJsonFormatters._
+  "ApplicationDeletedByGatekeeper" should {
+    import EventsInterServiceCallJsonFormatters._
 
-        val applicationDeletedByGatekeeper: ApplicationEvent = ApplicationDeletedByGatekeeper(anEventId, anAppId, anInstant, gkCollaborator, aClientId, "bob", reasons, requestingEmail)
+    val applicationDeletedByGatekeeper: ApplicationEvent = ApplicationDeletedByGatekeeper(anEventId, anAppId, anInstant, gkCollaborator, aClientId, "bob", reasons, requestingEmail)
 
-        val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"clientId":"${aClientId.value}","wso2ApplicationName":"bob","reasons":"$reasons","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
+    val jsonText =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"clientId":"${aClientId.value}","wso2ApplicationName":"bob","reasons":"$reasons","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
 
-        "convert from json" in {
-            val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json" in {
+      val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-            evt shouldBe a[ApplicationDeletedByGatekeeper]
-        }
-
-        "convert to correctJson" in {
-
-            val eventJSonString = Json.toJson(applicationDeletedByGatekeeper).toString()
-            eventJSonString shouldBe jsonText
-        }
-        "display ApplicationDeletedByGatekeeper correctly" in {
-            testDisplay(applicationDeletedByGatekeeper, EventTags.APP_LIFECYCLE, "Deleted", List(reasons, requestingEmail.text))
-        }
+      evt shouldBe a[ApplicationDeletedByGatekeeper]
     }
-  
+
+    "convert to correctJson" in {
+
+      val eventJSonString = Json.toJson(applicationDeletedByGatekeeper).toString()
+      eventJSonString shouldBe jsonText
+    }
+    "display ApplicationDeletedByGatekeeper correctly" in {
+      testDisplay(applicationDeletedByGatekeeper, EventTags.APP_LIFECYCLE, "Deleted", List(reasons, requestingEmail.text))
+    }
+  }
+
 }

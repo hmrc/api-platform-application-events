@@ -22,8 +22,8 @@ import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.play.json.Union
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-import  uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
@@ -83,15 +83,15 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
   implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdatedV2]
   implicit val redirectUriAddedFormats            = Json.format[RedirectUriAdded]
-  implicit val redirectUriChangedFormats            = Json.format[RedirectUriChanged]
-  implicit val redirectUriDeletedFormats            = Json.format[RedirectUriDeleted]
+  implicit val redirectUriChangedFormats          = Json.format[RedirectUriChanged]
+  implicit val redirectUriDeletedFormats          = Json.format[RedirectUriDeleted]
   implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
   private sealed trait EventType
 
   private object EventTypes {
 
-    case object COLLABORATOR_ADDED  extends EventType
+    case object COLLABORATOR_ADDED   extends EventType
     case object COLLABORATOR_REMOVED extends EventType
 
     case object TEAM_MEMBER_ADDED   extends EventType
@@ -132,17 +132,16 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED extends EventType
     case object PROD_APP_NAME_CHANGED                             extends EventType
 
-    case object REDIRECT_URIS_UPDATED                             extends EventType
-    case object REDIRECT_URIS_UPDATED_V2                          extends EventType
-    case object REDIRECT_URI_ADDED                          extends EventType
-    case object REDIRECT_URI_CHANGED                          extends EventType
-    case object REDIRECT_URI_DELETED                          extends EventType
+    case object REDIRECT_URIS_UPDATED    extends EventType
+    case object REDIRECT_URIS_UPDATED_V2 extends EventType
+    case object REDIRECT_URI_ADDED       extends EventType
+    case object REDIRECT_URI_CHANGED     extends EventType
+    case object REDIRECT_URI_DELETED     extends EventType
 
-    case object PPNS_CALLBACK_URI_UPDATED                         extends EventType
+    case object PPNS_CALLBACK_URI_UPDATED extends EventType
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
   }
-
 
   implicit val abstractApplicationEventFormats: OFormat[ApplicationEvent] = Union.from[ApplicationEvent]("eventType")
     .and[ProductionAppNameChangedEvent](EventTypes.PROD_APP_NAME_CHANGED.toString)

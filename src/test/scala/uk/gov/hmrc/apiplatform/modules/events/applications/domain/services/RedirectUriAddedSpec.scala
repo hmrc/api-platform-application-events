@@ -17,8 +17,8 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.Collaborator
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.{RedirectUriAdded, TeamMemberRemovedEvent}
+
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUriAdded
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class RedirectUriAddedSpec extends EventSpec {
@@ -31,7 +31,7 @@ class RedirectUriAddedSpec extends EventSpec {
     val jsonText =
       raw"""{"id":"${anEventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"newRedirectUri":"${aRedirectUri.uri}","eventType":"REDIRECT_URI_ADDED"}"""
 
-      "convert from json" in {
+    "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 

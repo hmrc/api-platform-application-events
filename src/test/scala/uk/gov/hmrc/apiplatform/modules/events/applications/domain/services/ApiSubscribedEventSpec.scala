@@ -16,37 +16,36 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.ApiSubscribedEvent
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class ApiSubscribedEventSpec extends EventSpec {
 
-    "ApiSubscribedEvent" should {
-        import EventsInterServiceCallJsonFormatters._
+  "ApiSubscribedEvent" should {
+    import EventsInterServiceCallJsonFormatters._
 
-        val apiSubscribedEvent: ApplicationEvent = ApiSubscribedEvent(anEventId, anAppId, anInstant, appCollaborator, context.value, version.value)
+    val apiSubscribedEvent: ApplicationEvent = ApiSubscribedEvent(anEventId, anAppId, anInstant, appCollaborator, context.value, version.value)
 
-        val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"context":"${context.value}","version":"${version.value}","eventType":"API_SUBSCRIBED"}"""
+    val jsonText =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"context":"${context.value}","version":"${version.value}","eventType":"API_SUBSCRIBED"}"""
 
-        "convert from json" in {
-            val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json" in {
+      val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-            evt shouldBe a[ApiSubscribedEvent]
-        }
-
-        "convert to correctJson" in {
-
-            val eventJSonString = Json.toJson(apiSubscribedEvent).toString()
-            eventJSonString shouldBe jsonText
-        }
-
-        "display ApiSubscribedEvent correctly" in {
-            testDisplay(apiSubscribedEvent, EventTags.SUBSCRIPTION, "Api Subscribed", List(s"${context.value}", s"${version.value}"))
-        }
+      evt shouldBe a[ApiSubscribedEvent]
     }
-  
+
+    "convert to correctJson" in {
+
+      val eventJSonString = Json.toJson(apiSubscribedEvent).toString()
+      eventJSonString shouldBe jsonText
+    }
+
+    "display ApiSubscribedEvent correctly" in {
+      testDisplay(apiSubscribedEvent, EventTags.SUBSCRIPTION, "Api Subscribed", List(s"${context.value}", s"${version.value}"))
+    }
+  }
+
 }

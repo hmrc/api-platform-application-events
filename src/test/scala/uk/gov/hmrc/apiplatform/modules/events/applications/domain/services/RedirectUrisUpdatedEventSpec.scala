@@ -17,7 +17,8 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.{RedirectUriAdded, RedirectUrisUpdatedEvent}
+
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUrisUpdatedEvent
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class RedirectUrisUpdatedEventSpec extends EventSpec {
@@ -30,7 +31,7 @@ class RedirectUrisUpdatedEventSpec extends EventSpec {
     val jsonText =
       raw"""{"id":"${anEventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldRedirectUris":"${toChangeRedirectUri.uri}","newRedirectUris":"${aRedirectUri.uri}","eventType":"REDIRECT_URIS_UPDATED"}"""
 
-      "convert from json" in {
+    "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 

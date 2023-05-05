@@ -18,14 +18,16 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneOffset}
+
 import play.api.libs.json.{JsString, Json}
+
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models.{ApiContext, ApiVersion}
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, ClientId, RedirectUri}
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.common.utils.{FixedClock, JsonFormattersSpec}
-import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
+
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId            = EventId.random
   val anAppId            = ApplicationId.random
@@ -82,7 +84,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       }
     }
 
-      "given a new terms of use passed event" should {
+    "given a new terms of use passed event" should {
       val submissionId = SubmissionId.random
       val jsonText     =
         raw"""{"id":"${eventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"some-user@example.com","actorType":"COLLABORATOR"},"submissionId":"${submissionId.value}","submissionIndex":0,"eventType":"TERMS_OF_USE_PASSED"}"""

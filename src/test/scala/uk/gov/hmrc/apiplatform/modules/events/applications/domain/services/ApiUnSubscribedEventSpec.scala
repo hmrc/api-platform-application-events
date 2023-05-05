@@ -16,37 +16,36 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.ApiUnsubscribedEvent
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class ApiUnsubscribedEventSpec extends EventSpec {
 
-    "ApiUnsubscribedEvent" should {
-        import EventsInterServiceCallJsonFormatters._
+  "ApiUnsubscribedEvent" should {
+    import EventsInterServiceCallJsonFormatters._
 
-        val apiUnSubscribedEvent: ApplicationEvent = ApiUnsubscribedEvent(anEventId, anAppId, anInstant, appCollaborator, context.value, version.value)
+    val apiUnSubscribedEvent: ApplicationEvent = ApiUnsubscribedEvent(anEventId, anAppId, anInstant, appCollaborator, context.value, version.value)
 
-        val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"context":"${context.value}","version":"${version.value}","eventType":"API_UNSUBSCRIBED"}"""
+    val jsonText =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"context":"${context.value}","version":"${version.value}","eventType":"API_UNSUBSCRIBED"}"""
 
-        "convert from json" in {
-            val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json" in {
+      val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-            evt shouldBe a[ApiUnsubscribedEvent]
-        }
-
-        "convert to correctJson" in {
-
-            val eventJSonString = Json.toJson(apiUnSubscribedEvent).toString()
-            eventJSonString shouldBe jsonText
-        }
-
-        "display ApiUnSubscribedEvent correctly" in {
-            testDisplay(apiUnSubscribedEvent, EventTags.SUBSCRIPTION, "Api Unsubscribed", List(s"${context.value}", s"${version.value}"))
-        }
+      evt shouldBe a[ApiUnsubscribedEvent]
     }
-  
+
+    "convert to correctJson" in {
+
+      val eventJSonString = Json.toJson(apiUnSubscribedEvent).toString()
+      eventJSonString shouldBe jsonText
+    }
+
+    "display ApiUnSubscribedEvent correctly" in {
+      testDisplay(apiUnSubscribedEvent, EventTags.SUBSCRIPTION, "Api Unsubscribed", List(s"${context.value}", s"${version.value}"))
+    }
+  }
+
 }

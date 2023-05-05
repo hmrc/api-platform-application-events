@@ -16,39 +16,43 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-
 import play.api.libs.json.Json
+
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.Collaborator
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.CollaboratorAddedV2
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class CollaboratorAddedV2EventSpec extends EventSpec {
 
-    "CollaboratorAddedV2" should {
-        import EventsInterServiceCallJsonFormatters._
+  "CollaboratorAddedV2" should {
+    import EventsInterServiceCallJsonFormatters._
 
-        val collaboratorAddedV2: ApplicationEvent = CollaboratorAddedV2(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator)
+    val collaboratorAddedV2: ApplicationEvent = CollaboratorAddedV2(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator)
 
-        val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"collaborator":{"userId":"${developerCollaborator.userId.value.toString()}","emailAddress":"${developerCollaborator.emailAddress.text}","role":"DEVELOPER"},"eventType":"COLLABORATOR_ADDED"}"""
-        
-        "convert from json" in {
+    val jsonText =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"collaborator":{"userId":"${developerCollaborator.userId.value.toString()}","emailAddress":"${developerCollaborator.emailAddress.text}","role":"DEVELOPER"},"eventType":"COLLABORATOR_ADDED"}"""
 
-            val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json" in {
 
-            evt shouldBe a[CollaboratorAddedV2]
-        }
+      val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-        "convert to correctJson" in {
-
-            val eventJSonString = Json.toJson(collaboratorAddedV2).toString()
-            eventJSonString shouldBe jsonText
-        }
-
-        "display CollaboratorAddedV2 correctly" in {
-            testDisplay(collaboratorAddedV2, EventTags.TEAM_MEMBER, "Collaborator Added", List(s"${developerCollaborator.emailAddress.text} was added as a ${Collaborator.describeRole(developerCollaborator)}"))
-        }
+      evt shouldBe a[CollaboratorAddedV2]
     }
-  
+
+    "convert to correctJson" in {
+
+      val eventJSonString = Json.toJson(collaboratorAddedV2).toString()
+      eventJSonString shouldBe jsonText
+    }
+
+    "display CollaboratorAddedV2 correctly" in {
+      testDisplay(
+        collaboratorAddedV2,
+        EventTags.TEAM_MEMBER,
+        "Collaborator Added",
+        List(s"${developerCollaborator.emailAddress.text} was added as a ${Collaborator.describeRole(developerCollaborator)}")
+      )
+    }
+  }
+
 }

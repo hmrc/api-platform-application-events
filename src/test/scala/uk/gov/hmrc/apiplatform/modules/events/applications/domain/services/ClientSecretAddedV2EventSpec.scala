@@ -16,37 +16,36 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-
 import play.api.libs.json.Json
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.ClientSecretAddedV2
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class ClientSecretAddedV2EventSpec extends EventSpec {
 
-    "ClientSecretAddedV2" should {
-        import EventsInterServiceCallJsonFormatters._
+  "ClientSecretAddedV2" should {
+    import EventsInterServiceCallJsonFormatters._
 
-        val clientSecretAddedV2: ApplicationEvent = ClientSecretAddedV2(anEventId, anAppId, anInstant, appCollaborator, aClientSecretId, aClientSecretName)
+    val clientSecretAddedV2: ApplicationEvent = ClientSecretAddedV2(anEventId, anAppId, anInstant, appCollaborator, aClientSecretId, aClientSecretName)
 
-        val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_ADDED_V2"}"""
+    val jsonText =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_ADDED_V2"}"""
 
-        "convert from json" in {
-            val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json" in {
+      val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-            evt shouldBe a[ClientSecretAddedV2]
-        }
-
-        "convert to correctJson" in {
-
-            val eventJSonString = Json.toJson(clientSecretAddedV2).toString()
-            eventJSonString shouldBe jsonText
-        }
-
-        "display ClientSecretAddedV2 correctly" in {
-            testDisplay(clientSecretAddedV2, EventTags.CLIENT_SECRET, "Client Secret Added", List("Name: someClientSecretName"))
-        }
+      evt shouldBe a[ClientSecretAddedV2]
     }
-  
+
+    "convert to correctJson" in {
+
+      val eventJSonString = Json.toJson(clientSecretAddedV2).toString()
+      eventJSonString shouldBe jsonText
+    }
+
+    "display ClientSecretAddedV2 correctly" in {
+      testDisplay(clientSecretAddedV2, EventTags.CLIENT_SECRET, "Client Secret Added", List("Name: someClientSecretName"))
+    }
+  }
+
 }

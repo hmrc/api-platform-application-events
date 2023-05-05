@@ -16,21 +16,25 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.apiplatform.modules.common.utils.{JsonTestUtils, EventTestData}
-import org.scalatest.matchers.should.Matchers
 import org.scalatest.Inside
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
+import uk.gov.hmrc.apiplatform.modules.common.utils.{EventTestData, JsonTestUtils}
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.services.EventToDisplay
 
 abstract class EventSpec extends AnyWordSpec with Matchers with Inside with JsonTestUtils with EventTestData {
-  
-  def testDisplay(applicationEvent: ApplicationEvent, expectedEventTag: EventTag, expectedEventType: String, expectedTextItems: List[String]) ={
+
+  def testDisplay(applicationEvent: ApplicationEvent, expectedEventTag: EventTag, expectedEventType: String, expectedTextItems: List[String]) = {
     inside(EventToDisplay.display(applicationEvent)) {
-      case DisplayEvent(_, _, _, _, eventTag, eventType, meta) => eventType shouldBe expectedEventType
-        expectedTextItems.foreach(item => withClue(s"expected text $item not found in metaData for $eventType") {
-          meta.find(_.contains(item)) should not be empty
-          eventTag shouldBe expectedEventTag
-      })
+      case DisplayEvent(_, _, _, _, eventTag, eventType, meta) =>
+        eventType shouldBe expectedEventType
+        expectedTextItems.foreach(item =>
+          withClue(s"expected text $item not found in metaData for $eventType") {
+            meta.find(_.contains(item)) should not be empty
+            eventTag shouldBe expectedEventTag
+          }
+        )
     }
   }
 }

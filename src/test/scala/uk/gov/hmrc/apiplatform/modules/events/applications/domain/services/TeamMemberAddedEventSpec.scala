@@ -17,35 +17,43 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
+
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.Collaborator
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.{CollaboratorAddedV2, TeamMemberAddedEvent}
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.TeamMemberAddedEvent
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class TeamMemberAddedEventSpec extends EventSpec {
 
-    "TeamMemberAddedEvent" should {
-        import EventsInterServiceCallJsonFormatters._
+  "TeamMemberAddedEvent" should {
+    import EventsInterServiceCallJsonFormatters._
 
-        val teamMemberAddedEvent: ApplicationEvent = TeamMemberAddedEvent(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator.emailAddress, Collaborator.describeRole(developerCollaborator))
+    val teamMemberAddedEvent: ApplicationEvent =
+      TeamMemberAddedEvent(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator.emailAddress, Collaborator.describeRole(developerCollaborator))
 
-        val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"teamMemberEmail":"${developerCollaborator.emailAddress.text}","teamMemberRole":"DEVELOPER","eventType":"TEAM_MEMBER_ADDED"}"""
-        
-        "convert from json" in {
+    val jsonText =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"teamMemberEmail":"${developerCollaborator.emailAddress.text}","teamMemberRole":"DEVELOPER","eventType":"TEAM_MEMBER_ADDED"}"""
 
-            val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json" in {
 
-            evt shouldBe a[TeamMemberAddedEvent]
-        }
+      val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-        "convert to correctJson" in {
-
-            val eventJSonString = Json.toJson(teamMemberAddedEvent).toString()
-            eventJSonString shouldBe jsonText
-        }
-
-        "display TeamMemberAddedEvent correctly" in {
-            testDisplay(teamMemberAddedEvent, EventTags.TEAM_MEMBER, "Collaborator Added", List(s"${developerCollaborator.emailAddress.text} was added as a ${Collaborator.describeRole(developerCollaborator)}"))
-        }
+      evt shouldBe a[TeamMemberAddedEvent]
     }
-  
+
+    "convert to correctJson" in {
+
+      val eventJSonString = Json.toJson(teamMemberAddedEvent).toString()
+      eventJSonString shouldBe jsonText
+    }
+
+    "display TeamMemberAddedEvent correctly" in {
+      testDisplay(
+        teamMemberAddedEvent,
+        EventTags.TEAM_MEMBER,
+        "Collaborator Added",
+        List(s"${developerCollaborator.emailAddress.text} was added as a ${Collaborator.describeRole(developerCollaborator)}")
+      )
+    }
+  }
+
 }

@@ -23,10 +23,9 @@ import play.api.libs.json._
 
 trait JsonFormattersSpec extends AnyWordSpec with Matchers with JsonTestUtils {}
 
-
 trait JsonTestUtils {
   self: AnyWordSpec with Matchers =>
-    
+
   def testToJson[T](in: T)(fields: (String, String)*)(implicit wrt: Writes[T]) = {
     val f: Seq[(String, JsValue)] = fields.map { case (k, v) => (k -> JsString(v)) }
     Json.toJson(in) shouldBe JsObject(f)

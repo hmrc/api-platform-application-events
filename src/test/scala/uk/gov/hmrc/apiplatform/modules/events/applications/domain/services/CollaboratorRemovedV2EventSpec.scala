@@ -16,41 +16,43 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-
 import play.api.libs.json.Json
+
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.Collaborator
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventSpec
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventTags
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
 class CollaboratorRemovedV2EventSpec extends EventSpec {
 
-    "CollaboratorRemovedV2" should {
-        import EventsInterServiceCallJsonFormatters._
+  "CollaboratorRemovedV2" should {
+    import EventsInterServiceCallJsonFormatters._
 
-    
+    val collaboratorRemovedV2: ApplicationEvent = CollaboratorRemovedV2(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator)
 
-        val collaboratorRemovedV2: ApplicationEvent = CollaboratorRemovedV2(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator)
+    // val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_REMOVED_V2"}"""
+    val jsonText =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"collaborator":{"userId":"${developerCollaborator.userId.value.toString()}","emailAddress":"${developerCollaborator.emailAddress.text}","role":"DEVELOPER"},"eventType":"COLLABORATOR_REMOVED"}"""
+    "convert from json" in {
 
-        //val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_REMOVED_V2"}"""
-     val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"collaborator":{"userId":"${developerCollaborator.userId.value.toString()}","emailAddress":"${developerCollaborator.emailAddress.text}","role":"DEVELOPER"},"eventType":"COLLABORATOR_REMOVED"}"""
-        "convert from json" in {
+      val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-            val evt = Json.parse(jsonText).as[ApplicationEvent]
-
-            evt shouldBe a[CollaboratorRemovedV2]
-        }
-
-        "convert to correctJson" in {
-
-            val eventJSonString = Json.toJson(collaboratorRemovedV2).toString()
-            eventJSonString shouldBe jsonText
-        }
-
-        "display CollaboratorRemovedV2 correctly" in {
-            testDisplay(collaboratorRemovedV2, EventTags.TEAM_MEMBER, "Collaborator Removed", List(s"${developerCollaborator.emailAddress.text} was removed as a ${Collaborator.describeRole(developerCollaborator)}"))
-        }
+      evt shouldBe a[CollaboratorRemovedV2]
     }
-  
+
+    "convert to correctJson" in {
+
+      val eventJSonString = Json.toJson(collaboratorRemovedV2).toString()
+      eventJSonString shouldBe jsonText
+    }
+
+    "display CollaboratorRemovedV2 correctly" in {
+      testDisplay(
+        collaboratorRemovedV2,
+        EventTags.TEAM_MEMBER,
+        "Collaborator Removed",
+        List(s"${developerCollaborator.emailAddress.text} was removed as a ${Collaborator.describeRole(developerCollaborator)}")
+      )
+    }
+  }
+
 }

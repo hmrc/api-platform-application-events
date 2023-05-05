@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import java.time.Instant
+
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
 
 case class DisplayEvent(
-  id: EventId, 
-  applicationId: ApplicationId,
-  eventDateTime: Instant,
-  actor: Actor,
-  eventTag: EventTag,
-  eventType: String, 
-  metaData: List[String]
-)
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    eventTag: EventTag,
+    eventType: String,
+    metaData: List[String]
+  )

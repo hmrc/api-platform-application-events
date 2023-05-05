@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.Instant
+
 import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, RedirectUri, _}
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actor, Actors, LaxEmailAddress}
@@ -39,6 +40,7 @@ object ApplicationEvent {
 }
 
 object ApplicationEvents {
+
   case class RedirectUriAdded(
       id: EventId,
       applicationId: ApplicationId,
