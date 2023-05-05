@@ -20,13 +20,19 @@ import java.time.Instant
 
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actor
+import play.api.libs.json.Json
 
 case class DisplayEvent(
     id: EventId,
     applicationId: ApplicationId,
     eventDateTime: Instant,
     actor: Actor,
-    eventTag: EventTag,
+    eventTag: String,
     eventType: String,
     metaData: List[String]
   )
+
+  object DisplayEvent {
+    implicit val format = Json.format[DisplayEvent]
+  }
+  

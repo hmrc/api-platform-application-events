@@ -27,12 +27,12 @@ abstract class EventSpec extends AnyWordSpec with Matchers with Inside with Json
 
   def testDisplay(applicationEvent: ApplicationEvent, expectedEventTag: EventTag, expectedEventType: String, expectedTextItems: List[String]) = {
     inside(EventToDisplay.display(applicationEvent)) {
-      case DisplayEvent(_, _, _, _, eventTag, eventType, meta) =>
+      case DisplayEvent(_, _, _, _, eventTagDescription, eventType, meta) =>
         eventType shouldBe expectedEventType
         expectedTextItems.foreach(item =>
           withClue(s"expected text $item not found in metaData for $eventType") {
             meta.find(_.contains(item)) should not be empty
-            eventTag shouldBe expectedEventTag
+            eventTagDescription shouldBe expectedEventTag.description
           }
         )
     }

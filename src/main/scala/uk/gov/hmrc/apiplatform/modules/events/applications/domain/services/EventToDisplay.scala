@@ -265,6 +265,6 @@ object EventToDisplay {
       case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                            => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
       // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
     }
-    DisplayEvent(evt.id, evt.applicationId, evt.eventDateTime, evt.actor, EventTags.tag(evt), eventType, metaData)
+    DisplayEvent(evt.id, evt.applicationId, evt.eventDateTime, evt.actor, EventTags.tag(evt).description, eventType, metaData)
   }
 }
