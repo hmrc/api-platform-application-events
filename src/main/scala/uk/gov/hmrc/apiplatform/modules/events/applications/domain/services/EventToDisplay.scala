@@ -25,9 +25,9 @@ object EventToDisplay {
   def display(evt: ApplicationEvent): DisplayEvent = {
     val (eventType, metaData) = evt match {
       case ApiSubscribedEvent(_, _, _, _, context, version)                                                 => ("Api Subscribed", List(s"API ${context} v${version}"))
-      case ApiSubscribedV2(_, _, _, _, context, version)                                                    => ("Api Subscribed", List(s"API ${context} v${version}"))
+      case ApiSubscribedV2(_, _, _, _, context, version)                                                    => ("Api Subscribed", List(s"API ${context.value} v${version.value}"))
       case ApiUnsubscribedEvent(_, _, _, _, context, version)                                               => ("Api Unsubscribed", List(s"API ${context} v${version}"))
-      case ApiUnsubscribedV2(_, _, _, _, context, version)                                                  => ("Api Unsubscribed", List(s"API ${context} v${version}"))
+      case ApiUnsubscribedV2(_, _, _, _, context, version)                                                  => ("Api Unsubscribed", List(s"API ${context.value} v${version.value}"))
       case CollaboratorAddedV2(_, _, _, _,  collaborator)                                                   => ("Collaborator Added", List(s"${collaborator.emailAddress.text} was added as a ${Collaborator.describeRole(collaborator)}"))
       case CollaboratorRemovedV2(_, _, _, _, collaborator)                                                  => ("Collaborator Removed", List(s"${collaborator.emailAddress.text} was removed as a ${Collaborator.describeRole(collaborator)}"))
       case TeamMemberAddedEvent(_, _, _, _, teamMemberEmail, teamMemberRole)                                => ("Collaborator Added", List(s"${teamMemberEmail.text} was added as a $teamMemberRole"))
@@ -125,7 +125,7 @@ object EventToDisplay {
       case TermsOfUsePassed(_, _, _, _, submissionId, submissionIndex)                        => ("Terms of Use passed", List(s"Submission Id: ${submissionId.value} - ${submissionIndex}"))
       case ProductionCredentialsApplicationDeleted(_, _, _, _, _, _, reasons)                 => ("Application credentials deleted", List(s"Reason(s) given as $reasons"))
       case ApplicationDeleted(_, _, _, _, _, _, reasons)                                      => ("Application deleted", List(s"Reason(s) given as ${reasons}"))
-      case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminName)     => ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminName}"))
+      case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)    => ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
       case ProductionAppNameChangedEvent(_, _, _, _, oldName, newName, requestingAdminEmail)  => ("Name Changed", List(s"From: $oldName", s"To: $newName", s"Requested by ${requestingAdminEmail.text}"))
       case ProductionAppPrivacyPolicyLocationChanged(_, _, _, _, oldLocation, newLocation)    => ("Privacy Policy Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
       case ProductionLegacyAppPrivacyPolicyLocationChanged(_, _, _, _, oldUrl, newUrl)        => ("Privacy Policy Changed", List(s"From: $oldUrl", s"To: $newUrl"))
