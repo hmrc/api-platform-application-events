@@ -35,3 +35,4 @@ case class DisplayEvent(
   object DisplayEvent {
     implicit val format = Json.format[DisplayEvent]
   }
+  
