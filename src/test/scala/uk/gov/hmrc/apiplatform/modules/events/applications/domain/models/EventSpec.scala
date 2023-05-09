@@ -23,7 +23,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.apiplatform.modules.common.utils.{EventTestData, JsonTestUtils}
 
 abstract class EventSpec extends AnyWordSpec with Matchers with Inside with JsonTestUtils with EventTestData {
-  
+
   def testDisplay(applicationEvent: ApplicationEvent, expectedEventTag: EventTag, expectedEventType: String, expectedTextItems: List[String]) = {
     inside(ApplicationEvent.asMetaData(applicationEvent)) {
       case (eventType, meta) =>

@@ -39,6 +39,7 @@ object ApplicationEvent {
   }
 
   import ApplicationEvents._
+
   def asMetaData(evt: ApplicationEvent): (String, List[String]) = {
     val tuple = evt match {
       case ApiSubscribedEvent(_, _, _, _, context, version)                                                         => ("Api Subscribed", List(s"API ${context} v${version}"))
@@ -61,9 +62,12 @@ object ApplicationEvent {
         ("Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
       case RedirectUriAdded(_, _, _, _, newRedirectUri)                                                             => ("Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
       case RedirectUriDeleted(_, _, _, _, deletedRedirectUri)                                                       => ("Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
-      case RedirectUriChanged(_, _, _, _, oldRedirectUri, newRedirectUri)                                           => ("Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
-      case RedirectUrisUpdatedEvent(_, _, _, _, oldRedirectUris, newRedirectUris)                                   => ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
-      case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)                          => ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
+      case RedirectUriChanged(_, _, _, _, oldRedirectUri, newRedirectUri)                                           =>
+        ("Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
+      case RedirectUrisUpdatedEvent(_, _, _, _, oldRedirectUris, newRedirectUris)                                   =>
+        ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
+      case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)                          =>
+        ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
 
       // $COVERAGE-OFF$
       case ResponsibleIndividualChanged(
