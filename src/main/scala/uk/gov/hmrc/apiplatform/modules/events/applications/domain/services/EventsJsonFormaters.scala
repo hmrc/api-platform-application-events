@@ -187,7 +187,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
     .format
 }
-object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantFormatter.NoTimeZone.format)
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantFormatter.NoTimeZone.instantNoTimeZoneFormat)
 
 /*
  *  For mongo use the following
