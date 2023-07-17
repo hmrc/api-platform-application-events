@@ -68,7 +68,10 @@ object ApplicationEvent {
         ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
       case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)                          =>
         ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
-
+      case AllowApplicationAutoDelete(_, applicationId, _, actor)                                                   =>
+        ("Application auto delete allowed", List(s"Changed by: ${actor.user}", s"Application Id: ${applicationId.value}"))
+      case BlockApplicationAutoDelete(_, applicationId, _, actor)                                                   =>
+        ("Application auto delete blocked", List(s"Changed by: ${actor.user}", s"Application Id: ${applicationId.value}"))
       // $COVERAGE-OFF$
       case ResponsibleIndividualChanged(
             _,
@@ -613,6 +616,20 @@ object ApplicationEvents {
       clientId: ClientId,
       wso2ApplicationName: String,
       reasons: String
+    ) extends ApplicationEvent
+
+  case class AllowApplicationAutoDelete(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser
+    ) extends ApplicationEvent
+
+  case class BlockApplicationAutoDelete(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser
     ) extends ApplicationEvent
 
   // *** DEPRECATED EVENTS ***

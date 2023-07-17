@@ -86,7 +86,9 @@ object EventTags {
         _: TermsOfUsePassed |
         _: ProductionCredentialsApplicationDeleted => TERMS_OF_USE
     case _: ApplicationDeleted |
-        _: ApplicationDeletedByGatekeeper => APP_LIFECYCLE
+        _: ApplicationDeletedByGatekeeper |
+        _: AllowApplicationAutoDelete |
+        _: BlockApplicationAutoDelete => APP_LIFECYCLE
     case _: ProductionAppNameChangedEvent => APP_NAME
     case _: ProductionAppPrivacyPolicyLocationChanged |
         _: ProductionLegacyAppPrivacyPolicyLocationChanged => PRIVACY_POLICY
