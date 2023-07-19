@@ -79,6 +79,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val applicationDeletedFormats                      = Json.format[ApplicationDeleted]
   implicit val applicationDeletedByGatekeeperFormats          = Json.format[ApplicationDeletedByGatekeeper]
   implicit val productionCredentialsApplicationDeletedFormats = Json.format[ProductionCredentialsApplicationDeleted]
+  implicit val allowApplicationAutoDeleteFormats              = Json.format[AllowApplicationAutoDelete]
+  implicit val blockApplicationAutoDeleteFormats              = Json.format[BlockApplicationAutoDelete]
 
   implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
   implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdatedV2]
@@ -90,7 +92,6 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   private sealed trait EventType
 
   private object EventTypes {
-
     case object COLLABORATOR_ADDED   extends EventType
     case object COLLABORATOR_REMOVED extends EventType
 
@@ -125,6 +126,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object APPLICATION_DELETED                        extends EventType
     case object APPLICATION_DELETED_BY_GATEKEEPER          extends EventType
     case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED extends EventType
+    case object ALLOW_APPLICATION_AUTO_DELETE              extends EventType
+    case object BLOCK_APPLICATION_AUTO_DELETE              extends EventType
 
     case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED          extends EventType
     case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED        extends EventType
@@ -167,6 +170,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ApplicationDeleted](EventTypes.APPLICATION_DELETED.toString)
     .and[ApplicationDeletedByGatekeeper](EventTypes.APPLICATION_DELETED_BY_GATEKEEPER.toString)
     .and[ProductionCredentialsApplicationDeleted](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED.toString)
+    .and[AllowApplicationAutoDelete](EventTypes.ALLOW_APPLICATION_AUTO_DELETE.toString)
+    .and[BlockApplicationAutoDelete](EventTypes.BLOCK_APPLICATION_AUTO_DELETE.toString)
     .and[ApiSubscribedV2](EventTypes.API_SUBSCRIBED_V2.toString)
     .and[ApiUnsubscribedV2](EventTypes.API_UNSUBSCRIBED_V2.toString)
     .and[ClientSecretAddedV2](EventTypes.CLIENT_SECRET_ADDED_V2.toString)
