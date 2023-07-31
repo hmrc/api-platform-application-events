@@ -25,6 +25,8 @@ object EventTags {
   case object APP_NAME             extends EventTag("Application name")
   case object PPNS_CALLBACK        extends EventTag("Callback URL")
   case object CLIENT_SECRET        extends EventTag("Client secret")
+
+  case object GRANT_LENGTH        extends EventTag("Grant Length")
   case object PRIVACY_POLICY       extends EventTag("Privacy Policy URL")
   case object TEAM_MEMBER          extends EventTag("Team member")
   case object TERMS_AND_CONDITIONS extends EventTag("Terms and Conditions URL")
@@ -67,6 +69,7 @@ object EventTags {
         _: ClientSecretRemovedV2 |
         _: ClientSecretAddedEvent |
         _: ClientSecretRemovedEvent => CLIENT_SECRET
+    case _: GrantLengthChanged => GRANT_LENGTH
     case _: PpnsCallBackUriUpdatedEvent   => PPNS_CALLBACK
     case _: RedirectUrisUpdatedV2 |
         _: RedirectUriAdded |

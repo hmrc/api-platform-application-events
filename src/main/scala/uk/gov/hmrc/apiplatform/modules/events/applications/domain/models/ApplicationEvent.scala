@@ -56,6 +56,7 @@ object ApplicationEvent {
       case ClientSecretRemovedV2(_, _, _, _, clientSecretId, clientSecretName)                                      => ("Client Secret Removed", List(s"Name: $clientSecretName"))
       case ClientSecretAddedEvent(_, _, _, _, clientSecretId)                                                       => ("Client Secret Added", List(s"Id: $clientSecretId"))
       case ClientSecretRemovedEvent(_, _, _, _, clientSecretId)                                                     => ("Client Secret Removed", List(s"Id: $clientSecretId"))
+      case GrantLengthChanged(_, _, _, _, oldGrantLengthInDays, newGrantLengthInDays)                               => ("Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
       case PpnsCallBackUriUpdatedEvent(_, _, _, _, boxId, boxName, oldCallbackUrl, newCallbackUrl)                  =>
         ("Ppns CallBackUri Updated", List(s"boxName: ${boxName}", s"oldCallBackUrl: ${oldCallbackUrl}", s"newCallBackUrl: ${newCallbackUrl}"))
       case RedirectUrisUpdatedV2(_, _, _, _, oldRedirectUris: List[String], newRedirectUris: List[String])          =>
@@ -295,6 +296,15 @@ object ApplicationEvent {
 }
 
 object ApplicationEvents {
+
+  case class GrantLengthChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      oldGrantLengthInDays: Int,
+      newGrantLengthInDays: Int
+    ) extends ApplicationEvent
 
   case class RedirectUriAdded(
       id: EventId,
