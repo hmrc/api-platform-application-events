@@ -17,13 +17,11 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import java.time.Instant
-
 import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.play.json.Union
-
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvents, _}
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
@@ -49,6 +47,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   implicit val apiSubscribedEventFormats   = Json.format[ApiSubscribedEvent]
   implicit val apiUnsubscribedEventFormats = Json.format[ApiUnsubscribedEvent]
+
+  implicit val grantLengthChangedFormats = Json.format[GrantLengthChanged]
 
   implicit val productionAppNameChangedEventFormats             = Json.format[ProductionAppNameChangedEvent]
   implicit val productionAppPrivacyPolicyLocationChangedFormats = Json.format[ProductionAppPrivacyPolicyLocationChanged]
@@ -109,7 +109,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
     case object API_SUBSCRIBED   extends EventType
     case object API_UNSUBSCRIBED extends EventType
-
+    case object GRANT_LENGTH_CHANGED extends EventType
     case object RESPONSIBLE_INDIVIDUAL_SET                        extends EventType
     case object RESPONSIBLE_INDIVIDUAL_CHANGED                    extends EventType
     case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF            extends EventType
@@ -178,6 +178,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ClientSecretRemovedV2](EventTypes.CLIENT_SECRET_REMOVED_V2.toString)
     .and[CollaboratorAddedV2](EventTypes.COLLABORATOR_ADDED.toString)
     .and[CollaboratorRemovedV2](EventTypes.COLLABORATOR_REMOVED.toString)
+    .and[GrantLengthChanged](EventTypes.GRANT_LENGTH_CHANGED.toString)
     .and[RedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
     .and[RedirectUrisUpdatedV2](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
     .and[RedirectUriAdded](EventTypes.REDIRECT_URI_ADDED.toString)
