@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.GrantLengthChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
@@ -46,7 +47,12 @@ class GrantLengthChangedSpec extends EventSpec {
     }
 
     "display GrantLengthChanged correctly" in {
-      testDisplay(event, EventTags.GRANT_LENGTH, "Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
+      testDisplay(
+        event,
+        EventTags.GRANT_LENGTH,
+        "Grant Length Changed",
+        List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days")
+      )
     }
   }
 

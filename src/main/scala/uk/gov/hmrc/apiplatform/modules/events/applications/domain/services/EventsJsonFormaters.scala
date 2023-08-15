@@ -17,11 +17,13 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import java.time.Instant
+
 import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.play.json.Union
+
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvents, _}
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
@@ -89,6 +91,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val redirectUriDeletedFormats          = Json.format[RedirectUriDeleted]
   implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
+  implicit val rateLimitChangedEvent = Json.format[RateLimitChanged]
+
   private sealed trait EventType
 
   private object EventTypes {
@@ -107,9 +111,9 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object API_SUBSCRIBED_V2   extends EventType
     case object API_UNSUBSCRIBED_V2 extends EventType
 
-    case object API_SUBSCRIBED   extends EventType
-    case object API_UNSUBSCRIBED extends EventType
-    case object GRANT_LENGTH_CHANGED extends EventType
+    case object API_SUBSCRIBED                                    extends EventType
+    case object API_UNSUBSCRIBED                                  extends EventType
+    case object GRANT_LENGTH_CHANGED                              extends EventType
     case object RESPONSIBLE_INDIVIDUAL_SET                        extends EventType
     case object RESPONSIBLE_INDIVIDUAL_CHANGED                    extends EventType
     case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF            extends EventType
@@ -142,6 +146,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object REDIRECT_URI_DELETED     extends EventType
 
     case object PPNS_CALLBACK_URI_UPDATED extends EventType
+
+    case object RATE_LIMIT_CHANGED extends EventType
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
   }
@@ -191,6 +197,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ClientSecretRemovedEvent](EventTypes.CLIENT_SECRET_REMOVED.toString)
     .and[TeamMemberAddedEvent](EventTypes.TEAM_MEMBER_ADDED.toString)
     .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
+    .and[RateLimitChanged](EventTypes.RATE_LIMIT_CHANGED.toString)
     .format
 }
 object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantFormatter.NoTimeZone.instantNoTimeZoneFormat)
