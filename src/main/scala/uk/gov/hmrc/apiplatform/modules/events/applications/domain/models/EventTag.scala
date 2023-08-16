@@ -25,16 +25,16 @@ object EventTags {
   case object APP_NAME             extends EventTag("Application name")
   case object PPNS_CALLBACK        extends EventTag("Callback URL")
   case object CLIENT_SECRET        extends EventTag("Client secret")
-
-  case object GRANT_LENGTH        extends EventTag("Grant Length")
+  case object GRANT_LENGTH         extends EventTag("Grant Length")
   case object PRIVACY_POLICY       extends EventTag("Privacy Policy URL")
   case object TEAM_MEMBER          extends EventTag("Team member")
   case object TERMS_AND_CONDITIONS extends EventTag("Terms and Conditions URL")
   case object REDIRECT_URIS        extends EventTag("Redirect URL")
   case object TERMS_OF_USE         extends EventTag("Terms of Use")
   case object APP_LIFECYCLE        extends EventTag("Application lifecycle")
+  case object RATE_LIMIT           extends EventTag("Rate Limit")
 
-  val ALL = Set(SUBSCRIPTION, APP_NAME, PPNS_CALLBACK, CLIENT_SECRET, PRIVACY_POLICY, TERMS_AND_CONDITIONS, TEAM_MEMBER, REDIRECT_URIS, TERMS_OF_USE, APP_LIFECYCLE)
+  val ALL = Set(SUBSCRIPTION, APP_NAME, PPNS_CALLBACK, CLIENT_SECRET, PRIVACY_POLICY, TERMS_AND_CONDITIONS, TEAM_MEMBER, REDIRECT_URIS, TERMS_OF_USE, APP_LIFECYCLE, RATE_LIMIT)
 
   /*
    * Used for display purposes
@@ -69,7 +69,7 @@ object EventTags {
         _: ClientSecretRemovedV2 |
         _: ClientSecretAddedEvent |
         _: ClientSecretRemovedEvent => CLIENT_SECRET
-    case _: GrantLengthChanged => GRANT_LENGTH
+    case _: GrantLengthChanged            => GRANT_LENGTH
     case _: PpnsCallBackUriUpdatedEvent   => PPNS_CALLBACK
     case _: RedirectUrisUpdatedV2 |
         _: RedirectUriAdded |
@@ -97,6 +97,7 @@ object EventTags {
         _: ProductionLegacyAppPrivacyPolicyLocationChanged => PRIVACY_POLICY
     case _: ProductionAppTermsConditionsLocationChanged |
         _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
+    case _: RateLimitChanged              => RATE_LIMIT
   }
   // scalastyle:on cyclomatic.complexity
 }

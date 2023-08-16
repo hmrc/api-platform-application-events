@@ -56,7 +56,8 @@ object ApplicationEvent {
       case ClientSecretRemovedV2(_, _, _, _, clientSecretId, clientSecretName)                                      => ("Client Secret Removed", List(s"Name: $clientSecretName"))
       case ClientSecretAddedEvent(_, _, _, _, clientSecretId)                                                       => ("Client Secret Added", List(s"Id: $clientSecretId"))
       case ClientSecretRemovedEvent(_, _, _, _, clientSecretId)                                                     => ("Client Secret Removed", List(s"Id: $clientSecretId"))
-      case GrantLengthChanged(_, _, _, _, oldGrantLengthInDays, newGrantLengthInDays)                               => ("Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
+      case GrantLengthChanged(_, _, _, _, oldGrantLengthInDays, newGrantLengthInDays)                               =>
+        ("Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
       case PpnsCallBackUriUpdatedEvent(_, _, _, _, boxId, boxName, oldCallbackUrl, newCallbackUrl)                  =>
         ("Ppns CallBackUri Updated", List(s"boxName: ${boxName}", s"oldCallBackUrl: ${oldCallbackUrl}", s"newCallBackUrl: ${newCallbackUrl}"))
       case RedirectUrisUpdatedV2(_, _, _, _, oldRedirectUris: List[String], newRedirectUris: List[String])          =>
@@ -287,6 +288,7 @@ object ApplicationEvent {
       case ProductionAppTermsConditionsLocationChanged(_, _, _, _, oldLocation, newLocation)                        =>
         ("T&Cs Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
       case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                            => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
+      case RateLimitChanged(_, _, _, _, oldRateLimit, newRateLimit)                                                 => ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
       // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
       // $COVERAGE-ON$
     }
@@ -296,7 +298,6 @@ object ApplicationEvent {
 }
 
 object ApplicationEvents {
-
   case class GrantLengthChanged(
       id: EventId,
       applicationId: ApplicationId,
@@ -640,6 +641,15 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actors.GatekeeperUser
+    ) extends ApplicationEvent
+
+  case class RateLimitChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      oldRateLimit: RateLimitTier,
+      newRateLimit: RateLimitTier
     ) extends ApplicationEvent
 
   // *** DEPRECATED EVENTS ***
