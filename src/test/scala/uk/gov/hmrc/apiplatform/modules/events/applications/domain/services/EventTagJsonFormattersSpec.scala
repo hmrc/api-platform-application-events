@@ -30,11 +30,17 @@ class EventTagJsonFormattersSpec extends JsonFormattersSpec {
     "given an APP_NAME" should {
       "produce json" in {
         val tag: EventTag = EventTags.APP_NAME
-        Json.toJson(tag) shouldBe JsString("APP_NAME")
+        testToJson[EventTag](tag)("description" -> "Application name", "type" -> "APP_NAME")
       }
 
       "read json" in {
         testFromJson[EventTag](""""APP_NAME"""")(EventTags.APP_NAME)
+      }
+
+      "read complex json" in {
+        testFromJson[EventTag](
+          """{"type":"APP_NAME", "description": "Application name"}"""
+        )(EventTags.APP_NAME)
       }
 
       "fail to read invalid text json" in {

@@ -24,11 +24,15 @@ trait EventTagJsonFormatters {
 
   implicit val formatEventTag2: Format[EventTag] = new Format[EventTag] {
 
-    override def writes(o: EventTag): JsValue = JsString(o.toString())
+    override def writes(o: EventTag): JsValue = Json.obj("description" -> o.description, "type" -> o.toString)
 
     override def reads(json: JsValue): JsResult[EventTag] = {
       (json match {
         case JsString(text) => EventTags.fromString(text)
+        case JsObject(obj)  => obj.get("type").flatMap(_ match {
+            case JsString(t) => EventTags.fromString(t)
+            case _           => None
+          })
         case _              => None
       })
         .fold[JsResult[EventTag]](JsError(s"Cannot find event tag from $json"))(JsSuccess(_))
