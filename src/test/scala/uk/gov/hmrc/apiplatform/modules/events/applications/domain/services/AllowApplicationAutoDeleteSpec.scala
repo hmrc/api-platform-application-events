@@ -23,32 +23,68 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{Applic
 
 class AllowApplicationAutoDeleteSpec extends EventSpec {
 
+  val defaultReasons = "No reason given"
+
   "AllowApplicationAutoDelete" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val allowApplicationAutoDelete: ApplicationEvent = ApplicationEvents.AllowApplicationAutoDelete(anEventId, anAppId, anInstant, gkCollaborator)
+    val allowApplicationAutoDelete: ApplicationEvent = ApplicationEvents.AllowApplicationAutoDelete(anEventId, anAppId, anInstant, gkCollaborator, reasons)
+    val allowApplicationAutoDeleteWithDefaultReason  = ApplicationEvents.AllowApplicationAutoDelete(anEventId, anAppId, anInstant, gkCollaborator, defaultReasons)
 
-    val jsonText =
+    val jsonTextWithReasons    =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"reasons":"Some reasons here","eventType":"ALLOW_APPLICATION_AUTO_DELETE"}""".stripMargin
+    val jsonTextWithoutReasons =
       raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"eventType":"ALLOW_APPLICATION_AUTO_DELETE"}""".stripMargin
 
-    "convert from json" in {
-      val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json without reasons gives event with default reasons" in {
+      val evt = Json.parse(jsonTextWithoutReasons).as[ApplicationEvent]
 
-      evt shouldBe a[AllowApplicationAutoDelete]
+      evt match {
+        case (e: AllowApplicationAutoDelete) => {
+          e.reasons shouldBe defaultReasons
+          e.applicationId shouldBe anAppId
+          e.actor shouldBe gkCollaborator
+          e.id shouldBe anEventId
+        }
+        case _                               => fail()
+      }
     }
 
-    "convert to correctJson" in {
+    "convert from json with reasons gives event with reasons" in {
+      val evt = Json.parse(jsonTextWithReasons).as[ApplicationEvent]
+
+      evt match {
+        case (e: AllowApplicationAutoDelete) => {
+          e.reasons shouldBe reasons
+          e.applicationId shouldBe anAppId
+          e.actor shouldBe gkCollaborator
+          e.id shouldBe anEventId
+        }
+        case _                               => fail()
+      }
+    }
+
+    "convert to json with reasons" in {
 
       val eventJSonString = Json.toJson(allowApplicationAutoDelete).toString()
-      eventJSonString shouldBe jsonText
+      eventJSonString shouldBe jsonTextWithReasons
     }
 
-    "display AllowApplicationAutoDelete correctly" in {
+    "display AllowApplicationAutoDelete with reasons correctly" in {
       testDisplay(
         allowApplicationAutoDelete,
         EventTags.APP_LIFECYCLE,
         "Application auto delete allowed",
-        List(s"Changed by: ${gkCollaborator.user}", s"Application Id: ${anAppId.value}")
+        List(s"Reason(s) given as: ${reasons}")
+      )
+    }
+
+    "display AllowApplicationAutoDelete with default reasons correctly" in {
+      testDisplay(
+        allowApplicationAutoDeleteWithDefaultReason,
+        EventTags.APP_LIFECYCLE,
+        "Application auto delete allowed",
+        List(s"Reason(s) given as: $defaultReasons")
       )
     }
   }

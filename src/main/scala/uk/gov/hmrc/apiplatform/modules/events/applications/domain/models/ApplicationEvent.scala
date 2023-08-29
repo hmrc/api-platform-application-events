@@ -70,10 +70,10 @@ object ApplicationEvent {
         ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
       case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)                          =>
         ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
-      case AllowApplicationAutoDelete(_, applicationId, _, actor)                                                   =>
-        ("Application auto delete allowed", List(s"Changed by: ${actor.user}", s"Application Id: ${applicationId.value}"))
-      case BlockApplicationAutoDelete(_, applicationId, _, actor)                                                   =>
-        ("Application auto delete blocked", List(s"Changed by: ${actor.user}", s"Application Id: ${applicationId.value}"))
+      case AllowApplicationAutoDelete(_, _, _, _, reasons)                                                          =>
+        ("Application auto delete allowed", List(s"Reason(s) given as: ${reasons}"))
+      case BlockApplicationAutoDelete(_, _, _, _, reasons)                                                          =>
+        ("Application auto delete blocked", List(s"Reason(s) given as: ${reasons}"))
       // $COVERAGE-OFF$
       case ResponsibleIndividualChanged(
             _,
@@ -298,6 +298,7 @@ object ApplicationEvent {
 }
 
 object ApplicationEvents {
+
   case class GrantLengthChanged(
       id: EventId,
       applicationId: ApplicationId,
@@ -633,14 +634,16 @@ object ApplicationEvents {
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,
-      actor: Actors.GatekeeperUser
+      actor: Actors.GatekeeperUser,
+      reasons: String
     ) extends ApplicationEvent
 
   case class BlockApplicationAutoDelete(
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,
-      actor: Actors.GatekeeperUser
+      actor: Actors.GatekeeperUser,
+      reasons: String
     ) extends ApplicationEvent
 
   case class RateLimitChanged(

@@ -23,32 +23,69 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{Applic
 
 class BlockApplicationAutoDeleteSpec extends EventSpec {
 
+  val defaultReasons = "No reason given"
+
   "BlockApplicationAutoDelete" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val blockApplicationAutoDelete: ApplicationEvent = ApplicationEvents.BlockApplicationAutoDelete(anEventId, anAppId, anInstant, gkCollaborator)
+    val blockApplicationAutoDeleteWithReasons: ApplicationEvent        = ApplicationEvents.BlockApplicationAutoDelete(anEventId, anAppId, anInstant, gkCollaborator, reasons)
+    val blockApplicationAutoDeleteWithDefaultReasons: ApplicationEvent = ApplicationEvents.BlockApplicationAutoDelete(anEventId, anAppId, anInstant, gkCollaborator, defaultReasons)
 
-    val jsonText =
+    val jsonTextWithReasons =
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"reasons":"Some reasons here","eventType":"BLOCK_APPLICATION_AUTO_DELETE"}""".stripMargin
+
+    val jsonTextWithoutReasons =
       raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"eventType":"BLOCK_APPLICATION_AUTO_DELETE"}""".stripMargin
 
-    "convert from json" in {
-      val evt = Json.parse(jsonText).as[ApplicationEvent]
+    "convert from json without reasons gives event with default reasons" in {
+      val evt = Json.parse(jsonTextWithoutReasons).as[ApplicationEvent]
 
-      evt shouldBe a[BlockApplicationAutoDelete]
+      evt match {
+        case (e: BlockApplicationAutoDelete) => {
+          e.reasons shouldBe defaultReasons
+          e.applicationId shouldBe anAppId
+          e.actor shouldBe gkCollaborator
+          e.id shouldBe anEventId
+        }
+        case _                               => fail()
+      }
     }
 
-    "convert to correctJson" in {
+    "convert from json with reasons gives event with reasons" in {
+      val evt = Json.parse(jsonTextWithReasons).as[ApplicationEvent]
 
-      val eventJSonString = Json.toJson(blockApplicationAutoDelete).toString()
-      eventJSonString shouldBe jsonText
+      evt match {
+        case (e: BlockApplicationAutoDelete) => {
+          e.reasons shouldBe reasons
+          e.applicationId shouldBe anAppId
+          e.actor shouldBe gkCollaborator
+          e.id shouldBe anEventId
+        }
+        case _                               => fail()
+      }
     }
 
-    "display BlockApplicationAutoDelete correctly" in {
+    "convert to json with reasons" in {
+
+      val eventJSonString = Json.toJson(blockApplicationAutoDeleteWithReasons).toString()
+      eventJSonString shouldBe jsonTextWithReasons
+    }
+
+    "display BlockApplicationAutoDelete with reasons correctly" in {
       testDisplay(
-        blockApplicationAutoDelete,
+        blockApplicationAutoDeleteWithReasons,
         EventTags.APP_LIFECYCLE,
         "Application auto delete blocked",
-        List(s"Changed by: ${gkCollaborator.user}", s"Application Id: ${anAppId.value}")
+        List(s"Reason(s) given as: ${reasons}")
+      )
+    }
+
+    "display BlockApplicationAutoDelete with default reasons correctly" in {
+      testDisplay(
+        blockApplicationAutoDeleteWithDefaultReasons,
+        EventTags.APP_LIFECYCLE,
+        "Application auto delete blocked",
+        List(s"Reason(s) given as: ${defaultReasons}")
       )
     }
   }
