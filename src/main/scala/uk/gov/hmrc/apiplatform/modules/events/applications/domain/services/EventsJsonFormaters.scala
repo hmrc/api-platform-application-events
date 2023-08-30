@@ -18,9 +18,12 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import java.time.Instant
 
-import play.api.libs.json.{Format, Json, OFormat}
+import play.api.libs.functional.syntax.{toAlternativeOps, toFunctionalBuilderOps}
+import play.api.libs.json.{Format, JsPath, Json, OFormat, Reads}
 import uk.gov.hmrc.play.json.Union
 
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
@@ -81,8 +84,6 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val applicationDeletedFormats                      = Json.format[ApplicationDeleted]
   implicit val applicationDeletedByGatekeeperFormats          = Json.format[ApplicationDeletedByGatekeeper]
   implicit val productionCredentialsApplicationDeletedFormats = Json.format[ProductionCredentialsApplicationDeleted]
-  implicit val allowApplicationAutoDeleteFormats              = Json.format[AllowApplicationAutoDelete]
-  implicit val blockApplicationAutoDeleteFormats              = Json.format[BlockApplicationAutoDelete]
 
   implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
   implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdatedV2]
@@ -92,6 +93,30 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
 
   implicit val rateLimitChangedEvent = Json.format[RateLimitChanged]
+
+  implicit val allowApplicationAutoDeleteReads: Reads[AllowApplicationAutoDelete] = (
+    (JsPath \ "id").read[EventId] and
+      (JsPath \ "applicationId").read[ApplicationId] and
+      (JsPath \ "eventDateTime").read[Instant] and
+      (JsPath \ "actor").read[Actors.GatekeeperUser] and
+      ((JsPath \ "reasons").read[String] or Reads.pure("No reason given"))
+  )(AllowApplicationAutoDelete.apply _)
+
+  implicit val allowApplicationAutoDeleteFormats = {
+    OFormat(allowApplicationAutoDeleteReads, Json.writes[AllowApplicationAutoDelete])
+  }
+
+  implicit val blockApplicationAutoDeleteReads: Reads[BlockApplicationAutoDelete] = (
+    (JsPath \ "id").read[EventId] and
+      (JsPath \ "applicationId").read[ApplicationId] and
+      (JsPath \ "eventDateTime").read[Instant] and
+      (JsPath \ "actor").read[Actors.GatekeeperUser] and
+      ((JsPath \ "reasons").read[String] or Reads.pure("No reason given"))
+  )(BlockApplicationAutoDelete.apply _)
+
+  implicit val blockApplicationAutoDeleteFormats = {
+    OFormat(blockApplicationAutoDeleteReads, Json.writes[BlockApplicationAutoDelete])
+  }
 
   private sealed trait EventType
 
