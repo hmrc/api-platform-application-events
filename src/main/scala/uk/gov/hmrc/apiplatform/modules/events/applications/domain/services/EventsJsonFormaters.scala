@@ -118,9 +118,9 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     OFormat(blockApplicationAutoDeleteReads, Json.writes[BlockApplicationAutoDelete])
   }
 
-  private sealed trait EventType
+  sealed trait EventType
 
-  private object EventTypes {
+  object EventTypes {
     case object COLLABORATOR_ADDED   extends EventType
     case object COLLABORATOR_REMOVED extends EventType
 
