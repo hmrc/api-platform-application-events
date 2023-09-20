@@ -22,11 +22,10 @@ import play.api.libs.functional.syntax.{toAlternativeOps, toFunctionalBuilderOps
 import play.api.libs.json.{Format, JsPath, Json, OFormat, Reads}
 import uk.gov.hmrc.play.json.Union
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantFormatter
+import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.common.services.InstantJsonFormatter
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
@@ -225,7 +224,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[RateLimitChanged](EventTypes.RATE_LIMIT_CHANGED.toString)
     .format
 }
-object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantFormatter.NoTimeZone.instantNoTimeZoneFormat)
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantJsonFormatter.NoTimeZone.instantNoTimeZoneFormat)
 
 /*
  *  For mongo use the following
