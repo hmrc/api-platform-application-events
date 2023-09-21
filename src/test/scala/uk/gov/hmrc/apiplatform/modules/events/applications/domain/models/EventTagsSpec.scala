@@ -22,7 +22,7 @@ import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.{ApplicationId, Actors, LaxEmailAddress}
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, ApplicationId, LaxEmailAddress}
 
 class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
 

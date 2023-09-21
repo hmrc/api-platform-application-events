@@ -18,8 +18,8 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.Instant
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{RedirectUri, _}
+import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
 
 sealed trait ApplicationEvent {
