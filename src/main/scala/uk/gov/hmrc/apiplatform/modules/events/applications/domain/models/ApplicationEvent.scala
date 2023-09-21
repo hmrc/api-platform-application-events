@@ -18,9 +18,8 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.Instant
 
-import uk.gov.hmrc.apiplatform.modules.apis.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{ApplicationId, RedirectUri, _}
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actor, Actors, LaxEmailAddress}
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{RedirectUri, _}
+import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
 
 sealed trait ApplicationEvent {
@@ -439,7 +438,7 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       context: ApiContext,
-      version: ApiVersion
+      version: ApiVersionNbr
     ) extends ApplicationEvent
 
   case class ApiUnsubscribedV2(
@@ -448,7 +447,7 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       context: ApiContext,
-      version: ApiVersion
+      version: ApiVersionNbr
     ) extends ApplicationEvent
 
   case class ResponsibleIndividualChanged(

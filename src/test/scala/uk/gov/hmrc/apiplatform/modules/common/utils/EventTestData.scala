@@ -19,11 +19,9 @@ package uk.gov.hmrc.apiplatform.modules.common.utils
 import java.time.{Instant, LocalDateTime, ZoneOffset}
 import java.util.UUID
 
-import uk.gov.hmrc.apiplatform.modules.apis.domain.models.{ApiContext, ApiVersion}
 import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.Actors
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress.StringSyntax
-import uk.gov.hmrc.apiplatform.modules.developers.domain.models.UserId
+import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventId
 
 trait EventTestData {
@@ -35,7 +33,7 @@ trait EventTestData {
   val instantText        = "2020-01-02T03:04:05.006"
 
   val context = ApiContext.random
-  val version = ApiVersion.random
+  val version = ApiVersionNbr.random
 
   val reasons = "Some reasons here"
 

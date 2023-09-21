@@ -21,8 +21,6 @@ import java.time.{Instant, LocalDateTime, ZoneOffset}
 
 import play.api.libs.json.{JsString, Json}
 
-import uk.gov.hmrc.apiplatform.modules.apis.domain.models.{ApiContext, ApiVersion}
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.ApplicationId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.common.utils.{FixedClock, JsonFormattersSpec}
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
@@ -186,7 +184,7 @@ class EventsJsonFormattersSpec extends JsonFormattersSpec {
       import LaxEmailAddress.StringSyntax
 
       val e: ApplicationEvent =
-        ApiSubscribedV2(EventId.random, ApplicationId.random, FixedClock.instant, Actors.AppCollaborator("bob".toLaxEmail), ApiContext("bob"), ApiVersion("1.0"))
+        ApiSubscribedV2(EventId.random, ApplicationId.random, FixedClock.instant, Actors.AppCollaborator("bob".toLaxEmail), ApiContext("bob"), ApiVersionNbr("1.0"))
 
       Json.toJson[Actor](e.actor).toString
       val txt                 = Json.toJson(e).toString
