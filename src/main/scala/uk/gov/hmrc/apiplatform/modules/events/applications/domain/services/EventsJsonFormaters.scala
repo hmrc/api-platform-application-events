@@ -93,6 +93,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   implicit val rateLimitChangedEvent = Json.format[RateLimitChanged]
 
+  implicit val ipAllowlistCIDRBlockChangedEvent = Json.format[IPAllowlistCIDRBlockChanged]
+
   implicit val allowApplicationAutoDeleteReads: Reads[AllowApplicationAutoDelete] = (
     (JsPath \ "id").read[EventId] and
       (JsPath \ "applicationId").read[ApplicationId] and
@@ -172,6 +174,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object PPNS_CALLBACK_URI_UPDATED extends EventType
 
     case object RATE_LIMIT_CHANGED extends EventType
+
+    case object IP_ALLOWLIST_CIDR_BLOCK_CHANGED extends EventType
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
   }
@@ -222,6 +226,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[TeamMemberAddedEvent](EventTypes.TEAM_MEMBER_ADDED.toString)
     .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
     .and[RateLimitChanged](EventTypes.RATE_LIMIT_CHANGED.toString)
+    .and[IPAllowlistCIDRBlockChanged](EventTypes.IP_ALLOWLIST_CIDR_BLOCK_CHANGED.toString)
     .format
 }
 object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantJsonFormatter.NoTimeZone.instantNoTimeZoneFormat)

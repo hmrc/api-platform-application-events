@@ -288,6 +288,7 @@ object ApplicationEvent {
         ("T&Cs Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
       case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                            => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
       case RateLimitChanged(_, _, _, _, oldRateLimit, newRateLimit)                                                 => ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
+      case IPAllowlistCIDRBlockChanged(_, _, _, _, oldIPAllowList, newIPAllowList)                                  => ("IP Allowlist Changed", List(s"From: $oldIPAllowList", s"To: $newIPAllowList"))
       // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
       // $COVERAGE-ON$
     }
@@ -653,6 +654,15 @@ object ApplicationEvents {
       oldRateLimit: RateLimitTier,
       newRateLimit: RateLimitTier
     ) extends ApplicationEvent
+
+  case class IPAllowlistCIDRBlockChanged(
+    id: EventId,
+    applicationId: ApplicationId,
+    eventDateTime: Instant,
+    actor: Actor,
+    oldIPAllowlist: List[String],
+    newIPAllowlist: List[String]
+  ) extends ApplicationEvent
 
   // *** DEPRECATED EVENTS ***
 
