@@ -33,6 +33,7 @@ object EventTags {
   case object TERMS_OF_USE         extends EventTag("Terms of Use")
   case object APP_LIFECYCLE        extends EventTag("Application lifecycle")
   case object RATE_LIMIT           extends EventTag("Rate Limit")
+  case object IP_ALLOWLIST         extends EventTag("IP Allowlist")
 
   val ALL = Set(
     SUBSCRIPTION,
@@ -46,7 +47,8 @@ object EventTags {
     REDIRECT_URIS,
     TERMS_OF_USE,
     APP_LIFECYCLE,
-    RATE_LIMIT
+    RATE_LIMIT,
+    IP_ALLOWLIST
   )
 
   /*
@@ -111,6 +113,7 @@ object EventTags {
     case _: ProductionAppTermsConditionsLocationChanged |
         _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
     case _: RateLimitChanged              => RATE_LIMIT
+    case _: IpAllowlistCidrBlockChanged => IP_ALLOWLIST
   }
   // scalastyle:on cyclomatic.complexity
 }
