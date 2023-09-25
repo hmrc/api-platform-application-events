@@ -18,27 +18,28 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.IPAllowlistCIDRBlockChanged
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.IpAllowlistCidrBlockChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec}
+import uk.gov.hmrc.apiplatform.modules.applications.domain.models.CidrBlock
 
 class IPAllowlistCIDRBlockChangedSpec extends EventSpec {
-  val oldIPAllowList = List("1.2.3.4/0")
-  val oldIPAllowListAsStringArray = oldIPAllowList.mkString("\"", "\",\"", "\"")
-  val newIPAllowList = List("1.2.3.4/0","5.6.7.8/0")
-  val newIPAllowListAsStringArray = newIPAllowList.mkString("\"", "\",\"", "\"")
+  val oldIpAllowList = List(CidrBlock("1.2.3.4/0"))
+  val oldIpAllowListAsStringArray = oldIpAllowList.mkString("\"", "\",\"", "\"")
+  val newIpAllowList = List(CidrBlock("1.2.3.4/0"),CidrBlock("5.6.7.8/0"))
+  val newIpAllowListAsStringArray = newIpAllowList.mkString("\"", "\",\"", "\"")
 
   "IPAllowlistCIDRBlockChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = IPAllowlistCIDRBlockChanged(anEventId, anAppId, anInstant, appCollaborator, oldIPAllowList, newIPAllowList)
+    val event: ApplicationEvent = IpAllowlistCidrBlockChanged(anEventId, anAppId, anInstant, appCollaborator, oldIpAllowList, newIpAllowList)
 
     val json =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldIPAllowlist":[${oldIPAllowListAsStringArray}],"newIPAllowlist":[${newIPAllowListAsStringArray}],"eventType":"IP_ALLOWLIST_CIDR_BLOCK_CHANGED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldIpAllowlist":[${oldIpAllowListAsStringArray}],"newIpAllowlist":[${newIpAllowListAsStringArray}],"eventType":"IP_ALLOWLIST_CIDR_BLOCK_CHANGED"}"""
 
     "convert from json" in {
-      val result = Json.parse(json).as[IPAllowlistCIDRBlockChanged]
+      val result = Json.parse(json).as[IpAllowlistCidrBlockChanged]
 
-      result shouldBe a[IPAllowlistCIDRBlockChanged]
+      result shouldBe a[IpAllowlistCidrBlockChanged]
     }
 
     "convert to correctJson" in {
