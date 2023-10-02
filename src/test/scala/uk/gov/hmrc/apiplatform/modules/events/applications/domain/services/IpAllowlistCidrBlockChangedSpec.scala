@@ -31,10 +31,10 @@ class IPAllowlistCIDRBlockChangedSpec extends EventSpec {
   "IPAllowlistCIDRBlockChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = IpAllowlistCidrBlockChanged(anEventId, anAppId, anInstant, appCollaborator, oldIpAllowList, newIpAllowList)
+    val event: ApplicationEvent = IpAllowlistCidrBlockChanged(anEventId, anAppId, anInstant, appCollaborator, true, oldIpAllowList, newIpAllowList)
 
     val json =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldIpAllowlist":[${oldIpAllowListAsStringArray}],"newIpAllowlist":[${newIpAllowListAsStringArray}],"eventType":"IP_ALLOWLIST_CIDR_BLOCK_CHANGED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"required":true,"oldIpAllowlist":[${oldIpAllowListAsStringArray}],"newIpAllowlist":[${newIpAllowListAsStringArray}],"eventType":"IP_ALLOWLIST_CIDR_BLOCK_CHANGED"}"""
 
     "convert from json" in {
       val result = Json.parse(json).as[IpAllowlistCidrBlockChanged]

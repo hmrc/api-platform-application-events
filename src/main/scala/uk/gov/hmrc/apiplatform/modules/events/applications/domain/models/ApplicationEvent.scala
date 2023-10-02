@@ -293,11 +293,13 @@ object ApplicationEvent {
         _,
         _,
         _,
+        required,
         oldIpAllowList,
         newIpAllowList
       ) => (
         "IP Allowlist Changed",
         List(
+          s"Required: $required",
           s"From: ${if(oldIpAllowList.isEmpty) "None" else oldIpAllowList.mkString(",")}",
           s"To: ${if(newIpAllowList.isEmpty) "None" else newIpAllowList.mkString(",")}"
         )
@@ -673,6 +675,7 @@ object ApplicationEvents {
     applicationId: ApplicationId,
     eventDateTime: Instant,
     actor: Actor,
+    required: Boolean,
     oldIpAllowlist: List[CidrBlock],
     newIpAllowlist: List[CidrBlock]
   ) extends ApplicationEvent
