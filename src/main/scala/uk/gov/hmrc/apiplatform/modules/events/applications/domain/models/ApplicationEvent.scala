@@ -288,7 +288,20 @@ object ApplicationEvent {
         ("T&Cs Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
       case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                            => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
       case RateLimitChanged(_, _, _, _, oldRateLimit, newRateLimit)                                                 => ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
-      case IpAllowlistCidrBlockChanged(_, _, _, _, oldIpAllowList, newIpAllowList)                                  => ("IP Allowlist Changed", List(s"From: $oldIpAllowList", s"To: $newIpAllowList"))
+      case IpAllowlistCidrBlockChanged(
+        _,
+        _,
+        _,
+        _,
+        oldIpAllowList,
+        newIpAllowList
+      ) => (
+        "IP Allowlist Changed",
+        List(
+          s"From: ${if(oldIpAllowList.isEmpty) "None" else oldIpAllowList.mkString(",")}",
+          s"To: ${if(newIpAllowList.isEmpty) "None" else newIpAllowList.mkString(",")}"
+        )
+      )
       // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
       // $COVERAGE-ON$
     }
