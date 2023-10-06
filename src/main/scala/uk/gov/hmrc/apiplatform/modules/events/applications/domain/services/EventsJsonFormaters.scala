@@ -23,7 +23,7 @@ import play.api.libs.json.{Format, JsPath, Json, OFormat, Reads}
 import uk.gov.hmrc.play.json.Union
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
-import uk.gov.hmrc.apiplatform.modules.common.services.InstantJsonFormatter
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantJsonFormatter
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 

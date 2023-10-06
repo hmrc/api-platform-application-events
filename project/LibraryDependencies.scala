@@ -4,7 +4,7 @@ object LibraryDependencies {
   def apply() = compileDependencies ++ testDependencies
 
   lazy val compileDependencies = Seq(
-    "uk.gov.hmrc"       %% "api-platform-application-domain" % "0.19.0"
+    "uk.gov.hmrc"       %% "api-platform-application-domain" % "0.21.0"
   )
 
   lazy val testDependencies = Seq(
