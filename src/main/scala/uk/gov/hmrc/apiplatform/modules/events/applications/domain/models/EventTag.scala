@@ -113,7 +113,7 @@ object EventTags {
     case _: ProductionAppTermsConditionsLocationChanged |
         _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
     case _: RateLimitChanged              => RATE_LIMIT
-    case _: IpAllowlistCidrBlockChanged => IP_ALLOWLIST
+    case _: IpAllowlistCidrBlockChanged   => IP_ALLOWLIST
   }
   // scalastyle:on cyclomatic.complexity
 }

@@ -18,14 +18,14 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.CidrBlock
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.IpAllowlistCidrBlockChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec}
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.CidrBlock
 
 class IPAllowlistCIDRBlockChangedSpec extends EventSpec {
-  val oldIpAllowList = List(CidrBlock("1.2.3.4/0"))
+  val oldIpAllowList              = List(CidrBlock("1.2.3.4/0"))
   val oldIpAllowListAsStringArray = oldIpAllowList.mkString("\"", "\",\"", "\"")
-  val newIpAllowList = List(CidrBlock("1.2.3.4/0"),CidrBlock("5.6.7.8/0"))
+  val newIpAllowList              = List(CidrBlock("1.2.3.4/0"), CidrBlock("5.6.7.8/0"))
   val newIpAllowListAsStringArray = newIpAllowList.mkString("\"", "\",\"", "\"")
 
   "IPAllowlistCIDRBlockChanged" should {

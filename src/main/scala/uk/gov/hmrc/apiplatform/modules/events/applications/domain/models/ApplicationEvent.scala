@@ -18,9 +18,9 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.Instant
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.{RedirectUri, _}
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.{SubmissionId, _}
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
-import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
 
 sealed trait ApplicationEvent {
   def id: EventId
@@ -289,21 +289,21 @@ object ApplicationEvent {
       case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                            => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
       case RateLimitChanged(_, _, _, _, oldRateLimit, newRateLimit)                                                 => ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
       case IpAllowlistCidrBlockChanged(
-        _,
-        _,
-        _,
-        _,
-        required,
-        oldIpAllowList,
-        newIpAllowList
-      ) => (
-        "IP Allowlist Changed",
-        List(
-          s"Required: $required",
-          s"From: ${if(oldIpAllowList.isEmpty) "None" else oldIpAllowList.mkString(",")}",
-          s"To: ${if(newIpAllowList.isEmpty) "None" else newIpAllowList.mkString(",")}"
+            _,
+            _,
+            _,
+            _,
+            required,
+            oldIpAllowList,
+            newIpAllowList
+          ) => (
+          "IP Allowlist Changed",
+          List(
+            s"Required: $required",
+            s"From: ${if (oldIpAllowList.isEmpty) "None" else oldIpAllowList.mkString(",")}",
+            s"To: ${if (newIpAllowList.isEmpty) "None" else newIpAllowList.mkString(",")}"
+          )
         )
-      )
       // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
       // $COVERAGE-ON$
     }
@@ -671,14 +671,14 @@ object ApplicationEvents {
     ) extends ApplicationEvent
 
   case class IpAllowlistCidrBlockChanged(
-    id: EventId,
-    applicationId: ApplicationId,
-    eventDateTime: Instant,
-    actor: Actor,
-    required: Boolean,
-    oldIpAllowlist: List[CidrBlock],
-    newIpAllowlist: List[CidrBlock]
-  ) extends ApplicationEvent
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      required: Boolean,
+      oldIpAllowlist: List[CidrBlock],
+      newIpAllowlist: List[CidrBlock]
+    ) extends ApplicationEvent
 
   // *** DEPRECATED EVENTS ***
 
