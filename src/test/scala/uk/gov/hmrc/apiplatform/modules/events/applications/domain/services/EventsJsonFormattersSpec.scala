@@ -21,10 +21,10 @@ import java.time.{Instant, LocalDateTime, ZoneOffset}
 
 import play.api.libs.json.{JsString, Json}
 
+import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.SubmissionId
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.common.utils.{FixedClock, JsonFormattersSpec}
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
-import uk.gov.hmrc.apiplatform.modules.submissions.domain.models.SubmissionId
 
 class EventsJsonFormattersSpec extends JsonFormattersSpec {
   val eventId            = EventId.random

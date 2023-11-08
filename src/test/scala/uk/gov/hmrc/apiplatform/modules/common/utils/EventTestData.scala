@@ -19,7 +19,7 @@ package uk.gov.hmrc.apiplatform.modules.common.utils
 import java.time.{Instant, LocalDateTime, ZoneOffset}
 import java.util.UUID
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{Collaborators, RedirectUri}
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress.StringSyntax
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventId

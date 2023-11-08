@@ -22,7 +22,7 @@ import java.time.temporal.ChronoUnit
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-import uk.gov.hmrc.apiplatform.modules.applications.domain.models.Collaborators
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.Collaborators
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 
 class AppliationEventSpec extends AnyWordSpec with Matchers {
