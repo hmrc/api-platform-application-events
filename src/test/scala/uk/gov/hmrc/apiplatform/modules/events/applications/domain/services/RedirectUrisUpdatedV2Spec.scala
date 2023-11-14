@@ -26,7 +26,7 @@ class RedirectUrisUpdatedV2Spec extends EventSpec {
   "RedirectUrisUpdatedV2" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = RedirectUrisUpdatedV2(anEventId, anAppId, anInstant, appCollaborator, List(toChangeRedirectUri.uri), List(aRedirectUri.uri))
+    val event: ApplicationEvent = RedirectUrisUpdatedV2(anEventId, anAppId, anInstant, appCollaborator, List(toChangeRedirectUri), List(aRedirectUri))
 
     val jsonText =
       raw"""{"id":"${anEventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldRedirectUris":["${toChangeRedirectUri.uri}"],"newRedirectUris":["${aRedirectUri.uri}"],"eventType":"REDIRECT_URIS_UPDATED_V2"}"""
