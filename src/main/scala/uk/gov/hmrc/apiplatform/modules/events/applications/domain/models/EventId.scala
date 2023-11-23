@@ -18,11 +18,13 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.util.UUID
 
+import play.api.libs.json.Format
+
 final case class EventId(value: UUID) extends AnyVal
 
 object EventId {
   def random: EventId = EventId(UUID.randomUUID())
 
   import play.api.libs.json.Json
-  implicit val eventIdJf = Json.valueFormat[EventId]
+  implicit val eventIdJf: Format[EventId] = Json.valueFormat[EventId]
 }
