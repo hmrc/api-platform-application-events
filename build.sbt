@@ -6,17 +6,12 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 import bloop.integrations.sbt.BloopDefaults
 
 val appName = "api-platform-application-events"
-lazy val scala213 = "2.13.8"
+lazy val scala213 = "2.13.12"
 
-ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.6.0"
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
-inThisBuild(
-  List(
-    scalaVersion := scala213,
-    semanticdbEnabled := true,
-    semanticdbVersion := scalafixSemanticdb.revision
-  )
-)
+ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 
 lazy val library = Project(appName, file("."))
   .settings(

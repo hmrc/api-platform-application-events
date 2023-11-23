@@ -29,71 +29,71 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
-  private implicit val fmt = instantFormatter
+  private implicit val fmt: Format[Instant] = instantFormatter
 
   // scalastyle:off number.of.types
   // scalastyle:off number.of.methods
 
-  implicit val collaboratorAddedFormats   = Json.format[CollaboratorAddedV2]
-  implicit val collaboratorRemovedFormats = Json.format[CollaboratorRemovedV2]
+  implicit val collaboratorAddedFormats: OFormat[CollaboratorAddedV2]     = Json.format[CollaboratorAddedV2]
+  implicit val collaboratorRemovedFormats: OFormat[CollaboratorRemovedV2] = Json.format[CollaboratorRemovedV2]
 
-  implicit val teamMemberAddedEventFormats   = Json.format[TeamMemberAddedEvent]
-  implicit val teamMemberRemovedEventFormats = Json.format[TeamMemberRemovedEvent]
+  implicit val teamMemberAddedEventFormats: OFormat[TeamMemberAddedEvent]     = Json.format[TeamMemberAddedEvent]
+  implicit val teamMemberRemovedEventFormats: OFormat[TeamMemberRemovedEvent] = Json.format[TeamMemberRemovedEvent]
 
-  implicit val clientSecretAddedFormats   = Json.format[ClientSecretAddedV2]
-  implicit val clientSecretRemovedFormats = Json.format[ClientSecretRemovedV2]
+  implicit val clientSecretAddedFormats: OFormat[ClientSecretAddedV2]     = Json.format[ClientSecretAddedV2]
+  implicit val clientSecretRemovedFormats: OFormat[ClientSecretRemovedV2] = Json.format[ClientSecretRemovedV2]
 
-  implicit val clientSecretAddedEventFormats   = Json.format[ClientSecretAddedEvent]
-  implicit val clientSecretRemovedEventFormats = Json.format[ClientSecretRemovedEvent]
+  implicit val clientSecretAddedEventFormats: OFormat[ClientSecretAddedEvent]     = Json.format[ClientSecretAddedEvent]
+  implicit val clientSecretRemovedEventFormats: OFormat[ClientSecretRemovedEvent] = Json.format[ClientSecretRemovedEvent]
 
-  implicit val apiSubscribedFormats   = Json.format[ApiSubscribedV2]
-  implicit val apiUnsubscribedFormats = Json.format[ApiUnsubscribedV2]
+  implicit val apiSubscribedFormats: OFormat[ApiSubscribedV2]     = Json.format[ApiSubscribedV2]
+  implicit val apiUnsubscribedFormats: OFormat[ApiUnsubscribedV2] = Json.format[ApiUnsubscribedV2]
 
-  implicit val apiSubscribedEventFormats   = Json.format[ApiSubscribedEvent]
-  implicit val apiUnsubscribedEventFormats = Json.format[ApiUnsubscribedEvent]
+  implicit val apiSubscribedEventFormats: OFormat[ApiSubscribedEvent]     = Json.format[ApiSubscribedEvent]
+  implicit val apiUnsubscribedEventFormats: OFormat[ApiUnsubscribedEvent] = Json.format[ApiUnsubscribedEvent]
 
-  implicit val grantLengthChangedFormats = Json.format[GrantLengthChanged]
+  implicit val grantLengthChangedFormats: OFormat[GrantLengthChanged] = Json.format[GrantLengthChanged]
 
-  implicit val productionAppNameChangedEventFormats             = Json.format[ProductionAppNameChangedEvent]
-  implicit val productionAppPrivacyPolicyLocationChangedFormats = Json.format[ProductionAppPrivacyPolicyLocationChanged]
+  implicit val productionAppNameChangedEventFormats: OFormat[ProductionAppNameChangedEvent]                         = Json.format[ProductionAppNameChangedEvent]
+  implicit val productionAppPrivacyPolicyLocationChangedFormats: OFormat[ProductionAppPrivacyPolicyLocationChanged] = Json.format[ProductionAppPrivacyPolicyLocationChanged]
 
-  implicit val productionLegacyAppPrivacyPolicyLocationChangedFormats =
+  implicit val productionLegacyAppPrivacyPolicyLocationChangedFormats: OFormat[ProductionLegacyAppPrivacyPolicyLocationChanged] =
     Json.format[ProductionLegacyAppPrivacyPolicyLocationChanged]
 
-  implicit val productionAppTermsConditionsLocationChangedFormats =
+  implicit val productionAppTermsConditionsLocationChangedFormats: OFormat[ProductionAppTermsConditionsLocationChanged] =
     Json.format[ProductionAppTermsConditionsLocationChanged]
 
-  implicit val productionLegacyAppTermsConditionsLocationChangedFormats =
+  implicit val productionLegacyAppTermsConditionsLocationChangedFormats: OFormat[ProductionLegacyAppTermsConditionsLocationChanged] =
     Json.format[ProductionLegacyAppTermsConditionsLocationChanged]
-  implicit val responsibleIndividualSetFormats                          = Json.format[ResponsibleIndividualSet]
+  implicit val responsibleIndividualSetFormats: OFormat[ResponsibleIndividualSet]                                                   = Json.format[ResponsibleIndividualSet]
 
-  implicit val responsibleIndividualChangedFormats       = Json.format[ResponsibleIndividualChanged]
-  implicit val responsibleIndividualChangedToSelfFormats = Json.format[ResponsibleIndividualChangedToSelf]
-  implicit val applicationStateChangedFormats            = Json.format[ApplicationStateChanged]
+  implicit val responsibleIndividualChangedFormats: OFormat[ResponsibleIndividualChanged]             = Json.format[ResponsibleIndividualChanged]
+  implicit val responsibleIndividualChangedToSelfFormats: OFormat[ResponsibleIndividualChangedToSelf] = Json.format[ResponsibleIndividualChangedToSelf]
+  implicit val applicationStateChangedFormats: OFormat[ApplicationStateChanged]                       = Json.format[ApplicationStateChanged]
 
-  implicit val responsibleIndividualVerificationStartedFormats    = Json.format[ResponsibleIndividualVerificationStarted]
-  implicit val responsibleIndividualDeclinedFormats               = Json.format[ResponsibleIndividualDeclined]
-  implicit val responsibleIndividualDeclinedUpdateFormats         = Json.format[ResponsibleIndividualDeclinedUpdate]
-  implicit val responsibleIndividualDidNotVerifyFormats           = Json.format[ResponsibleIndividualDidNotVerify]
-  implicit val responsibleIndividualDeclinedOrDidNotVerifyFormats = Json.format[ResponsibleIndividualDeclinedOrDidNotVerify]
+  implicit val responsibleIndividualVerificationStartedFormats: OFormat[ResponsibleIndividualVerificationStarted]       = Json.format[ResponsibleIndividualVerificationStarted]
+  implicit val responsibleIndividualDeclinedFormats: OFormat[ResponsibleIndividualDeclined]                             = Json.format[ResponsibleIndividualDeclined]
+  implicit val responsibleIndividualDeclinedUpdateFormats: OFormat[ResponsibleIndividualDeclinedUpdate]                 = Json.format[ResponsibleIndividualDeclinedUpdate]
+  implicit val responsibleIndividualDidNotVerifyFormats: OFormat[ResponsibleIndividualDidNotVerify]                     = Json.format[ResponsibleIndividualDidNotVerify]
+  implicit val responsibleIndividualDeclinedOrDidNotVerifyFormats: OFormat[ResponsibleIndividualDeclinedOrDidNotVerify] = Json.format[ResponsibleIndividualDeclinedOrDidNotVerify]
 
-  implicit val applicationApprovalRequestDeclinedFormats = Json.format[ApplicationApprovalRequestDeclined]
-  implicit val termsOfUsePassedFormats                   = Json.format[TermsOfUsePassed]
+  implicit val applicationApprovalRequestDeclinedFormats: OFormat[ApplicationApprovalRequestDeclined] = Json.format[ApplicationApprovalRequestDeclined]
+  implicit val termsOfUsePassedFormats: OFormat[TermsOfUsePassed]                                     = Json.format[TermsOfUsePassed]
 
-  implicit val applicationDeletedFormats                      = Json.format[ApplicationDeleted]
-  implicit val applicationDeletedByGatekeeperFormats          = Json.format[ApplicationDeletedByGatekeeper]
-  implicit val productionCredentialsApplicationDeletedFormats = Json.format[ProductionCredentialsApplicationDeleted]
+  implicit val applicationDeletedFormats: OFormat[ApplicationDeleted]                                           = Json.format[ApplicationDeleted]
+  implicit val applicationDeletedByGatekeeperFormats: OFormat[ApplicationDeletedByGatekeeper]                   = Json.format[ApplicationDeletedByGatekeeper]
+  implicit val productionCredentialsApplicationDeletedFormats: OFormat[ProductionCredentialsApplicationDeleted] = Json.format[ProductionCredentialsApplicationDeleted]
 
-  implicit val redirectUrisUpdatedEventFormats    = Json.format[RedirectUrisUpdatedEvent]
-  implicit val redirectUrisUpdatedFormats         = Json.format[RedirectUrisUpdatedV2]
-  implicit val redirectUriAddedFormats            = Json.format[RedirectUriAdded]
-  implicit val redirectUriChangedFormats          = Json.format[RedirectUriChanged]
-  implicit val redirectUriDeletedFormats          = Json.format[RedirectUriDeleted]
-  implicit val ppnsCallBackUriUpdatedEventFormats = Json.format[PpnsCallBackUriUpdatedEvent]
+  implicit val redirectUrisUpdatedEventFormats: OFormat[RedirectUrisUpdatedEvent]       = Json.format[RedirectUrisUpdatedEvent]
+  implicit val redirectUrisUpdatedFormats: OFormat[RedirectUrisUpdatedV2]               = Json.format[RedirectUrisUpdatedV2]
+  implicit val redirectUriAddedFormats: OFormat[RedirectUriAdded]                       = Json.format[RedirectUriAdded]
+  implicit val redirectUriChangedFormats: OFormat[RedirectUriChanged]                   = Json.format[RedirectUriChanged]
+  implicit val redirectUriDeletedFormats: OFormat[RedirectUriDeleted]                   = Json.format[RedirectUriDeleted]
+  implicit val ppnsCallBackUriUpdatedEventFormats: OFormat[PpnsCallBackUriUpdatedEvent] = Json.format[PpnsCallBackUriUpdatedEvent]
 
-  implicit val rateLimitChangedEvent = Json.format[RateLimitChanged]
+  implicit val rateLimitChangedEvent: OFormat[RateLimitChanged] = Json.format[RateLimitChanged]
 
-  implicit val ipAllowlistCidrBlockChangedEvent = Json.format[IpAllowlistCidrBlockChanged]
+  implicit val ipAllowlistCidrBlockChangedEvent: OFormat[IpAllowlistCidrBlockChanged] = Json.format[IpAllowlistCidrBlockChanged]
 
   implicit val allowApplicationAutoDeleteReads: Reads[AllowApplicationAutoDelete] = (
     (JsPath \ "id").read[EventId] and
@@ -103,7 +103,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
       ((JsPath \ "reasons").read[String] or Reads.pure("No reason given"))
   )(AllowApplicationAutoDelete.apply _)
 
-  implicit val allowApplicationAutoDeleteFormats = {
+  implicit val allowApplicationAutoDeleteFormats: OFormat[AllowApplicationAutoDelete] = {
     OFormat(allowApplicationAutoDeleteReads, Json.writes[AllowApplicationAutoDelete])
   }
 
@@ -115,7 +115,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
       ((JsPath \ "reasons").read[String] or Reads.pure("No reason given"))
   )(BlockApplicationAutoDelete.apply _)
 
-  implicit val blockApplicationAutoDeleteFormats = {
+  implicit val blockApplicationAutoDeleteFormats: OFormat[BlockApplicationAutoDelete] = {
     OFormat(blockApplicationAutoDeleteReads, Json.writes[BlockApplicationAutoDelete])
   }
 
