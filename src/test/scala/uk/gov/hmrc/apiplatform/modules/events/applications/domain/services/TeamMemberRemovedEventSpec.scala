@@ -17,8 +17,8 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
-
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.Collaborator
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.TeamMemberRemovedEvent
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 

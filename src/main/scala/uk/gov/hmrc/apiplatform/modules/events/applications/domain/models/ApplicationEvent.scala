@@ -18,9 +18,9 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import java.time.Instant
 
+import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.{SubmissionId, _}
-import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 
 sealed trait ApplicationEvent {
   def id: EventId
