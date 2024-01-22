@@ -17,11 +17,11 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.{JsError, Json}
-import uk.gov.hmrc.apiplatform.modules.common.utils.JsonFormattersSpec
+import uk.gov.hmrc.apiplatform.modules.common.utils.BaseJsonFormattersSpec
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{EventTag, EventTags}
 
-class EventTagJsonFormattersSpec extends JsonFormattersSpec {
+class EventTagJsonFormattersSpec extends BaseJsonFormattersSpec {
 
   "EventTagJsonFormatters" when {
 
