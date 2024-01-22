@@ -18,11 +18,10 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import org.scalatest.Inside
 import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
 
-import uk.gov.hmrc.apiplatform.modules.common.utils.{EventTestData, JsonTestUtils}
+import uk.gov.hmrc.apiplatform.modules.common.utils.{BaseJsonFormattersSpec, EventTestData, HmrcSpec}
 
-abstract class EventSpec extends AnyWordSpec with Matchers with Inside with JsonTestUtils with EventTestData {
+abstract class EventSpec extends HmrcSpec with Matchers with Inside with BaseJsonFormattersSpec with EventTestData {
 
   def testDisplay(applicationEvent: ApplicationEvent, expectedEventTag: EventTag, expectedEventType: String, expectedTextItems: List[String]) = {
     inside(ApplicationEvent.asMetaData(applicationEvent)) {
