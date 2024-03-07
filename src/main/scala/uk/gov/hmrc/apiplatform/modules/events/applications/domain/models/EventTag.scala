@@ -107,13 +107,20 @@ object EventTags {
         _: ApplicationDeletedByGatekeeper |
         _: AllowApplicationAutoDelete |
         _: BlockApplicationAutoDelete => APP_LIFECYCLE
-    case _: ProductionAppNameChangedEvent => APP_NAME
     case _: ProductionAppPrivacyPolicyLocationChanged |
+        _: SandboxApplicationPrivacyPolicyUrlChanged |
+        _: SandboxApplicationPrivacyPolicyUrlRemoved |
         _: ProductionLegacyAppPrivacyPolicyLocationChanged => PRIVACY_POLICY
     case _: ProductionAppTermsConditionsLocationChanged |
+        _: SandboxApplicationTermsAndConditionsUrlChanged |
+        _: SandboxApplicationTermsAndConditionsUrlRemoved |
         _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
-    case _: RateLimitChanged              => RATE_LIMIT
-    case _: IpAllowlistCidrBlockChanged   => IP_ALLOWLIST
+    case _: RateLimitChanged                     => RATE_LIMIT
+    case _: IpAllowlistCidrBlockChanged          => IP_ALLOWLIST
+    case _: ProductionAppNameChangedEvent |
+        _: SandboxApplicationNameChanged |
+        _: SandboxApplicationDescriptionChanged |
+        _: SandboxApplicationDescriptionCleared => APP_NAME
   }
   // scalastyle:on cyclomatic.complexity
 }

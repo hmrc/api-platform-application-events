@@ -304,6 +304,13 @@ object ApplicationEvent {
             s"To: ${if (newIpAllowList.isEmpty) "None" else newIpAllowList.mkString(",")}"
           )
         )
+      case SandboxApplicationNameChanged(id, applicationId, eventDateTime, actor, oldName, newName) => ("Application Name Changed", List(s"From: $oldName", s"To: $newName"))
+      case SandboxApplicationDescriptionChanged(id, applicationId, eventDateTime, actor, oldValue, newValue) => ("Application Description Changed", List(s"From: $oldValue", s"To: $newValue"))
+      case SandboxApplicationPrivacyPolicyUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue) => ("Application Privacy Policy Url Changed", List(s"From: $oldValue", s"To: $newValue"))
+      case SandboxApplicationDescriptionCleared(_, _, _, _, _) => ???
+      case SandboxApplicationPrivacyPolicyUrlRemoved(_, _, _, _, _) => ???
+      case SandboxApplicationTermsAndConditionsUrlChanged(_, _, _, _, _, _) => ???
+      case SandboxApplicationTermsAndConditionsUrlRemoved(_, _, _, _, _) => ???
       // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
       // $COVERAGE-ON$
     }
@@ -757,5 +764,31 @@ object ApplicationEvents {
       version: String
     ) extends ApplicationEvent
 
+
+  case class SandboxApplicationNameChanged(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldName: String, newName: String)
+      extends ApplicationEvent
+
+  case class SandboxApplicationDescriptionChanged(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldDescription: String, description: String)
+      extends ApplicationEvent
+
+  case class SandboxApplicationPrivacyPolicyUrlChanged(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldPrivacyPolicyUrl: String, privacyPolicyUrl: String)
+      extends ApplicationEvent
+
+  case class SandboxApplicationTermsAndConditionsUrlChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      oldTermsAndConditionsUrl: String,
+      termsAndConditionsUrl: String
+    ) extends ApplicationEvent
+
+  case class SandboxApplicationDescriptionCleared(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldDescription: String) extends ApplicationEvent
+
+  case class SandboxApplicationPrivacyPolicyUrlRemoved(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldPrivacyPolicyUrl: String) extends ApplicationEvent
+
+  case class SandboxApplicationTermsAndConditionsUrlRemoved(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldTermsAndConditionsUrl: String)
+      extends ApplicationEvent
+      
   // scalastyle:on number.of.types
 }
