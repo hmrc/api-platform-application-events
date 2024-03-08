@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationDescriptionChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
@@ -27,7 +28,7 @@ class SandboxApplicationDescriptionChangedSpec extends EventSpec {
 
     val oldDescription = "Adrians App"
     val newDescription = "Bobs App"
-    
+
     val event: ApplicationEvent =
       SandboxApplicationDescriptionChanged(anEventId, anAppId, anInstant, appCollaborator, oldDescription, newDescription)
 

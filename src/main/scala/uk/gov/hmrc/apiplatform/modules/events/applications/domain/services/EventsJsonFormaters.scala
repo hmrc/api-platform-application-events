@@ -205,13 +205,13 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
     case object IP_ALLOWLIST_CIDR_BLOCK_CHANGED extends EventType
 
-    case object SANDBOX_APPLICATION_NAME_CHANGED                 extends EventType
-    case object SANDBOX_APPLICATION_DESCRIPTION_CHANGED          extends EventType
-    case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED   extends EventType
-    case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_CHANGED extends EventType
-    case object SANDBOX_APPLICATION_DESCRIPTION_CLEARED          extends EventType
-    case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED   extends EventType
-    case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_REMOVED extends EventType
+    case object SANDBOX_APPLICATION_NAME_CHANGED                     extends EventType
+    case object SANDBOX_APPLICATION_DESCRIPTION_CHANGED              extends EventType
+    case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED       extends EventType
+    case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_CHANGED extends EventType
+    case object SANDBOX_APPLICATION_DESCRIPTION_CLEARED              extends EventType
+    case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED       extends EventType
+    case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED extends EventType
 
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
@@ -267,10 +267,10 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[SandboxApplicationNameChanged](EventTypes.SANDBOX_APPLICATION_NAME_CHANGED.toString)
     .and[SandboxApplicationDescriptionChanged](EventTypes.SANDBOX_APPLICATION_DESCRIPTION_CHANGED.toString)
     .and[SandboxApplicationPrivacyPolicyUrlChanged](EventTypes.SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED.toString)
-    .and[SandboxApplicationTermsAndConditionsUrlChanged](EventTypes.SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_CHANGED.toString)
+    .and[SandboxApplicationTermsAndConditionsUrlChanged](EventTypes.SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_CHANGED.toString)
     .and[SandboxApplicationDescriptionCleared](EventTypes.SANDBOX_APPLICATION_DESCRIPTION_CLEARED.toString)
     .and[SandboxApplicationPrivacyPolicyUrlRemoved](EventTypes.SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED.toString)
-    .and[SandboxApplicationTermsAndConditionsUrlRemoved](EventTypes.SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_REMOVED.toString)
+    .and[SandboxApplicationTermsAndConditionsUrlRemoved](EventTypes.SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED.toString)
     .format
 }
 

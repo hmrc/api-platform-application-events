@@ -18,28 +18,27 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationNameChanged
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationPrivacyPolicyUrlRemoved
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class SandboxApplicationNameChangedSpec extends EventSpec {
+class SandboxApplicationPrivacyPolicyUrlRemovedSpec extends EventSpec {
 
-  "SandboxApplicationNameChangedEvent" should {
+  "SandboxApplicationPrivacyPolicyUrlRemoved" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val oldName = "Adrians App"
-    val newName = "Bobs App"
+    val oldPrivacyPolicyUrl = "http://someplace.com/old"
 
     val event: ApplicationEvent =
-      SandboxApplicationNameChanged(anEventId, anAppId, anInstant, appCollaborator, oldName, newName)
+      SandboxApplicationPrivacyPolicyUrlRemoved(anEventId, anAppId, anInstant, appCollaborator, oldPrivacyPolicyUrl)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldName":"${oldName}","newName":"${newName}","eventType":"SANDBOX_APPLICATION_NAME_CHANGED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldPrivacyPolicyUrl":"${oldPrivacyPolicyUrl}","eventType":"SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED"}"""
 
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[SandboxApplicationNameChanged]
+      evt shouldBe a[SandboxApplicationPrivacyPolicyUrlRemoved]
     }
 
     "convert to correctJson" in {
@@ -51,10 +50,11 @@ class SandboxApplicationNameChangedSpec extends EventSpec {
     "display event correctly" in {
       testDisplay(
         event,
-        EventTags.APP_NAME,
-        "Application Name Changed",
-        List(s"From: ${oldName}", s"To: ${newName}")
+        EventTags.PRIVACY_POLICY,
+        "Application Privacy Policy Url Removed",
+        List(s"From: ${oldPrivacyPolicyUrl}", s"To: ")
       )
     }
   }
+
 }

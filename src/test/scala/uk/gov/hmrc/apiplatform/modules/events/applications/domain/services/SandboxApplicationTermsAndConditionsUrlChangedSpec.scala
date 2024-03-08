@@ -18,28 +18,28 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationNameChanged
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationTermsAndConditionsUrlChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class SandboxApplicationNameChangedSpec extends EventSpec {
+class SandboxApplicationTermsAndConditionsUrlChangedSpec extends EventSpec {
 
-  "SandboxApplicationNameChangedEvent" should {
+  "SandboxApplicationTermsAndConditionsUrlChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val oldName = "Adrians App"
-    val newName = "Bobs App"
+    val oldTermsAndConditionsUrl = "http://someplace.com/old"
+    val newTermsAndConditionsUrl = "http://someplace.com/new"
 
     val event: ApplicationEvent =
-      SandboxApplicationNameChanged(anEventId, anAppId, anInstant, appCollaborator, oldName, newName)
+      SandboxApplicationTermsAndConditionsUrlChanged(anEventId, anAppId, anInstant, appCollaborator, oldTermsAndConditionsUrl, newTermsAndConditionsUrl)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldName":"${oldName}","newName":"${newName}","eventType":"SANDBOX_APPLICATION_NAME_CHANGED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldTermsAndConditionsUrl":"${oldTermsAndConditionsUrl}","termsAndConditionsUrl":"${newTermsAndConditionsUrl}","eventType":"SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_CHANGED"}"""
 
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[SandboxApplicationNameChanged]
+      evt shouldBe a[SandboxApplicationTermsAndConditionsUrlChanged]
     }
 
     "convert to correctJson" in {
@@ -51,10 +51,11 @@ class SandboxApplicationNameChangedSpec extends EventSpec {
     "display event correctly" in {
       testDisplay(
         event,
-        EventTags.APP_NAME,
-        "Application Name Changed",
-        List(s"From: ${oldName}", s"To: ${newName}")
+        EventTags.TERMS_AND_CONDITIONS,
+        "Application Term and Conditions Url Changed",
+        List(s"From: ${oldTermsAndConditionsUrl}", s"To: ${newTermsAndConditionsUrl}")
       )
     }
   }
+
 }

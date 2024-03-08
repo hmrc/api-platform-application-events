@@ -84,8 +84,8 @@ object EventTags {
         _: ClientSecretRemovedV2 |
         _: ClientSecretAddedEvent |
         _: ClientSecretRemovedEvent => CLIENT_SECRET
-    case _: GrantLengthChanged            => GRANT_LENGTH
-    case _: PpnsCallBackUriUpdatedEvent   => PPNS_CALLBACK
+    case _: GrantLengthChanged          => GRANT_LENGTH
+    case _: PpnsCallBackUriUpdatedEvent => PPNS_CALLBACK
     case _: RedirectUrisUpdatedV2 |
         _: RedirectUriAdded |
         _: RedirectUriDeleted |
@@ -115,8 +115,8 @@ object EventTags {
         _: SandboxApplicationTermsAndConditionsUrlChanged |
         _: SandboxApplicationTermsAndConditionsUrlRemoved |
         _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
-    case _: RateLimitChanged                     => RATE_LIMIT
-    case _: IpAllowlistCidrBlockChanged          => IP_ALLOWLIST
+    case _: RateLimitChanged            => RATE_LIMIT
+    case _: IpAllowlistCidrBlockChanged => IP_ALLOWLIST
     case _: ProductionAppNameChangedEvent |
         _: SandboxApplicationNameChanged |
         _: SandboxApplicationDescriptionChanged |

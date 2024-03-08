@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
+
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationPrivacyPolicyUrlChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
@@ -27,7 +28,7 @@ class SandboxApplicationPrivacyPolicyUrlChangedSpec extends EventSpec {
 
     val oldPrivacyPolicyUrl = "http://someplace.com/old"
     val newPrivacyPolicyUrl = "http://someplace.com/new"
-    
+
     val event: ApplicationEvent =
       SandboxApplicationPrivacyPolicyUrlChanged(anEventId, anAppId, anInstant, appCollaborator, oldPrivacyPolicyUrl, newPrivacyPolicyUrl)
 

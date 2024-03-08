@@ -18,28 +18,27 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationNameChanged
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.SandboxApplicationDescriptionCleared
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class SandboxApplicationNameChangedSpec extends EventSpec {
+class SandboxApplicationDescriptionClearedSpec extends EventSpec {
 
-  "SandboxApplicationNameChangedEvent" should {
+  "SandboxApplicationDescriptionClearedEvent" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val oldName = "Adrians App"
-    val newName = "Bobs App"
+    val oldDescription = "Adrians App"
 
     val event: ApplicationEvent =
-      SandboxApplicationNameChanged(anEventId, anAppId, anInstant, appCollaborator, oldName, newName)
+      SandboxApplicationDescriptionCleared(anEventId, anAppId, anInstant, appCollaborator, oldDescription)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldName":"${oldName}","newName":"${newName}","eventType":"SANDBOX_APPLICATION_NAME_CHANGED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldDescription":"${oldDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CLEARED"}"""
 
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[SandboxApplicationNameChanged]
+      evt shouldBe a[SandboxApplicationDescriptionCleared]
     }
 
     "convert to correctJson" in {
@@ -52,9 +51,10 @@ class SandboxApplicationNameChangedSpec extends EventSpec {
       testDisplay(
         event,
         EventTags.APP_NAME,
-        "Application Name Changed",
-        List(s"From: ${oldName}", s"To: ${newName}")
+        "Application Description Cleared",
+        List(s"From: ${oldDescription}", "To: ")
       )
     }
   }
+
 }
