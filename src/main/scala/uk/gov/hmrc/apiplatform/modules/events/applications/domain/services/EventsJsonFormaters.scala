@@ -119,6 +119,34 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     OFormat(blockApplicationAutoDeleteReads, Json.writes[BlockApplicationAutoDelete])
   }
 
+  implicit val SandboxApplicationNameChangedFormats: OFormat[SandboxApplicationNameChanged] = {
+    Json.format[SandboxApplicationNameChanged]
+  }
+
+  implicit val SandboxApplicationDescriptionChangedFormats: OFormat[SandboxApplicationDescriptionChanged] = {
+    Json.format[SandboxApplicationDescriptionChanged]
+  }
+
+  implicit val SandboxApplicationPrivacyPolicyUrlChangedFormats: OFormat[SandboxApplicationPrivacyPolicyUrlChanged] = {
+    Json.format[SandboxApplicationPrivacyPolicyUrlChanged]
+  }
+
+  implicit val SandboxApplicationTermsAndConditionsUrlChangedFormats: OFormat[SandboxApplicationTermsAndConditionsUrlChanged] = {
+    Json.format[SandboxApplicationTermsAndConditionsUrlChanged]
+  }
+
+  implicit val SandboxApplicationDescriptionClearedFormats: OFormat[SandboxApplicationDescriptionCleared] = {
+    Json.format[SandboxApplicationDescriptionCleared]
+  }
+
+  implicit val SandboxApplicationPrivacyPolicyUrlRemovedFormats: OFormat[SandboxApplicationPrivacyPolicyUrlRemoved] = {
+    Json.format[SandboxApplicationPrivacyPolicyUrlRemoved]
+  }
+
+  implicit val SandboxApplicationTermsAndConditionsUrlRemovedFormats: OFormat[SandboxApplicationTermsAndConditionsUrlRemoved] = {
+    Json.format[SandboxApplicationTermsAndConditionsUrlRemoved]
+  }
+
   private sealed trait EventType
 
   private object EventTypes {
@@ -176,6 +204,15 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object RATE_LIMIT_CHANGED extends EventType
 
     case object IP_ALLOWLIST_CIDR_BLOCK_CHANGED extends EventType
+
+    case object SANDBOX_APPLICATION_NAME_CHANGED                     extends EventType
+    case object SANDBOX_APPLICATION_DESCRIPTION_CHANGED              extends EventType
+    case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED       extends EventType
+    case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_CHANGED extends EventType
+    case object SANDBOX_APPLICATION_DESCRIPTION_CLEARED              extends EventType
+    case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED       extends EventType
+    case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED extends EventType
+
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
   }
@@ -227,8 +264,16 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[TeamMemberRemovedEvent](EventTypes.TEAM_MEMBER_REMOVED.toString)
     .and[RateLimitChanged](EventTypes.RATE_LIMIT_CHANGED.toString)
     .and[IpAllowlistCidrBlockChanged](EventTypes.IP_ALLOWLIST_CIDR_BLOCK_CHANGED.toString)
+    .and[SandboxApplicationNameChanged](EventTypes.SANDBOX_APPLICATION_NAME_CHANGED.toString)
+    .and[SandboxApplicationDescriptionChanged](EventTypes.SANDBOX_APPLICATION_DESCRIPTION_CHANGED.toString)
+    .and[SandboxApplicationPrivacyPolicyUrlChanged](EventTypes.SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED.toString)
+    .and[SandboxApplicationTermsAndConditionsUrlChanged](EventTypes.SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_CHANGED.toString)
+    .and[SandboxApplicationDescriptionCleared](EventTypes.SANDBOX_APPLICATION_DESCRIPTION_CLEARED.toString)
+    .and[SandboxApplicationPrivacyPolicyUrlRemoved](EventTypes.SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED.toString)
+    .and[SandboxApplicationTermsAndConditionsUrlRemoved](EventTypes.SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED.toString)
     .format
 }
+
 object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantJsonFormatter.NoTimeZone.instantNoTimeZoneFormat)
 
 /*

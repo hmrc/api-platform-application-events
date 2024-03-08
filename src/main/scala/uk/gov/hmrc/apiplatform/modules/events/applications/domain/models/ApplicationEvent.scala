@@ -41,37 +41,37 @@ object ApplicationEvent {
 
   def asMetaData(evt: ApplicationEvent): (String, List[String]) = {
     val tuple = evt match {
-      case ApiSubscribedEvent(_, _, _, _, context, version)                                                          => ("Api Subscribed", List(s"API ${context} v${version}"))
-      case ApiSubscribedV2(_, _, _, _, context, version)                                                             => ("Api Subscribed", List(s"API ${context.value} v${version.value}"))
-      case ApiUnsubscribedEvent(_, _, _, _, context, version)                                                        => ("Api Unsubscribed", List(s"API ${context} v${version}"))
-      case ApiUnsubscribedV2(_, _, _, _, context, version)                                                           => ("Api Unsubscribed", List(s"API ${context.value} v${version.value}"))
-      case CollaboratorAddedV2(_, _, _, _, collaborator)                                                             =>
+      case ApiSubscribedEvent(_, _, _, _, context, version)                                                            => ("Api Subscribed", List(s"API ${context} v${version}"))
+      case ApiSubscribedV2(_, _, _, _, context, version)                                                               => ("Api Subscribed", List(s"API ${context.value} v${version.value}"))
+      case ApiUnsubscribedEvent(_, _, _, _, context, version)                                                          => ("Api Unsubscribed", List(s"API ${context} v${version}"))
+      case ApiUnsubscribedV2(_, _, _, _, context, version)                                                             => ("Api Unsubscribed", List(s"API ${context.value} v${version.value}"))
+      case CollaboratorAddedV2(_, _, _, _, collaborator)                                                               =>
         ("Collaborator Added", List(s"${collaborator.emailAddress.text} was added as a ${Collaborator.describeRole(collaborator)}"))
-      case CollaboratorRemovedV2(_, _, _, _, collaborator)                                                           =>
+      case CollaboratorRemovedV2(_, _, _, _, collaborator)                                                             =>
         ("Collaborator Removed", List(s"${collaborator.emailAddress.text} was removed as a ${Collaborator.describeRole(collaborator)}"))
-      case TeamMemberAddedEvent(_, _, _, _, teamMemberEmail, teamMemberRole)                                         => ("Collaborator Added", List(s"${teamMemberEmail.text} was added as a $teamMemberRole"))
-      case TeamMemberRemovedEvent(_, _, _, _, teamMemberEmail, teamMemberRole)                                       => ("Collaborator Removed", List(s"${teamMemberEmail.text} was removed"))
-      case ClientSecretAddedV2(_, _, _, _, clientSecretId, clientSecretName)                                         => ("Client Secret Added", List(s"Name: $clientSecretName"))
-      case ClientSecretRemovedV2(_, _, _, _, clientSecretId, clientSecretName)                                       => ("Client Secret Removed", List(s"Name: $clientSecretName"))
-      case ClientSecretAddedEvent(_, _, _, _, clientSecretId)                                                        => ("Client Secret Added", List(s"Id: $clientSecretId"))
-      case ClientSecretRemovedEvent(_, _, _, _, clientSecretId)                                                      => ("Client Secret Removed", List(s"Id: $clientSecretId"))
-      case GrantLengthChanged(_, _, _, _, oldGrantLengthInDays, newGrantLengthInDays)                                =>
+      case TeamMemberAddedEvent(_, _, _, _, teamMemberEmail, teamMemberRole)                                           => ("Collaborator Added", List(s"${teamMemberEmail.text} was added as a $teamMemberRole"))
+      case TeamMemberRemovedEvent(_, _, _, _, teamMemberEmail, teamMemberRole)                                         => ("Collaborator Removed", List(s"${teamMemberEmail.text} was removed"))
+      case ClientSecretAddedV2(_, _, _, _, clientSecretId, clientSecretName)                                           => ("Client Secret Added", List(s"Name: $clientSecretName"))
+      case ClientSecretRemovedV2(_, _, _, _, clientSecretId, clientSecretName)                                         => ("Client Secret Removed", List(s"Name: $clientSecretName"))
+      case ClientSecretAddedEvent(_, _, _, _, clientSecretId)                                                          => ("Client Secret Added", List(s"Id: $clientSecretId"))
+      case ClientSecretRemovedEvent(_, _, _, _, clientSecretId)                                                        => ("Client Secret Removed", List(s"Id: $clientSecretId"))
+      case GrantLengthChanged(_, _, _, _, oldGrantLengthInDays, newGrantLengthInDays)                                  =>
         ("Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
-      case PpnsCallBackUriUpdatedEvent(_, _, _, _, boxId, boxName, oldCallbackUrl, newCallbackUrl)                   =>
+      case PpnsCallBackUriUpdatedEvent(_, _, _, _, boxId, boxName, oldCallbackUrl, newCallbackUrl)                     =>
         ("Ppns CallBackUri Updated", List(s"boxName: ${boxName}", s"oldCallBackUrl: ${oldCallbackUrl}", s"newCallBackUrl: ${newCallbackUrl}"))
-      case RedirectUrisUpdatedV2(_, _, _, _, oldRedirectUris: List[RedirectUri], newRedirectUris: List[RedirectUri]) =>
+      case RedirectUrisUpdatedV2(_, _, _, _, oldRedirectUris: List[RedirectUri], newRedirectUris: List[RedirectUri])   =>
         ("Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
-      case RedirectUriAdded(_, _, _, _, newRedirectUri)                                                              => ("Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
-      case RedirectUriDeleted(_, _, _, _, deletedRedirectUri)                                                        => ("Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
-      case RedirectUriChanged(_, _, _, _, oldRedirectUri, newRedirectUri)                                            =>
+      case RedirectUriAdded(_, _, _, _, newRedirectUri)                                                                => ("Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
+      case RedirectUriDeleted(_, _, _, _, deletedRedirectUri)                                                          => ("Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
+      case RedirectUriChanged(_, _, _, _, oldRedirectUri, newRedirectUri)                                              =>
         ("Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
-      case RedirectUrisUpdatedEvent(_, _, _, _, oldRedirectUris, newRedirectUris)                                    =>
+      case RedirectUrisUpdatedEvent(_, _, _, _, oldRedirectUris, newRedirectUris)                                      =>
         ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
-      case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)                           =>
+      case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)                             =>
         ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
-      case AllowApplicationAutoDelete(_, _, _, _, reasons)                                                           =>
+      case AllowApplicationAutoDelete(_, _, _, _, reasons)                                                             =>
         ("Application auto delete allowed", List(s"Reason(s) given as: ${reasons}"))
-      case BlockApplicationAutoDelete(_, _, _, _, reasons)                                                           =>
+      case BlockApplicationAutoDelete(_, _, _, _, reasons)                                                             =>
         ("Application auto delete blocked", List(s"Reason(s) given as: ${reasons}"))
       // $COVERAGE-OFF$
       case ResponsibleIndividualChanged(
@@ -246,7 +246,7 @@ object ApplicationEvent {
             s"For Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
           )
         )
-      case ApplicationStateChanged(_, _, _, _, oldAppState, newAppState, requestingAdminName, requestingAdminEmail)  =>
+      case ApplicationStateChanged(_, _, _, _, oldAppState, newAppState, requestingAdminName, requestingAdminEmail)    =>
         (
           "State changed",
           List(
@@ -276,18 +276,18 @@ object ApplicationEvent {
             s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
           )
         )
-      case TermsOfUsePassed(_, _, _, _, submissionId, submissionIndex)                                               => ("Terms of Use passed", List(s"Submission Id: ${submissionId.value} - ${submissionIndex}"))
-      case ProductionCredentialsApplicationDeleted(_, _, _, _, _, _, reasons)                                        => ("Application credentials deleted", List(s"Reason(s) given as $reasons"))
-      case ApplicationDeleted(_, _, _, _, _, _, reasons)                                                             => ("Application deleted", List(s"Reason(s) given as ${reasons}"))
-      case ProductionAppNameChangedEvent(_, _, _, _, oldName, newName, requestingAdminEmail)                         =>
+      case TermsOfUsePassed(_, _, _, _, submissionId, submissionIndex)                                                 => ("Terms of Use passed", List(s"Submission Id: ${submissionId.value} - ${submissionIndex}"))
+      case ProductionCredentialsApplicationDeleted(_, _, _, _, _, _, reasons)                                          => ("Application credentials deleted", List(s"Reason(s) given as $reasons"))
+      case ApplicationDeleted(_, _, _, _, _, _, reasons)                                                               => ("Application deleted", List(s"Reason(s) given as ${reasons}"))
+      case ProductionAppNameChangedEvent(_, _, _, _, oldName, newName, requestingAdminEmail)                           =>
         ("Name Changed", List(s"From: $oldName", s"To: $newName", s"Requested by ${requestingAdminEmail.text}"))
-      case ProductionAppPrivacyPolicyLocationChanged(_, _, _, _, oldLocation, newLocation)                           =>
+      case ProductionAppPrivacyPolicyLocationChanged(_, _, _, _, oldLocation, newLocation)                             =>
         ("Privacy Policy Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
-      case ProductionLegacyAppPrivacyPolicyLocationChanged(_, _, _, _, oldUrl, newUrl)                               => ("Privacy Policy Changed", List(s"From: $oldUrl", s"To: $newUrl"))
-      case ProductionAppTermsConditionsLocationChanged(_, _, _, _, oldLocation, newLocation)                         =>
+      case ProductionLegacyAppPrivacyPolicyLocationChanged(_, _, _, _, oldUrl, newUrl)                                 => ("Privacy Policy Changed", List(s"From: $oldUrl", s"To: $newUrl"))
+      case ProductionAppTermsConditionsLocationChanged(_, _, _, _, oldLocation, newLocation)                           =>
         ("T&Cs Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
-      case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                             => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
-      case RateLimitChanged(_, _, _, _, oldRateLimit, newRateLimit)                                                  => ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
+      case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                               => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
+      case RateLimitChanged(_, _, _, _, oldRateLimit, newRateLimit)                                                    => ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
       case IpAllowlistCidrBlockChanged(
             _,
             _,
@@ -304,6 +304,20 @@ object ApplicationEvent {
             s"To: ${if (newIpAllowList.isEmpty) "None" else newIpAllowList.mkString(",")}"
           )
         )
+      case SandboxApplicationNameChanged(id, applicationId, eventDateTime, actor, oldName, newName)                    =>
+        ("Application Name Changed", List(s"From: $oldName", s"To: $newName"))
+      case SandboxApplicationDescriptionChanged(id, applicationId, eventDateTime, actor, oldValue, newValue)           =>
+        ("Application Description Changed", List(s"From: $oldValue", s"To: $newValue"))
+      case SandboxApplicationPrivacyPolicyUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue)      =>
+        ("Application Privacy Policy Url Changed", List(s"From: $oldValue", s"To: $newValue"))
+      case SandboxApplicationTermsAndConditionsUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue) =>
+        ("Application Term and Conditions Url Changed", List(s"From: $oldValue", s"To: $newValue"))
+      case SandboxApplicationDescriptionCleared(id, applicationId, eventDateTime, actor, oldValue)                     =>
+        ("Application Description Cleared", List(s"From: $oldValue", "To: "))
+      case SandboxApplicationPrivacyPolicyUrlRemoved(id, applicationId, eventDateTime, actor, oldValue)                =>
+        ("Application Privacy Policy Url Removed", List(s"From: $oldValue", "To: "))
+      case SandboxApplicationTermsAndConditionsUrlRemoved(id, applicationId, eventDateTime, actor, oldValue)           =>
+        ("Application Term and Conditions Url Removed", List(s"From: $oldValue", "To: "))
       // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
       // $COVERAGE-ON$
     }
@@ -755,6 +769,50 @@ object ApplicationEvents {
       actor: Actor,
       context: String,
       version: String
+    ) extends ApplicationEvent
+
+  case class SandboxApplicationNameChanged(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldName: String, newName: String)
+      extends ApplicationEvent
+
+  case class SandboxApplicationDescriptionChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      oldDescription: String,
+      description: String
+    ) extends ApplicationEvent
+
+  case class SandboxApplicationPrivacyPolicyUrlChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      oldPrivacyPolicyUrl: String,
+      privacyPolicyUrl: String
+    ) extends ApplicationEvent
+
+  case class SandboxApplicationTermsAndConditionsUrlChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      oldTermsAndConditionsUrl: String,
+      termsAndConditionsUrl: String
+    ) extends ApplicationEvent
+
+  case class SandboxApplicationDescriptionCleared(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldDescription: String)
+      extends ApplicationEvent
+
+  case class SandboxApplicationPrivacyPolicyUrlRemoved(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldPrivacyPolicyUrl: String)
+      extends ApplicationEvent
+
+  case class SandboxApplicationTermsAndConditionsUrlRemoved(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      oldTermsAndConditionsUrl: String
     ) extends ApplicationEvent
 
   // scalastyle:on number.of.types
