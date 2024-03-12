@@ -40,6 +40,9 @@ object ApplicationEvent {
   import ApplicationEvents._
 
   def asMetaData(evt: ApplicationEvent): (String, List[String]) = {
+    def ifDefined[T](fn: T => String)(value: Option[T]): List[String] =
+      value.map(fn).toList
+
     val tuple = evt match {
       case ApiSubscribedEvent(_, _, _, _, context, version)                                                            => ("Api Subscribed", List(s"API ${context} v${version}"))
       case ApiSubscribedV2(_, _, _, _, context, version)                                                               => ("Api Subscribed", List(s"API ${context.value} v${version.value}"))
@@ -307,9 +310,9 @@ object ApplicationEvent {
       case SandboxApplicationNameChanged(id, applicationId, eventDateTime, actor, oldName, newName)                    =>
         ("Application Name Changed", List(s"From: $oldName", s"To: $newName"))
       case SandboxApplicationDescriptionChanged(id, applicationId, eventDateTime, actor, oldValue, newValue)           =>
-        ("Application Description Changed", List(s"From: $oldValue", s"To: $newValue"))
+        ("Application Description Changed", ifDefined[String](x => s"From: $x")(oldValue) ++ List(s"To: $newValue"))
       case SandboxApplicationPrivacyPolicyUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue)      =>
-        ("Application Privacy Policy Url Changed", List(s"From: $oldValue", s"To: $newValue"))
+        ("Application Privacy Policy Url Changed", ifDefined[String](x => s"From: $x")(oldValue) ++ List(s"To: $newValue"))
       case SandboxApplicationTermsAndConditionsUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue) =>
         ("Application Term and Conditions Url Changed", List(s"From: $oldValue", s"To: $newValue"))
       case SandboxApplicationDescriptionCleared(id, applicationId, eventDateTime, actor, oldValue)                     =>
@@ -779,7 +782,7 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actors.AppCollaborator,
-      oldDescription: String,
+      oldDescription: Option[String],
       description: String
     ) extends ApplicationEvent
 
@@ -788,7 +791,7 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actors.AppCollaborator,
-      oldPrivacyPolicyUrl: String,
+      oldPrivacyPolicyUrl: Option[String],
       privacyPolicyUrl: String
     ) extends ApplicationEvent
 

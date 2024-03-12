@@ -23,38 +23,64 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{Applic
 
 class SandboxApplicationDescriptionChangedSpec extends EventSpec {
 
-  "SandboxApplicationDescriptionChangedEvent" should {
+  "SandboxApplicationDescriptionChangedEvent" when {
     import EventsInterServiceCallJsonFormatters._
 
-    val oldDescription = "Adrians App"
-    val newDescription = "Bobs App"
+    "we have an old description" should {
+      val oldDescription = Some("Adrians App")
+      val newDescription = "Bobs App"
 
-    val event: ApplicationEvent =
-      SandboxApplicationDescriptionChanged(anEventId, anAppId, anInstant, appCollaborator, oldDescription, newDescription)
+      val event: ApplicationEvent =
+        SandboxApplicationDescriptionChanged(anEventId, anAppId, anInstant, appCollaborator, oldDescription, newDescription)
 
-    val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldDescription":"${oldDescription}","description":"${newDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CHANGED"}"""
+      val jsonText =
+        raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldDescription":"${oldDescription.get}","description":"${newDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CHANGED"}"""
 
-    "convert from json" in {
+      "convert from json" in {
+        Json.parse(jsonText).as[ApplicationEvent] shouldBe a[SandboxApplicationDescriptionChanged]
+      }
 
-      val evt = Json.parse(jsonText).as[ApplicationEvent]
+      "convert to correctJson" in {
+        val eventJSonString = Json.toJson(event).toString()
+        eventJSonString shouldBe jsonText
+      }
 
-      evt shouldBe a[SandboxApplicationDescriptionChanged]
+      "display event correctly" in {
+        testDisplay(
+          event,
+          EventTags.APP_NAME,
+          "Application Description Changed",
+          List(s"From: ${oldDescription.get}", s"To: ${newDescription}")
+        )
+      }
     }
 
-    "convert to correctJson" in {
+    "we have no existing description" should {
+      val newDescription = "Bobs App"
 
-      val eventJSonString = Json.toJson(event).toString()
-      eventJSonString shouldBe jsonText
-    }
+      val event: ApplicationEvent =
+        SandboxApplicationDescriptionChanged(anEventId, anAppId, anInstant, appCollaborator, None, newDescription)
 
-    "display event correctly" in {
-      testDisplay(
-        event,
-        EventTags.APP_NAME,
-        "Application Description Changed",
-        List(s"From: ${oldDescription}", s"To: ${newDescription}")
-      )
+      val jsonText =
+        raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"description":"${newDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CHANGED"}"""
+
+      "convert from json" in {
+        Json.parse(jsonText).as[ApplicationEvent] shouldBe a[SandboxApplicationDescriptionChanged]
+      }
+
+      "convert to correctJson" in {
+        val eventJSonString = Json.toJson(event).toString()
+        eventJSonString shouldBe jsonText
+      }
+
+      "display event correctly" in {
+        testDisplay(
+          event,
+          EventTags.APP_NAME,
+          "Application Description Changed",
+          List(s"To: ${newDescription}")
+        )
+      }
     }
   }
 
