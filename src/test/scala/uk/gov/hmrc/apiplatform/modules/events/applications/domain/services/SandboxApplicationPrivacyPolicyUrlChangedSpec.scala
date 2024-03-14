@@ -30,7 +30,7 @@ class SandboxApplicationPrivacyPolicyUrlChangedSpec extends EventSpec {
     val newPrivacyPolicyUrl = "http://someplace.com/new"
 
     val event: ApplicationEvent =
-      SandboxApplicationPrivacyPolicyUrlChanged(anEventId, anAppId, anInstant, appCollaborator, oldPrivacyPolicyUrl, newPrivacyPolicyUrl)
+      SandboxApplicationPrivacyPolicyUrlChanged(anEventId, anAppId, anInstant, appCollaborator, Some(oldPrivacyPolicyUrl), newPrivacyPolicyUrl)
 
     val jsonText =
       raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldPrivacyPolicyUrl":"${oldPrivacyPolicyUrl}","privacyPolicyUrl":"${newPrivacyPolicyUrl}","eventType":"SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED"}"""
