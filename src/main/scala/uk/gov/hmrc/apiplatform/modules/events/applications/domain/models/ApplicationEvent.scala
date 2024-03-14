@@ -314,7 +314,7 @@ object ApplicationEvent {
       case SandboxApplicationPrivacyPolicyUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue)      =>
         ("Application Privacy Policy Url Changed", ifDefined[String](x => s"From: $x")(oldValue) ++ List(s"To: $newValue"))
       case SandboxApplicationTermsAndConditionsUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue) =>
-        ("Application Term and Conditions Url Changed", List(s"From: $oldValue", s"To: $newValue"))
+        ("Application Term and Conditions Url Changed", ifDefined[String](x => s"From: $x")(oldValue) ++ List(s"To: $newValue"))
       case SandboxApplicationDescriptionCleared(id, applicationId, eventDateTime, actor, oldValue)                     =>
         ("Application Description Cleared", List(s"From: $oldValue", "To: "))
       case SandboxApplicationPrivacyPolicyUrlRemoved(id, applicationId, eventDateTime, actor, oldValue)                =>
@@ -800,7 +800,7 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actors.AppCollaborator,
-      oldTermsAndConditionsUrl: String,
+      oldTermsAndConditionsUrl: Option[String],
       termsAndConditionsUrl: String
     ) extends ApplicationEvent
 

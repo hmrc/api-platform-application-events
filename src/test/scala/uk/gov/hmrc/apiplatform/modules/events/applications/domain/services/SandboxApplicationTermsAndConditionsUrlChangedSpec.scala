@@ -30,7 +30,7 @@ class SandboxApplicationTermsAndConditionsUrlChangedSpec extends EventSpec {
     val newTermsAndConditionsUrl = "http://someplace.com/new"
 
     val event: ApplicationEvent =
-      SandboxApplicationTermsAndConditionsUrlChanged(anEventId, anAppId, anInstant, appCollaborator, oldTermsAndConditionsUrl, newTermsAndConditionsUrl)
+      SandboxApplicationTermsAndConditionsUrlChanged(anEventId, anAppId, anInstant, appCollaborator, Some(oldTermsAndConditionsUrl), newTermsAndConditionsUrl)
 
     val jsonText =
       raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldTermsAndConditionsUrl":"${oldTermsAndConditionsUrl}","termsAndConditionsUrl":"${newTermsAndConditionsUrl}","eventType":"SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_CHANGED"}"""
