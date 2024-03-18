@@ -19,13 +19,10 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.Collaborators
 
-class AppliationEventSpec extends AnyWordSpec with Matchers {
+class AppliationEventSpec extends EventSpec {
 
   "AbstractApplicationEvent" when {
     val anActor       = Actors.Unknown

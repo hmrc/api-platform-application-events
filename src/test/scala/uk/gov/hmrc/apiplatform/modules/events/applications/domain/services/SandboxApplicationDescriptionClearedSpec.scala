@@ -52,7 +52,7 @@ class SandboxApplicationDescriptionClearedSpec extends EventSpec {
         event,
         EventTags.APP_NAME,
         "Application Description Cleared",
-        List(s"From: ${oldDescription}", "To: ")
+        List(s"From: ${oldDescription}")
       )
     }
   }

@@ -22,14 +22,20 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.{SubmissionId, _}
 
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent.{MetaData, ifDefined}
+
 sealed trait ApplicationEvent {
   def id: EventId
   def applicationId: ApplicationId
   def eventDateTime: Instant
   def actor: Actor
+
+  def asMetaData(): MetaData
 }
 
 object ApplicationEvent {
+
+  def ifDefined[T](fn: T => String)(value: Option[T]): List[String] = value.map(fn).toList
 
   implicit val orderEvents: Ordering[ApplicationEvent] = new Ordering[ApplicationEvent]() {
 
@@ -37,296 +43,27 @@ object ApplicationEvent {
       y.eventDateTime.compareTo(x.eventDateTime)
   }
 
-  import ApplicationEvents._
+// ------------------
 
-  def asMetaData(evt: ApplicationEvent): (String, List[String]) = {
-    def ifDefined[T](fn: T => String)(value: Option[T]): List[String] =
-      value.map(fn).toList
+  type MetaData = (String, List[String])
 
-    val tuple = evt match {
-      case ApiSubscribedEvent(_, _, _, _, context, version)                                                            => ("Api Subscribed", List(s"API ${context} v${version}"))
-      case ApiSubscribedV2(_, _, _, _, context, version)                                                               => ("Api Subscribed", List(s"API ${context.value} v${version.value}"))
-      case ApiUnsubscribedEvent(_, _, _, _, context, version)                                                          => ("Api Unsubscribed", List(s"API ${context} v${version}"))
-      case ApiUnsubscribedV2(_, _, _, _, context, version)                                                             => ("Api Unsubscribed", List(s"API ${context.value} v${version.value}"))
-      case CollaboratorAddedV2(_, _, _, _, collaborator)                                                               =>
-        ("Collaborator Added", List(s"${collaborator.emailAddress.text} was added as a ${Collaborator.describeRole(collaborator)}"))
-      case CollaboratorRemovedV2(_, _, _, _, collaborator)                                                             =>
-        ("Collaborator Removed", List(s"${collaborator.emailAddress.text} was removed as a ${Collaborator.describeRole(collaborator)}"))
-      case TeamMemberAddedEvent(_, _, _, _, teamMemberEmail, teamMemberRole)                                           => ("Collaborator Added", List(s"${teamMemberEmail.text} was added as a $teamMemberRole"))
-      case TeamMemberRemovedEvent(_, _, _, _, teamMemberEmail, teamMemberRole)                                         => ("Collaborator Removed", List(s"${teamMemberEmail.text} was removed"))
-      case ClientSecretAddedV2(_, _, _, _, clientSecretId, clientSecretName)                                           => ("Client Secret Added", List(s"Name: $clientSecretName"))
-      case ClientSecretRemovedV2(_, _, _, _, clientSecretId, clientSecretName)                                         => ("Client Secret Removed", List(s"Name: $clientSecretName"))
-      case ClientSecretAddedEvent(_, _, _, _, clientSecretId)                                                          => ("Client Secret Added", List(s"Id: $clientSecretId"))
-      case ClientSecretRemovedEvent(_, _, _, _, clientSecretId)                                                        => ("Client Secret Removed", List(s"Id: $clientSecretId"))
-      case GrantLengthChanged(_, _, _, _, oldGrantLengthInDays, newGrantLengthInDays)                                  =>
-        ("Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
-      case PpnsCallBackUriUpdatedEvent(_, _, _, _, boxId, boxName, oldCallbackUrl, newCallbackUrl)                     =>
-        ("Ppns CallBackUri Updated", List(s"boxName: ${boxName}", s"oldCallBackUrl: ${oldCallbackUrl}", s"newCallBackUrl: ${newCallbackUrl}"))
-      case RedirectUrisUpdatedV2(_, _, _, _, oldRedirectUris: List[RedirectUri], newRedirectUris: List[RedirectUri])   =>
-        ("Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
-      case RedirectUriAdded(_, _, _, _, newRedirectUri)                                                                => ("Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
-      case RedirectUriDeleted(_, _, _, _, deletedRedirectUri)                                                          => ("Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
-      case RedirectUriChanged(_, _, _, _, oldRedirectUri, newRedirectUri)                                              =>
-        ("Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
-      case RedirectUrisUpdatedEvent(_, _, _, _, oldRedirectUris, newRedirectUris)                                      =>
-        ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
-      case ApplicationDeletedByGatekeeper(_, _, _, _, _, _, reasons, requestingAdminEmail)                             =>
-        ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
-      case AllowApplicationAutoDelete(_, _, _, _, reasons)                                                             =>
-        ("Application auto delete allowed", List(s"Reason(s) given as: ${reasons}"))
-      case BlockApplicationAutoDelete(_, _, _, _, reasons)                                                             =>
-        ("Application auto delete blocked", List(s"Reason(s) given as: ${reasons}"))
-      // $COVERAGE-OFF$
-      case ResponsibleIndividualChanged(
-            _,
-            _,
-            _,
-            _,
-            previousResponsibleIndividualName,
-            previousResponsibleIndividualEmail,
-            newResponsibleIndividualName,
-            newResponsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            _,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Responsible Individual changed",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"From Responsible Individual: ${previousResponsibleIndividualName} @ ${previousResponsibleIndividualEmail.text}",
-            s"To Reponsible Individual: ${newResponsibleIndividualName} @ ${newResponsibleIndividualEmail.text}"
-          )
-        )
-      case ResponsibleIndividualChangedToSelf(
-            _,
-            _,
-            _,
-            _,
-            previousResponsibleIndividualName,
-            previousResponsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Responsible Individual changed to self",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"From Responsible Individual: ${previousResponsibleIndividualName} @ ${previousResponsibleIndividualEmail.text}"
-          )
-        )
-      case ResponsibleIndividualDeclined(
-            _,
-            _,
-            _,
-            _,
-            responsibleIndividualName,
-            responsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            _,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Responsible Individual declined",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"Rejected by Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
-          )
-        )
-      case ResponsibleIndividualDeclinedUpdate(
-            _,
-            _,
-            _,
-            _,
-            responsibleIndividualName,
-            responsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            _,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Responsible Individual declined update",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"Rejected by Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
-          )
-        )
-      case ResponsibleIndividualDidNotVerify(
-            _,
-            _,
-            _,
-            _,
-            responsibleIndividualName,
-            responsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            _,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Responsible Individual did not verify",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"Not verified by Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
-          )
-        )
-      case ResponsibleIndividualDeclinedOrDidNotVerify(
-            _,
-            _,
-            _,
-            _,
-            responsibleIndividualName,
-            responsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            code,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Responsible Individual Declined Or Did Not Verify",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"From Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
-          )
-        )
-      case ResponsibleIndividualSet(
-            _,
-            _,
-            _,
-            _,
-            responsibleIndividualName,
-            responsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            code,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Responsible Individual Set",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"To Reponsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
-          )
-        )
-      case ResponsibleIndividualVerificationStarted(
-            _,
-            _,
-            _,
-            _,
-            applicationName,
-            requestingAdminName,
-            requestingAdminEmail,
-            responsibleIndividualName,
-            responsibleIndividualEmail,
-            submissionId,
-            submissionIndex,
-            verificationId
-          ) =>
-        (
-          "Responsible Individual verification started",
-          List(
-            s"Application Name: ${applicationName}",
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-            s"For Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
-          )
-        )
-      case ApplicationStateChanged(_, _, _, _, oldAppState, newAppState, requestingAdminName, requestingAdminEmail)    =>
-        (
-          "State changed",
-          List(
-            s"From ${oldAppState} to ${newAppState}",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
-          )
-        )
-      case ApplicationApprovalRequestDeclined(
-            _,
-            _,
-            _,
-            _,
-            decliningUserName,
-            decliningUserEmail,
-            submissionId,
-            submissionIndex,
-            reasons,
-            requestingAdminName,
-            requestingAdminEmail
-          ) =>
-        (
-          "Approval request declined",
-          List(
-            s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-            s"Declined by ${decliningUserName} @ ${decliningUserEmail.text}",
-            s"Reason(s) given as $reasons",
-            s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
-          )
-        )
-      case TermsOfUsePassed(_, _, _, _, submissionId, submissionIndex)                                                 => ("Terms of Use passed", List(s"Submission Id: ${submissionId.value} - ${submissionIndex}"))
-      case ProductionCredentialsApplicationDeleted(_, _, _, _, _, _, reasons)                                          => ("Application credentials deleted", List(s"Reason(s) given as $reasons"))
-      case ApplicationDeleted(_, _, _, _, _, _, reasons)                                                               => ("Application deleted", List(s"Reason(s) given as ${reasons}"))
-      case ProductionAppNameChangedEvent(_, _, _, _, oldName, newName, requestingAdminEmail)                           =>
-        ("Name Changed", List(s"From: $oldName", s"To: $newName", s"Requested by ${requestingAdminEmail.text}"))
-      case ProductionAppPrivacyPolicyLocationChanged(_, _, _, _, oldLocation, newLocation)                             =>
-        ("Privacy Policy Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
-      case ProductionLegacyAppPrivacyPolicyLocationChanged(_, _, _, _, oldUrl, newUrl)                                 => ("Privacy Policy Changed", List(s"From: $oldUrl", s"To: $newUrl"))
-      case ProductionAppTermsConditionsLocationChanged(_, _, _, _, oldLocation, newLocation)                           =>
-        ("T&Cs Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
-      case ProductionLegacyAppTermsConditionsLocationChanged(_, _, _, _, oldUrl, newUrl)                               => ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
-      case RateLimitChanged(_, _, _, _, oldRateLimit, newRateLimit)                                                    => ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
-      case IpAllowlistCidrBlockChanged(
-            _,
-            _,
-            _,
-            _,
-            required,
-            oldIpAllowList,
-            newIpAllowList
-          ) => (
-          "IP Allowlist Changed",
-          List(
-            s"Required: $required",
-            s"From: ${if (oldIpAllowList.isEmpty) "None" else oldIpAllowList.mkString(",")}",
-            s"To: ${if (newIpAllowList.isEmpty) "None" else newIpAllowList.mkString(",")}"
-          )
-        )
-      case SandboxApplicationNameChanged(id, applicationId, eventDateTime, actor, oldName, newName)                    =>
-        ("Application Name Changed", List(s"From: $oldName", s"To: $newName"))
-      case SandboxApplicationDescriptionChanged(id, applicationId, eventDateTime, actor, oldValue, newValue)           =>
-        ("Application Description Changed", ifDefined[String](x => s"From: $x")(oldValue) ++ List(s"To: $newValue"))
-      case SandboxApplicationPrivacyPolicyUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue)      =>
-        ("Application Privacy Policy Url Changed", ifDefined[String](x => s"From: $x")(oldValue) ++ List(s"To: $newValue"))
-      case SandboxApplicationTermsAndConditionsUrlChanged(id, applicationId, eventDateTime, actor, oldValue, newValue) =>
-        ("Application Term and Conditions Url Changed", ifDefined[String](x => s"From: $x")(oldValue) ++ List(s"To: $newValue"))
-      case SandboxApplicationDescriptionCleared(id, applicationId, eventDateTime, actor, oldValue)                     =>
-        ("Application Description Cleared", List(s"From: $oldValue", "To: "))
-      case SandboxApplicationPrivacyPolicyUrlRemoved(id, applicationId, eventDateTime, actor, oldValue)                =>
-        ("Application Privacy Policy Url Removed", List(s"From: $oldValue", "To: "))
-      case SandboxApplicationTermsAndConditionsUrlRemoved(id, applicationId, eventDateTime, actor, oldValue)           =>
-        ("Application Term and Conditions Url Removed", List(s"From: $oldValue", "To: "))
-      // case _ => ("Unspecified", List("Not details"))    // TO REMOVE ONCE WE'VE PROVED THIS OUT
-      // $COVERAGE-ON$
-    }
+  type AuditData = Map[String, String]
 
-    tuple
+  trait AsAuditData[T] {
+    def asAuditData(t: T): Option[AuditData]
   }
+
+  trait LowPriorityAsAuditData {
+
+    implicit object LowPriorityEventAuditData extends AsAuditData[ApplicationEvent] {
+
+      def asAuditData(t: ApplicationEvent): Option[AuditData] = {
+        None
+      }
+    }
+  }
+  object AuditData extends LowPriorityAsAuditData
+
 }
 
 object ApplicationEvents {
@@ -338,7 +75,10 @@ object ApplicationEvents {
       actor: Actors.GatekeeperUser,
       oldGrantLengthInDays: Int,
       newGrantLengthInDays: Int
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
+  }
 
   case class RedirectUriAdded(
       id: EventId,
@@ -346,7 +86,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       newRedirectUri: RedirectUri
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
+  }
 
   case class RedirectUriChanged(
       id: EventId,
@@ -355,7 +98,10 @@ object ApplicationEvents {
       actor: Actor,
       oldRedirectUri: RedirectUri,
       newRedirectUri: RedirectUri
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
+  }
 
   case class RedirectUriDeleted(
       id: EventId,
@@ -363,7 +109,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       deletedRedirectUri: RedirectUri
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
+  }
 
   case class PpnsCallBackUriUpdatedEvent(
       id: EventId,
@@ -374,7 +123,10 @@ object ApplicationEvents {
       boxName: String,
       oldCallbackUrl: String,
       newCallbackUrl: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Ppns CallBackUri Updated", List(s"boxName: ${boxName}", s"oldCallBackUrl: ${oldCallbackUrl}", s"newCallBackUrl: ${newCallbackUrl}"))
+  }
 
   case class RedirectUrisUpdatedV2(
       id: EventId,
@@ -383,7 +135,10 @@ object ApplicationEvents {
       actor: Actor,
       oldRedirectUris: List[RedirectUri],
       newRedirectUris: List[RedirectUri]
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
+  }
 
   case class ProductionAppNameChangedEvent(
       id: EventId,
@@ -393,7 +148,10 @@ object ApplicationEvents {
       oldAppName: String,
       newAppName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Name Changed", List(s"From: $oldAppName", s"To: $newAppName", s"Requested by ${requestingAdminEmail.text}"))
+  }
 
   case class ProductionAppPrivacyPolicyLocationChanged(
       id: EventId,
@@ -402,7 +160,10 @@ object ApplicationEvents {
       actor: Actor,
       oldLocation: PrivacyPolicyLocation,
       newLocation: PrivacyPolicyLocation
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Privacy Policy Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
+  }
 
   case class ProductionLegacyAppPrivacyPolicyLocationChanged(
       id: EventId,
@@ -411,7 +172,10 @@ object ApplicationEvents {
       actor: Actor,
       oldUrl: String,
       newUrl: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Privacy Policy Changed", List(s"From: $oldUrl", s"To: $newUrl"))
+  }
 
   case class ProductionAppTermsConditionsLocationChanged(
       id: EventId,
@@ -420,7 +184,10 @@ object ApplicationEvents {
       actor: Actor,
       oldLocation: TermsAndConditionsLocation,
       newLocation: TermsAndConditionsLocation
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("T&Cs Changed", List(s"From: ${oldLocation.describe()}", s"To: ${newLocation.describe()}"))
+  }
 
   case class ProductionLegacyAppTermsConditionsLocationChanged(
       id: EventId,
@@ -429,7 +196,10 @@ object ApplicationEvents {
       actor: Actor,
       oldUrl: String,
       newUrl: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("T&Cs Changed", List(s"From: $oldUrl", s"To: $newUrl"))
+  }
 
   case class ClientSecretAddedV2(
       id: EventId,
@@ -438,7 +208,10 @@ object ApplicationEvents {
       actor: Actors.AppCollaborator,
       clientSecretId: String,
       clientSecretName: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Client Secret Added", List(s"Name: $clientSecretName"))
+  }
 
   case class ClientSecretRemovedV2(
       id: EventId,
@@ -447,7 +220,10 @@ object ApplicationEvents {
       actor: Actors.AppCollaborator,
       clientSecretId: String,
       clientSecretName: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Client Secret Removed", List(s"Name: $clientSecretName"))
+  }
 
   case class CollaboratorAddedV2(
       id: EventId,
@@ -455,7 +231,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       collaborator: Collaborator
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Collaborator Added", List(s"${collaborator.emailAddress.text} was added as a ${Collaborator.describeRole(collaborator)}"))
+  }
 
   case class CollaboratorRemovedV2(
       id: EventId,
@@ -463,7 +242,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       collaborator: Collaborator
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Collaborator Removed", List(s"${collaborator.emailAddress.text} was removed as a ${Collaborator.describeRole(collaborator)}"))
+  }
 
   case class ApiSubscribedV2(
       id: EventId,
@@ -472,7 +254,10 @@ object ApplicationEvents {
       actor: Actor,
       context: ApiContext,
       version: ApiVersionNbr
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Api Subscribed", List(s"API ${context.value} v${version.value}"))
+  }
 
   case class ApiUnsubscribedV2(
       id: EventId,
@@ -481,7 +266,10 @@ object ApplicationEvents {
       actor: Actor,
       context: ApiContext,
       version: ApiVersionNbr
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Api Unsubscribed", List(s"API ${context.value} v${version.value}"))
+  }
 
   case class ResponsibleIndividualChanged(
       id: EventId,
@@ -497,7 +285,18 @@ object ApplicationEvents {
       code: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual changed",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"From Responsible Individual: ${previousResponsibleIndividualName} @ ${previousResponsibleIndividualEmail.text}",
+        s"To Reponsible Individual: ${newResponsibleIndividualName} @ ${newResponsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ResponsibleIndividualChangedToSelf(
       id: EventId,
@@ -510,7 +309,17 @@ object ApplicationEvents {
       submissionIndex: Int,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual changed to self",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"From Responsible Individual: ${previousResponsibleIndividualName} @ ${previousResponsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ResponsibleIndividualSet(
       id: EventId,
@@ -524,7 +333,17 @@ object ApplicationEvents {
       code: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual Set",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"To Reponsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ApplicationStateChanged(
       id: EventId,
@@ -535,7 +354,16 @@ object ApplicationEvents {
       newAppState: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "State changed",
+      List(
+        s"From ${oldAppState} to ${newAppState}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
 
   case class ResponsibleIndividualVerificationStarted(
       id: EventId,
@@ -550,7 +378,18 @@ object ApplicationEvents {
       submissionId: SubmissionId,
       submissionIndex: Int,
       verificationId: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual verification started",
+      List(
+        s"Application Name: ${applicationName}",
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"For Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ResponsibleIndividualDeclined(
       id: EventId,
@@ -564,7 +403,17 @@ object ApplicationEvents {
       code: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual declined",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"Rejected by Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ResponsibleIndividualDeclinedUpdate(
       id: EventId,
@@ -578,7 +427,17 @@ object ApplicationEvents {
       code: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual declined update",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"Rejected by Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ResponsibleIndividualDidNotVerify(
       id: EventId,
@@ -592,7 +451,17 @@ object ApplicationEvents {
       code: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual did not verify",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"Not verified by Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ResponsibleIndividualDeclinedOrDidNotVerify(
       id: EventId,
@@ -606,7 +475,17 @@ object ApplicationEvents {
       code: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual Declined Or Did Not Verify",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"From Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+      )
+    )
+  }
 
   case class ApplicationApprovalRequestDeclined(
       id: EventId,
@@ -620,7 +499,18 @@ object ApplicationEvents {
       reasons: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Approval request declined",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Declined by ${decliningUserName} @ ${decliningUserEmail.text}",
+        s"Reason(s) given as $reasons",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
 
   case class TermsOfUsePassed(
       id: EventId,
@@ -629,7 +519,10 @@ object ApplicationEvents {
       actor: Actor,
       submissionId: SubmissionId,
       submissionIndex: Int
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Terms of Use passed", List(s"Submission Id: ${submissionId.value} - ${submissionIndex}"))
+  }
 
   case class ApplicationDeleted(
       id: EventId,
@@ -639,7 +532,10 @@ object ApplicationEvents {
       clientId: ClientId,
       wso2ApplicationName: String,
       reasons: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application deleted", List(s"Reason(s) given as ${reasons}"))
+  }
 
   case class ApplicationDeletedByGatekeeper(
       id: EventId,
@@ -650,7 +546,10 @@ object ApplicationEvents {
       wso2ApplicationName: String,
       reasons: String,
       requestingAdminEmail: LaxEmailAddress
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
+  }
 
   case class ProductionCredentialsApplicationDeleted(
       id: EventId,
@@ -660,7 +559,10 @@ object ApplicationEvents {
       clientId: ClientId,
       wso2ApplicationName: String,
       reasons: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application credentials deleted", List(s"Reason(s) given as $reasons"))
+  }
 
   case class AllowApplicationAutoDelete(
       id: EventId,
@@ -668,7 +570,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actors.GatekeeperUser,
       reasons: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application auto delete allowed", List(s"Reason(s) given as: ${reasons}"))
+  }
 
   case class BlockApplicationAutoDelete(
       id: EventId,
@@ -676,7 +581,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actors.GatekeeperUser,
       reasons: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application auto delete blocked", List(s"Reason(s) given as: ${reasons}"))
+  }
 
   case class RateLimitChanged(
       id: EventId,
@@ -685,7 +593,10 @@ object ApplicationEvents {
       actor: Actors.GatekeeperUser,
       oldRateLimit: RateLimitTier,
       newRateLimit: RateLimitTier
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Rate Limit Changed", List(s"From: $oldRateLimit", s"To: $newRateLimit"))
+  }
 
   case class IpAllowlistCidrBlockChanged(
       id: EventId,
@@ -695,7 +606,17 @@ object ApplicationEvents {
       required: Boolean,
       oldIpAllowlist: List[CidrBlock],
       newIpAllowlist: List[CidrBlock]
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "IP Allowlist Changed",
+      List(
+        s"Required: $required",
+        s"From: ${if (oldIpAllowlist.isEmpty) "None" else oldIpAllowlist.mkString(",")}",
+        s"To: ${if (newIpAllowlist.isEmpty) "None" else newIpAllowlist.mkString(",")}"
+      )
+    )
+  }
 
   // *** DEPRECATED EVENTS ***
 
@@ -708,7 +629,10 @@ object ApplicationEvents {
       actor: Actor,
       oldRedirectUris: String,
       newRedirectUris: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
+  }
 
   /** DEPRECATED Use ClientSecretAdded instead
     */
@@ -718,7 +642,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       clientSecretId: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Client Secret Added", List(s"Id: $clientSecretId"))
+  }
 
   /** DEPRECATED Use ClientSecretRemoved instead
     */
@@ -728,7 +655,10 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actor,
       clientSecretId: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Client Secret Removed", List(s"Id: $clientSecretId"))
+  }
 
   /** DEPRECATED Use CollaboratorAdded instead
     */
@@ -739,7 +669,10 @@ object ApplicationEvents {
       actor: Actor,
       teamMemberEmail: LaxEmailAddress,
       teamMemberRole: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Collaborator Added", List(s"${teamMemberEmail.text} was added as a $teamMemberRole"))
+  }
 
   /** DEPRECATED Use CollaboratorRemoved instead
     */
@@ -750,7 +683,10 @@ object ApplicationEvents {
       actor: Actor,
       teamMemberEmail: LaxEmailAddress,
       teamMemberRole: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Collaborator Removed", List(s"${teamMemberEmail.text} was removed"))
+  }
 
   /** DEPRECATED Use ApiSubscribedV2 instead
     */
@@ -761,7 +697,9 @@ object ApplicationEvents {
       actor: Actor,
       context: String,
       version: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+    def asMetaData(): MetaData = ("Api Subscribed", List(s"API ${context} v${version}"))
+  }
 
   /** DEPRECATED Use ApiUnsubscribedV2 instead
     */
@@ -772,10 +710,16 @@ object ApplicationEvents {
       actor: Actor,
       context: String,
       version: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Api Unsubscribed", List(s"API ${context} v${version}"))
+  }
 
   case class SandboxApplicationNameChanged(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldName: String, newName: String)
-      extends ApplicationEvent
+      extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application Name Changed", List(s"From: $oldName", s"To: $newName"))
+  }
 
   case class SandboxApplicationDescriptionChanged(
       id: EventId,
@@ -784,7 +728,10 @@ object ApplicationEvents {
       actor: Actors.AppCollaborator,
       oldDescription: Option[String],
       description: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application Description Changed", ifDefined[String](x => s"From: $x")(oldDescription) ++ List(s"To: $description"))
+  }
 
   case class SandboxApplicationPrivacyPolicyUrlChanged(
       id: EventId,
@@ -793,7 +740,10 @@ object ApplicationEvents {
       actor: Actors.AppCollaborator,
       oldPrivacyPolicyUrl: Option[String],
       privacyPolicyUrl: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application Privacy Policy Url Changed", ifDefined[String](x => s"From: $x")(oldPrivacyPolicyUrl) ++ List(s"To: $privacyPolicyUrl"))
+  }
 
   case class SandboxApplicationTermsAndConditionsUrlChanged(
       id: EventId,
@@ -802,13 +752,22 @@ object ApplicationEvents {
       actor: Actors.AppCollaborator,
       oldTermsAndConditionsUrl: Option[String],
       termsAndConditionsUrl: String
-    ) extends ApplicationEvent
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData =
+      ("Application Term and Conditions Url Changed", ifDefined[String](x => s"From: $x")(oldTermsAndConditionsUrl) ++ List(s"To: $termsAndConditionsUrl"))
+  }
 
   case class SandboxApplicationDescriptionCleared(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldDescription: String)
-      extends ApplicationEvent
+      extends ApplicationEvent {
+    def asMetaData(): MetaData = ("Application Description Cleared", List(s"From: $oldDescription"))
+  }
 
   case class SandboxApplicationPrivacyPolicyUrlRemoved(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldPrivacyPolicyUrl: String)
-      extends ApplicationEvent
+      extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application Privacy Policy Url Removed", List(s"From: $oldPrivacyPolicyUrl"))
+  }
 
   case class SandboxApplicationTermsAndConditionsUrlRemoved(
       id: EventId,
@@ -816,7 +775,8 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actors.AppCollaborator,
       oldTermsAndConditionsUrl: String
-    ) extends ApplicationEvent
-
-  // scalastyle:on number.of.types
+    ) extends ApplicationEvent {
+    def asMetaData(): MetaData = ("Application Term and Conditions Url Removed", List(s"From: ${oldTermsAndConditionsUrl}"))
+  }
 }
+// scalastyle:on number.of.types
