@@ -27,6 +27,9 @@ import uk.gov.hmrc.apiplatform.modules.common.domain.services.InstantJsonFormatt
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models._
 
+/*
+ * We are not using companion object based formatters because of the need to provide formatters with different time formatting (.e. for mongo)
+ */
 abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   private implicit val fmt: Format[Instant] = instantFormatter
@@ -65,7 +68,9 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   implicit val productionLegacyAppTermsConditionsLocationChangedFormats: OFormat[ProductionLegacyAppTermsConditionsLocationChanged] =
     Json.format[ProductionLegacyAppTermsConditionsLocationChanged]
-  implicit val responsibleIndividualSetFormats: OFormat[ResponsibleIndividualSet]                                                   = Json.format[ResponsibleIndividualSet]
+
+  implicit val responsibleIndividualSetFormats: OFormat[ResponsibleIndividualSet] =
+    Json.format[ResponsibleIndividualSet]
 
   implicit val responsibleIndividualChangedFormats: OFormat[ResponsibleIndividualChanged]             = Json.format[ResponsibleIndividualChanged]
   implicit val responsibleIndividualChangedToSelfFormats: OFormat[ResponsibleIndividualChangedToSelf] = Json.format[ResponsibleIndividualChangedToSelf]

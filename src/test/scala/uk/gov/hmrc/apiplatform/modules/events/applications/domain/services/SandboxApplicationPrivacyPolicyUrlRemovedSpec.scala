@@ -52,7 +52,7 @@ class SandboxApplicationPrivacyPolicyUrlRemovedSpec extends EventSpec {
         event,
         EventTags.PRIVACY_POLICY,
         "Application Privacy Policy Url Removed",
-        List(s"From: ${oldPrivacyPolicyUrl}", s"To: ")
+        List(s"From: ${oldPrivacyPolicyUrl}")
       )
     }
   }

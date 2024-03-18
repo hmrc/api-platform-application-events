@@ -52,7 +52,7 @@ class SandboxApplicationTermsAndConditionsUrlRemovedSpec extends EventSpec {
         event,
         EventTags.TERMS_AND_CONDITIONS,
         "Application Term and Conditions Url Removed",
-        List(s"From: ${oldTermsAndConditionsUrl}", s"To: ")
+        List(s"From: ${oldTermsAndConditionsUrl}")
       )
     }
   }
