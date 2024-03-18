@@ -21,6 +21,8 @@ import java.time.Instant
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.{SubmissionId, _}
+import play.api.libs.json._
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvent.MetaData
 
 sealed trait ApplicationEvent {
   def id: EventId
@@ -39,7 +41,44 @@ object ApplicationEvent {
 
   import ApplicationEvents._
 
-  def asMetaData(evt: ApplicationEvent): (String, List[String]) = {
+// ------------------
+
+  type AuditData = Map[String,String]
+
+  trait AsAuditData[T] {
+    def asAuditData(t: T): Option[AuditData]
+  }
+  trait LowPriorityAsAuditData {
+    implicit object LowPriorityEventAuditData extends AsAuditData[ApplicationEvent] {
+      def asAuditData(t: ApplicationEvent): Option[AuditData] = {
+        None
+      }
+    }
+  }
+  object AuditData extends LowPriorityAsAuditData
+
+// ------------------
+
+  case class MetaData(name: String, data: List[String])
+
+  trait AsMetaData[T] {
+    def asMetaData(t: T): Option[MetaData]
+  }
+  
+  // TODO - remove when migrated
+  trait LowPriorityAsMetaData {
+    implicit object LowPriorityEventMetaData extends AsMetaData[ApplicationEvent] {
+      def asMetaData(t: ApplicationEvent): Option[MetaData] = {
+        val (n,l) = asMetaDataOld(t)
+        Some(MetaData.apply(n,l))
+      }
+    }
+  }
+  object AsMetaData extends LowPriorityAsMetaData
+
+  def asMetaData[T <: ApplicationEvent](evt: T)(implicit meta: AsMetaData[T]): Option[MetaData] = meta.asMetaData(evt)
+
+  def asMetaDataOld(evt: ApplicationEvent): (String, List[String]) = {
     def ifDefined[T](fn: T => String)(value: Option[T]): List[String] =
       value.map(fn).toList
 
@@ -763,6 +802,16 @@ object ApplicationEvents {
       version: String
     ) extends ApplicationEvent
 
+object ApiSubscribedEvent {
+  implicit val format: Format[ApiSubscribedEvent] = Json.format[ApiSubscribedEvent]
+  implicit val metaData: ApplicationEvent.AsMetaData[ApiSubscribedEvent] = new ApplicationEvent.AsMetaData[ApiSubscribedEvent] {
+    def asMetaData(t: ApiSubscribedEvent): Option[MetaData] = Some(MetaData("Api Subscribed", List(s"API ${t.context} v${t.version}")))
+  }
+
+  // implicit object ApiSubscribedEventMetaData extends ApplicationEvent.AsMetaData[ApiSubscribedEvent] {
+  //   def asMetaData(t: ApiSubscribedEvent): MetaData = MetaData("Api Subscribed", List(s"API ${t.context} v${t.version}"))
+  // }
+}
   /** DEPRECATED Use ApiUnsubscribedV2 instead
     */
   case class ApiUnsubscribedEvent(

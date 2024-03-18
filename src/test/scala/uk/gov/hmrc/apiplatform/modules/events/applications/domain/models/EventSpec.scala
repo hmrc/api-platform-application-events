@@ -24,7 +24,7 @@ import uk.gov.hmrc.apiplatform.modules.common.utils.{BaseJsonFormattersSpec, Eve
 abstract class EventSpec extends HmrcSpec with Matchers with Inside with BaseJsonFormattersSpec with EventTestData {
 
   def testDisplay(applicationEvent: ApplicationEvent, expectedEventTag: EventTag, expectedEventType: String, expectedTextItems: List[String]) = {
-    inside(ApplicationEvent.asMetaData(applicationEvent)) {
+    inside(ApplicationEvent.asMetaDataOld(applicationEvent)) {
       case (eventType, meta) =>
         eventType shouldBe expectedEventType
         expectedTextItems.foreach(item =>

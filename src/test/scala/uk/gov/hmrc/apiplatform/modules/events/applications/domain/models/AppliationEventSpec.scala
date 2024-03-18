@@ -19,13 +19,10 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.Collaborators
 
-class AppliationEventSpec extends AnyWordSpec with Matchers {
+class AppliationEventSpec extends EventSpec {
 
   "AbstractApplicationEvent" when {
     val anActor       = Actors.Unknown
@@ -50,5 +47,23 @@ class AppliationEventSpec extends AnyWordSpec with Matchers {
         es.sorted shouldBe List(e1, e2, e3)
       }
     }
+
+    "bobbins" should {
+      import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
+      
+      "test meta 1" in {
+        val evt = ApiSubscribedEvent(anEventId, anAppId, anInstant, appCollaborator, context.value, version.value)
+
+        inside(ApplicationEvent.asMetaData(evt).value) {
+          case ApplicationEvent.MetaData("Api Subscribed", list) => list should have size 1
+        }
+      }
+
+      "test meta 2" in {
+        val evt: ApplicationEvent = ApplicationEvents.ClientSecretAddedEvent(anEventId, anAppId, anInstant, appCollaborator, aClientSecretId)
+
+        ApplicationEvent.asMetaData(evt) shouldBe Some(ApplicationEvent.MetaData("Client Secret Added", List("Id: someClientId")))
+      }
+    } 
   }
 }
