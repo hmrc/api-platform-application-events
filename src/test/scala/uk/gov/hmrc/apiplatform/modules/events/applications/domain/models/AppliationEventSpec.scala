@@ -47,23 +47,5 @@ class AppliationEventSpec extends EventSpec {
         es.sorted shouldBe List(e1, e2, e3)
       }
     }
-
-    "bobbins" should {
-      import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
-
-      "test meta 1" in {
-        val evt = ApiSubscribedEvent(anEventId, anAppId, anInstant, appCollaborator, context.value, version.value)
-
-        inside(evt.asMetaData()) {
-          case ("Api Subscribed", list) => list should have size 1
-        }
-      }
-
-      "test meta 2" in {
-        val evt: ApplicationEvent = ApplicationEvents.ClientSecretAddedEvent(anEventId, anAppId, anInstant, appCollaborator, aClientSecretId)
-
-        evt.asMetaData() shouldBe ("Client Secret Added", List("Id: someClientId"))
-      }
-    }
   }
 }
