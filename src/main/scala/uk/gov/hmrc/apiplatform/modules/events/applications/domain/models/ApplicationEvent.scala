@@ -150,7 +150,7 @@ object ApplicationEvents {
       requestingAdminEmail: LaxEmailAddress
     ) extends ApplicationEvent {
 
-    def asMetaData(): MetaData = ("Name Changed", List(s"From: $oldAppName", s"To: $newAppName", s"Requested by ${requestingAdminEmail.text}"))
+    def asMetaData(): MetaData = ("Production Application Name Changed", List(s"From: $oldAppName", s"To: $newAppName", s"Requested by ${requestingAdminEmail.text}"))
   }
 
   case class ProductionAppPrivacyPolicyLocationChanged(
@@ -357,7 +357,7 @@ object ApplicationEvents {
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
-      "State changed",
+      "Application State changed",
       List(
         s"From ${oldAppState} to ${newAppState}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
@@ -502,7 +502,7 @@ object ApplicationEvents {
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
-      "Approval request declined",
+      "Application Approval Request Declined",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
         s"Declined by ${decliningUserName} @ ${decliningUserEmail.text}",
@@ -524,7 +524,7 @@ object ApplicationEvents {
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
-      "Approval request granted",
+      "Application Approval Request Granted",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
         s"granted by ${actor.user}",
@@ -547,7 +547,7 @@ object ApplicationEvents {
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
-      "Approval request granted with Warnings",
+      "Application Approval Request Granted with warnings",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
         s"granted by ${actor.user}",
@@ -571,7 +571,7 @@ object ApplicationEvents {
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
-      "Terms of Use Approval granted",
+      "Terms of Use Approval Granted",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
         s"granted by ${actor.user}",
@@ -633,7 +633,7 @@ object ApplicationEvents {
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
-      "Terms of use Invitation sent",
+      "Terms of Use Invitation Sent",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
         s"Actioned by ${actor.user}"
@@ -650,7 +650,7 @@ object ApplicationEvents {
       submissionIndex: Int
     ) extends ApplicationEvent {
 
-    def asMetaData(): MetaData = ("Terms of Use passed", List(s"Submission Id: ${submissionId.value} - ${submissionIndex}"))
+    def asMetaData(): MetaData = ("Terms of Use Passed", List(s"Submission Id: ${submissionId.value} - ${submissionIndex}"))
   }
 
   case class ApplicationDeleted(

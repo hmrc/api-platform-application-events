@@ -101,6 +101,12 @@ object EventTags {
         _: ResponsibleIndividualVerificationStarted |
         _: ApplicationStateChanged |
         _: ApplicationApprovalRequestDeclined |
+        _: ApplicationApprovalRequestGranted |
+        _: ApplicationApprovalRequestGrantedWithWarnings |
+        _: ApplicationApprovalRequestSubmitted |
+        _: RequesterEmailVerificationResent |
+        _: TermsOfUseApprovalGranted |
+        _: TermsOfUseInvitationSent |
         _: TermsOfUsePassed |
         _: ProductionCredentialsApplicationDeleted => TERMS_OF_USE
     case _: ApplicationDeleted |
