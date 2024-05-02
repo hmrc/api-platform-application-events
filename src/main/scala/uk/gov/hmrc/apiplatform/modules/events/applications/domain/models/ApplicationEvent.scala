@@ -512,6 +512,139 @@ object ApplicationEvents {
     )
   }
 
+  case class ApplicationApprovalRequestGranted(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Approval request granted",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"granted by ${actor.user}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
+  case class ApplicationApprovalRequestGrantedWithWarnings(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      warnings: String,
+      escalatedTo: Option[String],
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Approval request granted with Warnings",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"granted by ${actor.user}",
+        s"warnings: ${warnings}" + escalatedTo.fold("")(to => s" escalatedTo: $to"),
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
+  case class TermsOfUseApprovalGranted(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      reasons: String,
+      escalatedTo: Option[String],
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Terms of Use Approval granted",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"granted by ${actor.user}",
+        s"reasons: ${reasons}" + escalatedTo.fold("")(to => s" escalatedTo: $to"),
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
+  case class ApplicationApprovalRequestSubmitted(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      reasons: String,
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Application Approval Request Submitted",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"reasons: ${reasons}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
+  case class RequesterEmailVerificationResent(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Requester Verification Email Resent",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Actioned by ${actor.user}",
+        s"Requester ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
+  case class TermsOfUseInvitationSent(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Terms of use Invitation sent",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Actioned by ${actor.user}",
+        s"Requester ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
   case class TermsOfUsePassed(
       id: EventId,
       applicationId: ApplicationId,
