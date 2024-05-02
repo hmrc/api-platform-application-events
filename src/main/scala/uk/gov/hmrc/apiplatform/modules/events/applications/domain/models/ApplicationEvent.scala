@@ -588,7 +588,6 @@ object ApplicationEvents {
       actor: Actors.GatekeeperUser,
       submissionId: SubmissionId,
       submissionIndex: Int,
-      reasons: String,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
     ) extends ApplicationEvent {
@@ -597,7 +596,7 @@ object ApplicationEvents {
       "Application Approval Request Submitted",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-        s"reasons: ${reasons}",
+        s"Actioned by ${actor.user}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
       )
     )
@@ -630,17 +629,14 @@ object ApplicationEvents {
       eventDateTime: Instant,
       actor: Actors.GatekeeperUser,
       submissionId: SubmissionId,
-      submissionIndex: Int,
-      requestingAdminName: String,
-      requestingAdminEmail: LaxEmailAddress
+      submissionIndex: Int
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
       "Terms of use Invitation sent",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-        s"Actioned by ${actor.user}",
-        s"Requester ${requestingAdminName} @ ${requestingAdminEmail.text}"
+        s"Actioned by ${actor.user}"
       )
     )
   }
