@@ -83,7 +83,15 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val responsibleIndividualDeclinedOrDidNotVerifyFormats: OFormat[ResponsibleIndividualDeclinedOrDidNotVerify] = Json.format[ResponsibleIndividualDeclinedOrDidNotVerify]
 
   implicit val applicationApprovalRequestDeclinedFormats: OFormat[ApplicationApprovalRequestDeclined] = Json.format[ApplicationApprovalRequestDeclined]
-  implicit val termsOfUsePassedFormats: OFormat[TermsOfUsePassed]                                     = Json.format[TermsOfUsePassed]
+  implicit val applicationApprovalRequestGrantedFormats: OFormat[ApplicationApprovalRequestGranted]   = Json.format[ApplicationApprovalRequestGranted]
+
+  implicit val applicationApprovalRequestGrantedWithWarningsFormats: OFormat[ApplicationApprovalRequestGrantedWithWarnings] =
+    Json.format[ApplicationApprovalRequestGrantedWithWarnings]
+  implicit val applicationApprovalRequestSubmittedFormats: OFormat[ApplicationApprovalRequestSubmitted]                     = Json.format[ApplicationApprovalRequestSubmitted]
+  implicit val requesterEmailVerificationResentFormats: OFormat[RequesterEmailVerificationResent]                           = Json.format[RequesterEmailVerificationResent]
+  implicit val termsOfUseApprovalGrantedFormats: OFormat[TermsOfUseApprovalGranted]                                         = Json.format[TermsOfUseApprovalGranted]
+  implicit val termsOfUseInvitationSentFormats: OFormat[TermsOfUseInvitationSent]                                           = Json.format[TermsOfUseInvitationSent]
+  implicit val termsOfUsePassedFormats: OFormat[TermsOfUsePassed]                                                           = Json.format[TermsOfUsePassed]
 
   implicit val applicationDeletedFormats: OFormat[ApplicationDeleted]                                           = Json.format[ApplicationDeleted]
   implicit val applicationDeletedByGatekeeperFormats: OFormat[ApplicationDeletedByGatekeeper]                   = Json.format[ApplicationDeletedByGatekeeper]
@@ -182,9 +190,15 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY             extends EventType
     case object RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY extends EventType
 
-    case object APPLICATION_APPROVAL_REQUEST_DECLINED extends EventType
-    case object TERMS_OF_USE_PASSED                   extends EventType
-    case object APPLICATION_STATE_CHANGED             extends EventType
+    case object APPLICATION_APPROVAL_REQUEST_DECLINED              extends EventType
+    case object APPLICATION_APPROVAL_REQUEST_GRANTED               extends EventType
+    case object APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS extends EventType
+    case object APPLICATION_APPROVAL_REQUEST_SUBMITTED             extends EventType
+    case object REQUESTER_EMAIL_VERIFICATION_RESENT                extends EventType
+    case object TERMS_OF_USE_APPROVAL_GRANTED                      extends EventType
+    case object TERMS_OF_USE_INVITATION_SENT                       extends EventType
+    case object TERMS_OF_USE_PASSED                                extends EventType
+    case object APPLICATION_STATE_CHANGED                          extends EventType
 
     case object APPLICATION_DELETED                        extends EventType
     case object APPLICATION_DELETED_BY_GATEKEEPER          extends EventType
@@ -242,6 +256,12 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ResponsibleIndividualDidNotVerify](EventTypes.RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY.toString)
     .and[ResponsibleIndividualDeclinedOrDidNotVerify](EventTypes.RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY.toString)
     .and[ApplicationApprovalRequestDeclined](EventTypes.APPLICATION_APPROVAL_REQUEST_DECLINED.toString)
+    .and[ApplicationApprovalRequestGranted](EventTypes.APPLICATION_APPROVAL_REQUEST_GRANTED.toString)
+    .and[ApplicationApprovalRequestGrantedWithWarnings](EventTypes.APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS.toString)
+    .and[ApplicationApprovalRequestSubmitted](EventTypes.APPLICATION_APPROVAL_REQUEST_SUBMITTED.toString)
+    .and[TermsOfUseApprovalGranted](EventTypes.TERMS_OF_USE_APPROVAL_GRANTED.toString)
+    .and[RequesterEmailVerificationResent](EventTypes.REQUESTER_EMAIL_VERIFICATION_RESENT.toString)
+    .and[TermsOfUseInvitationSent](EventTypes.TERMS_OF_USE_INVITATION_SENT.toString)
     .and[TermsOfUsePassed](EventTypes.TERMS_OF_USE_PASSED.toString)
     .and[ApplicationDeleted](EventTypes.APPLICATION_DELETED.toString)
     .and[ApplicationDeletedByGatekeeper](EventTypes.APPLICATION_DELETED_BY_GATEKEEPER.toString)

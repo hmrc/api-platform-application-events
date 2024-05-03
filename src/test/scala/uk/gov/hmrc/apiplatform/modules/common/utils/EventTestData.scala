@@ -22,6 +22,7 @@ import java.util.UUID
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress.StringSyntax
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{Collaborators, RedirectUri}
+import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.SubmissionId
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventId
 
@@ -45,7 +46,15 @@ trait EventTestData {
   val aClientSecretName      = "someClientSecretName"
   val aClientId              = ClientId.random
 
-  val requestingEmail            = "fred@example.com".toLaxEmail
+  val requestingEmail     = "fred@example.com".toLaxEmail
+  val requestingAdminName = "fred example"
+
+  val responsibleIndividualEmail = "captainsensible@example.com".toLaxEmail
+  val responsibleIndividualName  = "captain sensible"
+  val riCode                     = "1234"
+
+  val warnings                   = "some warning or other"
+  val escalatedTo                = Some("super-user")
   val adminCollaboratorEmail     = "admin@example.com".toLaxEmail
   val developerCollaboratorEmail = "developer@example.com".toLaxEmail
 
@@ -59,5 +68,8 @@ trait EventTestData {
 
   val aRedirectUri: RedirectUri        = RedirectUri.unsafeApply("http://localhost:8000/some")
   val toChangeRedirectUri: RedirectUri = RedirectUri.unsafeApply("http://localhost:8000/different")
+
+  val submissionId    = SubmissionId(UUID.randomUUID())
+  val submissionIndex = 1
 
 }
