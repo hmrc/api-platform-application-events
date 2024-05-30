@@ -104,6 +104,7 @@ object EventTags {
         _: ApplicationApprovalRequestGranted |
         _: ApplicationApprovalRequestGrantedWithWarnings |
         _: ApplicationApprovalRequestSubmitted |
+        _: TermsOfUseApprovalSubmitted |
         _: RequesterEmailVerificationResent |
         _: TermsOfUseApprovalGranted |
         _: TermsOfUseInvitationSent |

@@ -21,12 +21,12 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class ApplicationApprovalRequestSubmittedSpec extends EventSpec {
+class TermsOfUseApprovalSubmittedSpec extends EventSpec {
 
-  "ApplicationApprovalRequestSubmitted" should {
+  "TermsOfUseApprovalSubmitted" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val applicationApprovalRequestSubmitted: ApplicationEvent = ApplicationApprovalRequestSubmitted(
+    val termsOfUseApprovalSubmitted: ApplicationEvent = TermsOfUseApprovalSubmitted(
       anEventId,
       anAppId,
       anInstant,
@@ -38,25 +38,25 @@ class ApplicationApprovalRequestSubmittedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_APPROVAL_REQUEST_SUBMITTED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"TERMS_OF_USE_APPROVAL_REQUEST_SUBMITTED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[ApplicationApprovalRequestSubmitted]
+      evt shouldBe a[TermsOfUseApprovalSubmitted]
     }
 
     "convert to correctJson" in {
 
-      val eventJSonString = Json.toJson(applicationApprovalRequestSubmitted).toString()
+      val eventJSonString = Json.toJson(termsOfUseApprovalSubmitted).toString()
       eventJSonString shouldBe jsonText
     }
 
-    "display ApplicationApprovalRequestSubmitted correctly" in {
+    "display TermsOfUseApprovalSubmitted correctly" in {
       testDisplay(
-        applicationApprovalRequestSubmitted,
-        EventTags.APP_LIFECYCLE,
-        "Application Approval Request Submitted",
+        termsOfUseApprovalSubmitted,
+        EventTags.TERMS_OF_USE,
+        "Terms of Use Approval Request Submitted",
         List(actorCollaboratorEmail.text, requestingEmail.text)
       )
     }

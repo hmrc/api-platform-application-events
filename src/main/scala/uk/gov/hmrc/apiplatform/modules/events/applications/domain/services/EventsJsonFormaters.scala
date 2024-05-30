@@ -88,6 +88,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val applicationApprovalRequestGrantedWithWarningsFormats: OFormat[ApplicationApprovalRequestGrantedWithWarnings] =
     Json.format[ApplicationApprovalRequestGrantedWithWarnings]
   implicit val applicationApprovalRequestSubmittedFormats: OFormat[ApplicationApprovalRequestSubmitted]                     = Json.format[ApplicationApprovalRequestSubmitted]
+  implicit val termsOfUseApprovalSubmittedFormats: OFormat[TermsOfUseApprovalSubmitted]                                     = Json.format[TermsOfUseApprovalSubmitted]
   implicit val requesterEmailVerificationResentFormats: OFormat[RequesterEmailVerificationResent]                           = Json.format[RequesterEmailVerificationResent]
   implicit val termsOfUseApprovalGrantedFormats: OFormat[TermsOfUseApprovalGranted]                                         = Json.format[TermsOfUseApprovalGranted]
   implicit val termsOfUseInvitationSentFormats: OFormat[TermsOfUseInvitationSent]                                           = Json.format[TermsOfUseInvitationSent]
@@ -194,6 +195,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object APPLICATION_APPROVAL_REQUEST_GRANTED               extends EventType
     case object APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS extends EventType
     case object APPLICATION_APPROVAL_REQUEST_SUBMITTED             extends EventType
+    case object TERMS_OF_USE_APPROVAL_REQUEST_SUBMITTED            extends EventType
     case object REQUESTER_EMAIL_VERIFICATION_RESENT                extends EventType
     case object TERMS_OF_USE_APPROVAL_GRANTED                      extends EventType
     case object TERMS_OF_USE_INVITATION_SENT                       extends EventType
@@ -259,6 +261,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ApplicationApprovalRequestGranted](EventTypes.APPLICATION_APPROVAL_REQUEST_GRANTED.toString)
     .and[ApplicationApprovalRequestGrantedWithWarnings](EventTypes.APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS.toString)
     .and[ApplicationApprovalRequestSubmitted](EventTypes.APPLICATION_APPROVAL_REQUEST_SUBMITTED.toString)
+    .and[TermsOfUseApprovalSubmitted](EventTypes.TERMS_OF_USE_APPROVAL_REQUEST_SUBMITTED.toString)
     .and[TermsOfUseApprovalGranted](EventTypes.TERMS_OF_USE_APPROVAL_GRANTED.toString)
     .and[RequesterEmailVerificationResent](EventTypes.REQUESTER_EMAIL_VERIFICATION_RESENT.toString)
     .and[TermsOfUseInvitationSent](EventTypes.TERMS_OF_USE_INVITATION_SENT.toString)
