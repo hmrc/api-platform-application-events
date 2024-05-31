@@ -585,7 +585,7 @@ object ApplicationEvents {
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,
-      actor: Actors.GatekeeperUser,
+      actor: Actors.AppCollaborator,
       submissionId: SubmissionId,
       submissionIndex: Int,
       requestingAdminName: String,
@@ -596,7 +596,28 @@ object ApplicationEvents {
       "Application Approval Request Submitted",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-        s"Actioned by ${actor.user}",
+        s"Actioned by ${actor.email}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
+  case class TermsOfUseApprovalSubmitted(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Terms of Use Approval Request Submitted",
+      List(
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Actioned by ${actor.email}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
       )
     )
