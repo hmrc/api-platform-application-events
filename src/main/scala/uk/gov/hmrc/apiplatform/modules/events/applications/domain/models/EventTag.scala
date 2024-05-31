@@ -99,6 +99,7 @@ object EventTags {
         _: ResponsibleIndividualDeclinedOrDidNotVerify |
         _: ResponsibleIndividualSet |
         _: ResponsibleIndividualVerificationStarted |
+        _: ResponsibleIndividualVerificationRequired |
         _: ApplicationStateChanged |
         _: ApplicationApprovalRequestDeclined |
         _: ApplicationApprovalRequestGranted |

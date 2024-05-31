@@ -77,6 +77,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val applicationStateChangedFormats: OFormat[ApplicationStateChanged]                       = Json.format[ApplicationStateChanged]
 
   implicit val responsibleIndividualVerificationStartedFormats: OFormat[ResponsibleIndividualVerificationStarted]       = Json.format[ResponsibleIndividualVerificationStarted]
+  implicit val responsibleIndividualVerificationRequiredFormats: OFormat[ResponsibleIndividualVerificationRequired]     = Json.format[ResponsibleIndividualVerificationRequired]
   implicit val responsibleIndividualDeclinedFormats: OFormat[ResponsibleIndividualDeclined]                             = Json.format[ResponsibleIndividualDeclined]
   implicit val responsibleIndividualDeclinedUpdateFormats: OFormat[ResponsibleIndividualDeclinedUpdate]                 = Json.format[ResponsibleIndividualDeclinedUpdate]
   implicit val responsibleIndividualDidNotVerifyFormats: OFormat[ResponsibleIndividualDidNotVerify]                     = Json.format[ResponsibleIndividualDidNotVerify]
@@ -186,6 +187,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object RESPONSIBLE_INDIVIDUAL_CHANGED                    extends EventType
     case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF            extends EventType
     case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_STARTED       extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED      extends EventType
     case object RESPONSIBLE_INDIVIDUAL_DECLINED                   extends EventType
     case object RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE            extends EventType
     case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY             extends EventType
@@ -253,6 +255,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ResponsibleIndividualChangedToSelf](EventTypes.RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF.toString)
     .and[ApplicationStateChanged](EventTypes.APPLICATION_STATE_CHANGED.toString)
     .and[ResponsibleIndividualVerificationStarted](EventTypes.RESPONSIBLE_INDIVIDUAL_VERIFICATION_STARTED.toString)
+    .and[ResponsibleIndividualVerificationRequired](EventTypes.RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED.toString)
     .and[ResponsibleIndividualDeclined](EventTypes.RESPONSIBLE_INDIVIDUAL_DECLINED.toString)
     .and[ResponsibleIndividualDeclinedUpdate](EventTypes.RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE.toString)
     .and[ResponsibleIndividualDidNotVerify](EventTypes.RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY.toString)

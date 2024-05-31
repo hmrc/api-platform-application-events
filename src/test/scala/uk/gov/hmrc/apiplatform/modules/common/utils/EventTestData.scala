@@ -52,6 +52,7 @@ trait EventTestData {
   val responsibleIndividualEmail = "captainsensible@example.com".toLaxEmail
   val responsibleIndividualName  = "captain sensible"
   val riCode                     = "1234"
+  val verificationId             = "5678"
 
   val warnings                   = "some warning or other"
   val escalatedTo                = Some("super-user")

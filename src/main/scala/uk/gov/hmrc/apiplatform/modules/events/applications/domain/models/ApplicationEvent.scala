@@ -391,6 +391,32 @@ object ApplicationEvents {
     )
   }
 
+  case class ResponsibleIndividualVerificationRequired(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      applicationName: String,
+      requestingAdminName: String,
+      requestingAdminEmail: LaxEmailAddress,
+      responsibleIndividualName: String,
+      responsibleIndividualEmail: LaxEmailAddress,
+      submissionId: SubmissionId,
+      submissionIndex: Int,
+      verificationId: String
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Responsible Individual verification required",
+      List(
+        s"Application Name: ${applicationName}",
+        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
+        s"For Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+      )
+    )
+  }
+
   case class ResponsibleIndividualDeclined(
       id: EventId,
       applicationId: ApplicationId,
