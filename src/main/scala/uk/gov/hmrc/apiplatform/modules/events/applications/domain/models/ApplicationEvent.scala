@@ -293,7 +293,7 @@ object ApplicationEvents {
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
         s"From Responsible Individual: ${previousResponsibleIndividualName} @ ${previousResponsibleIndividualEmail.text}",
-        s"To Reponsible Individual: ${newResponsibleIndividualName} @ ${newResponsibleIndividualEmail.text}"
+        s"To Responsible Individual: ${newResponsibleIndividualName} @ ${newResponsibleIndividualEmail.text}"
       )
     )
   }
@@ -340,7 +340,7 @@ object ApplicationEvents {
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}",
-        s"To Reponsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
+        s"To Responsible Individual: ${responsibleIndividualName} @ ${responsibleIndividualEmail.text}"
       )
     )
   }
@@ -622,7 +622,7 @@ object ApplicationEvents {
       "Application Approval Request Submitted",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-        s"Actioned by ${actor.email}",
+        s"Actioned by ${actor.email.text}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
       )
     )
@@ -643,7 +643,7 @@ object ApplicationEvents {
       "Terms of Use Approval Request Submitted",
       List(
         s"Submission Id: ${submissionId.value} - ${submissionIndex}",
-        s"Actioned by ${actor.email}",
+        s"Actioned by ${actor.email.text}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
       )
     )
