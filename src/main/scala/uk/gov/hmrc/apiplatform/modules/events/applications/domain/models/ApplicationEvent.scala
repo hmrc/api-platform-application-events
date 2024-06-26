@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.time.{Instant, ZoneId}
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models._
@@ -67,6 +68,8 @@ object ApplicationEvent {
 }
 
 object ApplicationEvents {
+
+  val dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy").withZone(ZoneId.systemDefault())
 
   case class GrantLengthChanged(
       id: EventId,
@@ -675,14 +678,13 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actors.GatekeeperUser,
-      submissionId: SubmissionId,
-      submissionIndex: Int
+      dueBy: Instant
     ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = (
       "Terms of Use Invitation Sent",
       List(
-        s"Submission Id: ${submissionId.value} - ${submissionIndex}",
+        s"Due by: ${dateFormatter.format(dueBy)}",
         s"Actioned by ${actor.user}"
       )
     )
