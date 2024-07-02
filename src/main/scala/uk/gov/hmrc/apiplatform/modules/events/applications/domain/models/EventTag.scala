@@ -34,6 +34,7 @@ object EventTags {
   case object APP_LIFECYCLE        extends EventTag("Application lifecycle")
   case object RATE_LIMIT           extends EventTag("Rate Limit")
   case object IP_ALLOWLIST         extends EventTag("IP Allowlist")
+  case object SCOPES               extends EventTag("Scopes")
 
   val ALL = Set(
     SUBSCRIPTION,
@@ -48,7 +49,8 @@ object EventTags {
     TERMS_OF_USE,
     APP_LIFECYCLE,
     RATE_LIMIT,
-    IP_ALLOWLIST
+    IP_ALLOWLIST,
+    SCOPES
   )
 
   /*
@@ -114,7 +116,9 @@ object EventTags {
     case _: ApplicationDeleted |
         _: ApplicationDeletedByGatekeeper |
         _: AllowApplicationAutoDelete |
-        _: BlockApplicationAutoDelete => APP_LIFECYCLE
+        _: BlockApplicationAutoDelete |
+        _: ApplicationBlocked |
+        _: ApplicationUnblocked => APP_LIFECYCLE
     case _: ProductionAppPrivacyPolicyLocationChanged |
         _: SandboxApplicationPrivacyPolicyUrlChanged |
         _: SandboxApplicationPrivacyPolicyUrlRemoved |
@@ -129,6 +133,8 @@ object EventTags {
         _: SandboxApplicationNameChanged |
         _: SandboxApplicationDescriptionChanged |
         _: SandboxApplicationDescriptionCleared => APP_NAME
+    case _: ApplicationScopesChanged |
+        _: ApplicationAccessOverridesChanged => SCOPES
   }
   // scalastyle:on cyclomatic.complexity
 }

@@ -56,7 +56,7 @@ class TermsOfUseInvitationSentSpec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
     "display TermsOfUseInvitationSent correctly" in {
-      testDisplay(termsOfUseInvitationSent, EventTags.APP_LIFECYCLE, "Terms of Use Invitation Sent", List(gkUserStr, dueByDisplayText))
+      testDisplay(termsOfUseInvitationSent, EventTags.TERMS_OF_USE, "Terms of Use Invitation Sent", List(gkUserStr, dueByDisplayText))
     }
   }
 

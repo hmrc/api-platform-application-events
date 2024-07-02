@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Instant, ZoneId}
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
+import uk.gov.hmrc.apiplatform.modules.applications.access.domain.models.OverrideFlag
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.{SubmissionId, _}
 
@@ -792,6 +793,62 @@ object ApplicationEvents {
         s"Required: $required",
         s"From: ${if (oldIpAllowlist.isEmpty) "None" else oldIpAllowlist.mkString(",")}",
         s"To: ${if (newIpAllowlist.isEmpty) "None" else newIpAllowlist.mkString(",")}"
+      )
+    )
+  }
+
+  case class ApplicationBlocked(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application blocked", List.empty)
+  }
+
+  case class ApplicationUnblocked(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application unblocked", List.empty)
+  }
+
+  case class ApplicationScopesChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      oldScopes: Set[String],
+      newScopes: Set[String]
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Application scopes changed",
+      List(
+        s"Old scopes: ${oldScopes.mkString(",")}",
+        s"New scopes: ${newScopes.mkString(",")}"
+      )
+    )
+  }
+
+  case class ApplicationAccessOverridesChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      oldOverrides: Set[OverrideFlag],
+      newOverrides: Set[OverrideFlag]
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Application access overrides changed",
+      List(
+        s"Old overrides: ${oldOverrides.mkString(",")}",
+        s"New overrides: ${newOverrides.mkString(",")}"
       )
     )
   }

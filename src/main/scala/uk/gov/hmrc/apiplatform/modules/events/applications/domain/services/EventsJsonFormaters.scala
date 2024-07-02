@@ -99,6 +99,11 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val applicationDeletedByGatekeeperFormats: OFormat[ApplicationDeletedByGatekeeper]                   = Json.format[ApplicationDeletedByGatekeeper]
   implicit val productionCredentialsApplicationDeletedFormats: OFormat[ProductionCredentialsApplicationDeleted] = Json.format[ProductionCredentialsApplicationDeleted]
 
+  implicit val applicationBlockedFormats: OFormat[ApplicationBlocked]                               = Json.format[ApplicationBlocked]
+  implicit val applicationUnblockedFormats: OFormat[ApplicationUnblocked]                           = Json.format[ApplicationUnblocked]
+  implicit val applicationScopesChangedFormats: OFormat[ApplicationScopesChanged]                   = Json.format[ApplicationScopesChanged]
+  implicit val applicationAccessOverridesChangedFormats: OFormat[ApplicationAccessOverridesChanged] = Json.format[ApplicationAccessOverridesChanged]
+
   implicit val redirectUrisUpdatedEventFormats: OFormat[RedirectUrisUpdatedEvent]       = Json.format[RedirectUrisUpdatedEvent]
   implicit val redirectUrisUpdatedFormats: OFormat[RedirectUrisUpdatedV2]               = Json.format[RedirectUrisUpdatedV2]
   implicit val redirectUriAddedFormats: OFormat[RedirectUriAdded]                       = Json.format[RedirectUriAdded]
@@ -236,6 +241,11 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED       extends EventType
     case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED extends EventType
 
+    case object APPLICATION_BLOCKED                  extends EventType
+    case object APPLICATION_UNBLOCKED                extends EventType
+    case object APPLICATION_SCOPES_CHANGED           extends EventType
+    case object APPLICATION_ACCESS_OVERRIDES_CHANGED extends EventType
+
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
   }
@@ -274,6 +284,10 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ProductionCredentialsApplicationDeleted](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED.toString)
     .and[AllowApplicationAutoDelete](EventTypes.ALLOW_APPLICATION_AUTO_DELETE.toString)
     .and[BlockApplicationAutoDelete](EventTypes.BLOCK_APPLICATION_AUTO_DELETE.toString)
+    .and[ApplicationBlocked](EventTypes.APPLICATION_BLOCKED.toString)
+    .and[ApplicationUnblocked](EventTypes.APPLICATION_UNBLOCKED.toString)
+    .and[ApplicationScopesChanged](EventTypes.APPLICATION_SCOPES_CHANGED.toString)
+    .and[ApplicationAccessOverridesChanged](EventTypes.APPLICATION_ACCESS_OVERRIDES_CHANGED.toString)
     .and[ApiSubscribedV2](EventTypes.API_SUBSCRIBED_V2.toString)
     .and[ApiUnsubscribedV2](EventTypes.API_UNSUBSCRIBED_V2.toString)
     .and[ClientSecretAddedV2](EventTypes.CLIENT_SECRET_ADDED_V2.toString)
