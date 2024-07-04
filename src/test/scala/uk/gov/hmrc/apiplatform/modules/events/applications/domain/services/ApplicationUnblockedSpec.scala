@@ -16,48 +16,41 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import java.time.{LocalDateTime, ZoneOffset}
-
 import play.api.libs.json.Json
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class TermsOfUseInvitationSentSpec extends EventSpec {
+class ApplicationUnblockedSpec extends EventSpec {
 
-  "TermsOfUseInvitationSent" should {
+  "ApplicationUnblocked" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val gkUserStr        = gkCollaborator.user
-    val dueBy            = LocalDateTime.of(2020, 2, 1, 3, 4, 5, 0).toInstant(ZoneOffset.UTC)
-    val dueByText        = "2020-02-01T03:04:05.000"
-    val dueByDisplayText = "01 February 2020"
+    val gkUserStr = gkCollaborator.user
 
-    val termsOfUseInvitationSent: ApplicationEvent = TermsOfUseInvitationSent(
+    val applicationUnblocked: ApplicationEvent = ApplicationUnblocked(
       anEventId,
       anAppId,
       anInstant,
-      gkCollaborator,
-      dueBy
+      gkCollaborator
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"dueBy":"${dueByText}","eventType":"TERMS_OF_USE_INVITATION_SENT"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"eventType":"APPLICATION_UNBLOCKED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[TermsOfUseInvitationSent]
+      evt shouldBe a[ApplicationUnblocked]
     }
 
-    "convert to correctJson" in {
-
-      val eventJSonString = Json.toJson(termsOfUseInvitationSent).toString()
+    "convert to correct Json" in {
+      val eventJSonString = Json.toJson(applicationUnblocked).toString()
       eventJSonString shouldBe jsonText
     }
-    "display TermsOfUseInvitationSent correctly" in {
-      testDisplay(termsOfUseInvitationSent, EventTags.TERMS_OF_USE, "Terms of Use Invitation Sent", List(gkUserStr, dueByDisplayText))
+
+    "display ApplicationUnblocked correctly" in {
+      testDisplay(applicationUnblocked, EventTags.APP_LIFECYCLE, "Application unblocked", List.empty)
     }
   }
-
 }

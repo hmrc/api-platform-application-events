@@ -16,48 +16,45 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
-import java.time.{LocalDateTime, ZoneOffset}
-
 import play.api.libs.json.Json
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class TermsOfUseInvitationSentSpec extends EventSpec {
+class ApplicationScopesChangedSpec extends EventSpec {
 
-  "TermsOfUseInvitationSent" should {
+  "ApplicationScopesChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val gkUserStr        = gkCollaborator.user
-    val dueBy            = LocalDateTime.of(2020, 2, 1, 3, 4, 5, 0).toInstant(ZoneOffset.UTC)
-    val dueByText        = "2020-02-01T03:04:05.000"
-    val dueByDisplayText = "01 February 2020"
+    val gkUserStr = gkCollaborator.user
+    val oldScopes = Set("scope01")
+    val newScopes = Set("scope01", "scope02")
 
-    val termsOfUseInvitationSent: ApplicationEvent = TermsOfUseInvitationSent(
+    val applicationScopesChanged: ApplicationEvent = ApplicationScopesChanged(
       anEventId,
       anAppId,
       anInstant,
       gkCollaborator,
-      dueBy
+      oldScopes,
+      newScopes
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"dueBy":"${dueByText}","eventType":"TERMS_OF_USE_INVITATION_SENT"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldScopes":["scope01"],"newScopes":["scope01","scope02"],"eventType":"APPLICATION_SCOPES_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[TermsOfUseInvitationSent]
+      evt shouldBe a[ApplicationScopesChanged]
     }
 
-    "convert to correctJson" in {
-
-      val eventJSonString = Json.toJson(termsOfUseInvitationSent).toString()
+    "convert to correct Json" in {
+      val eventJSonString = Json.toJson(applicationScopesChanged).toString()
       eventJSonString shouldBe jsonText
     }
-    "display TermsOfUseInvitationSent correctly" in {
-      testDisplay(termsOfUseInvitationSent, EventTags.TERMS_OF_USE, "Terms of Use Invitation Sent", List(gkUserStr, dueByDisplayText))
+
+    "display ApplicationScopesChanged correctly" in {
+      testDisplay(applicationScopesChanged, EventTags.SCOPES, "Application scopes changed", List("Old scopes: scope01", "New scopes: scope01,scope02"))
     }
   }
-
 }
