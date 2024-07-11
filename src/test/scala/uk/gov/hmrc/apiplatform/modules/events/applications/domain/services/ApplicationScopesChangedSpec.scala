@@ -27,8 +27,8 @@ class ApplicationScopesChangedSpec extends EventSpec {
     import EventsInterServiceCallJsonFormatters._
 
     val gkUserStr = gkCollaborator.user
-    val oldScopes = Set("scope01")
-    val newScopes = Set("scope01", "scope02")
+    val oldScopes = Set("scope01", "scope02")
+    val newScopes = Set("scope01", "scope03")
 
     val applicationScopesChanged: ApplicationEvent = ApplicationScopesChanged(
       anEventId,
@@ -40,7 +40,7 @@ class ApplicationScopesChangedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldScopes":["scope01"],"newScopes":["scope01","scope02"],"eventType":"APPLICATION_SCOPES_CHANGED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldScopes":["scope01","scope02"],"newScopes":["scope01","scope03"],"eventType":"APPLICATION_SCOPES_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
@@ -54,7 +54,7 @@ class ApplicationScopesChangedSpec extends EventSpec {
     }
 
     "display ApplicationScopesChanged correctly" in {
-      testDisplay(applicationScopesChanged, EventTags.SCOPES, "Application scopes changed", List("Old scopes: scope01", "New scopes: scope01,scope02"))
+      testDisplay(applicationScopesChanged, EventTags.SCOPES, "Application scopes changed", List("Old scopes: scope01, scope02", "New scopes: scope01, scope03"))
     }
   }
 }

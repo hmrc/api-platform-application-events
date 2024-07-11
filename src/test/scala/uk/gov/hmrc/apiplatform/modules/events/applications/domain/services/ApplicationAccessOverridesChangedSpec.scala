@@ -28,8 +28,12 @@ class ApplicationAccessOverridesChangedSpec extends EventSpec {
     import EventsInterServiceCallJsonFormatters._
 
     val gkUserStr    = gkCollaborator.user
-    val oldOverrides = Set[OverrideFlag](OverrideFlag.PersistLogin)
-    val newOverrides = Set[OverrideFlag](OverrideFlag.PersistLogin, OverrideFlag.OriginOverride("scope01"))
+    val oldOverrides = Set[OverrideFlag](OverrideFlag.PersistLogin, OverrideFlag.OriginOverride("origin01"))
+    val newOverrides = Set[OverrideFlag](
+      OverrideFlag.PersistLogin,
+      OverrideFlag.SuppressIvForIndividuals(Set("scope01", "scope02")),
+      OverrideFlag.GrantWithoutConsent(Set("scope03", "scope04", "scope05"))
+    )
 
     val applicationAccessOverridesChanged: ApplicationEvent = ApplicationAccessOverridesChanged(
       anEventId,
@@ -41,7 +45,7 @@ class ApplicationAccessOverridesChangedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"}],"newOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"},{"origin":"scope01","overrideType":"ORIGIN_OVERRIDE"}],"eventType":"APPLICATION_ACCESS_OVERRIDES_CHANGED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"},{"origin":"origin01","overrideType":"ORIGIN_OVERRIDE"}],"newOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"},{"scopes":["scope01","scope02"],"overrideType":"SUPPRESS_IV_FOR_INDIVIDUALS"},{"scopes":["scope03","scope04","scope05"],"overrideType":"GRANT_WITHOUT_TAXPAYER_CONSENT"}],"eventType":"APPLICATION_ACCESS_OVERRIDES_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
@@ -59,7 +63,10 @@ class ApplicationAccessOverridesChangedSpec extends EventSpec {
         applicationAccessOverridesChanged,
         EventTags.SCOPES,
         "Application access overrides changed",
-        List("Old overrides: PersistLogin", "New overrides: PersistLogin,OriginOverride(scope01)")
+        List(
+          "Old overrides: PersistLogin, OriginOverride(origin01)",
+          "New overrides: PersistLogin, SuppressIvForIndividuals(scope01, scope02), GrantWithoutConsent(scope03, scope04, scope05)"
+        )
       )
     }
   }

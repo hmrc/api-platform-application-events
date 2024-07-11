@@ -829,8 +829,8 @@ object ApplicationEvents {
     def asMetaData(): MetaData = (
       "Application scopes changed",
       List(
-        s"Old scopes: ${oldScopes.mkString(",")}",
-        s"New scopes: ${newScopes.mkString(",")}"
+        s"Old scopes: ${oldScopes.mkString(", ")}",
+        s"New scopes: ${newScopes.mkString(", ")}"
       )
     )
   }
@@ -847,8 +847,8 @@ object ApplicationEvents {
     def asMetaData(): MetaData = (
       "Application access overrides changed",
       List(
-        s"Old overrides: ${oldOverrides.mkString(",")}",
-        s"New overrides: ${newOverrides.mkString(",")}"
+        s"Old overrides: ${oldOverrides.mkString(", ")}",
+        s"New overrides: ${newOverrides.mkString(", ")}"
       )
     )
   }
