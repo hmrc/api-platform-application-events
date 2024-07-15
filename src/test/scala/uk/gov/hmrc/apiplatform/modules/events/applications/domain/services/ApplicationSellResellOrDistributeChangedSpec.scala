@@ -17,47 +17,46 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
+import uk.gov.hmrc.apiplatform.modules.applications.access.domain.models.SellResellOrDistribute
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class ApplicationApprovalRequestSubmittedSpec extends EventSpec {
+class ApplicationSellResellOrDistributeChangedSpec extends EventSpec {
 
-  "ApplicationApprovalRequestSubmitted" should {
+  "ApplicationSellResellOrDistributeChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val applicationApprovalRequestSubmitted: ApplicationEvent = ApplicationApprovalRequestSubmitted(
+    val applicationSellResellOrDistributeChanged: ApplicationEvent = ApplicationSellResellOrDistributeChanged(
       anEventId,
       anAppId,
       anInstant,
       appCollaborator,
-      submissionId,
-      submissionIndex,
-      requestingAdminName,
-      requestingEmail
+      Some(SellResellOrDistribute("Yes")),
+      SellResellOrDistribute("No")
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_APPROVAL_REQUEST_SUBMITTED"}"""
+      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"oldSellResellOrDistribute":"Yes","newSellResellOrDistribute":"No","eventType":"APPLICATION_SELL_RESELL_OR_DISTRIBUTE_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[ApplicationApprovalRequestSubmitted]
+      evt shouldBe a[ApplicationSellResellOrDistributeChanged]
     }
 
     "convert to correctJson" in {
 
-      val eventJSonString = Json.toJson(applicationApprovalRequestSubmitted).toString()
+      val eventJSonString = Json.toJson(applicationSellResellOrDistributeChanged).toString()
       eventJSonString shouldBe jsonText
     }
 
-    "display ApplicationApprovalRequestSubmitted correctly" in {
+    "display ApplicationSellResellOrDistributeChanged correctly" in {
       testDisplay(
-        applicationApprovalRequestSubmitted,
+        applicationSellResellOrDistributeChanged,
         EventTags.TERMS_OF_USE,
-        "Application Approval Request Submitted",
-        List(actorCollaboratorEmail.text, requestingEmail.text)
+        "Application SellResellOrDistribute Changed",
+        List("Old SellResellOrDistribute: Yes", "New SellResellOrDistribute: No")
       )
     }
   }

@@ -106,6 +106,7 @@ object EventTags {
         _: ApplicationApprovalRequestDeclined |
         _: ApplicationApprovalRequestGranted |
         _: ApplicationApprovalRequestGrantedWithWarnings |
+        _: ApplicationSellResellOrDistributeChanged |
         _: ApplicationApprovalRequestSubmitted |
         _: TermsOfUseApprovalSubmitted |
         _: RequesterEmailVerificationResent |

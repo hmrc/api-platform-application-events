@@ -88,6 +88,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
 
   implicit val applicationApprovalRequestGrantedWithWarningsFormats: OFormat[ApplicationApprovalRequestGrantedWithWarnings] =
     Json.format[ApplicationApprovalRequestGrantedWithWarnings]
+  implicit val applicationSellResellOrDistributeChangedFormats: OFormat[ApplicationSellResellOrDistributeChanged]           = Json.format[ApplicationSellResellOrDistributeChanged]
   implicit val applicationApprovalRequestSubmittedFormats: OFormat[ApplicationApprovalRequestSubmitted]                     = Json.format[ApplicationApprovalRequestSubmitted]
   implicit val termsOfUseApprovalSubmittedFormats: OFormat[TermsOfUseApprovalSubmitted]                                     = Json.format[TermsOfUseApprovalSubmitted]
   implicit val requesterEmailVerificationResentFormats: OFormat[RequesterEmailVerificationResent]                           = Json.format[RequesterEmailVerificationResent]
@@ -201,6 +202,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object APPLICATION_APPROVAL_REQUEST_DECLINED              extends EventType
     case object APPLICATION_APPROVAL_REQUEST_GRANTED               extends EventType
     case object APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS extends EventType
+    case object APPLICATION_SELL_RESELL_OR_DISTRIBUTE_CHANGED      extends EventType
     case object APPLICATION_APPROVAL_REQUEST_SUBMITTED             extends EventType
     case object TERMS_OF_USE_APPROVAL_REQUEST_SUBMITTED            extends EventType
     case object REQUESTER_EMAIL_VERIFICATION_RESENT                extends EventType
@@ -273,6 +275,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ApplicationApprovalRequestDeclined](EventTypes.APPLICATION_APPROVAL_REQUEST_DECLINED.toString)
     .and[ApplicationApprovalRequestGranted](EventTypes.APPLICATION_APPROVAL_REQUEST_GRANTED.toString)
     .and[ApplicationApprovalRequestGrantedWithWarnings](EventTypes.APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS.toString)
+    .and[ApplicationSellResellOrDistributeChanged](EventTypes.APPLICATION_SELL_RESELL_OR_DISTRIBUTE_CHANGED.toString)
     .and[ApplicationApprovalRequestSubmitted](EventTypes.APPLICATION_APPROVAL_REQUEST_SUBMITTED.toString)
     .and[TermsOfUseApprovalSubmitted](EventTypes.TERMS_OF_USE_APPROVAL_REQUEST_SUBMITTED.toString)
     .and[TermsOfUseApprovalGranted](EventTypes.TERMS_OF_USE_APPROVAL_GRANTED.toString)
