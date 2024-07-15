@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Instant, ZoneId}
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.access.domain.models.OverrideFlag
+import uk.gov.hmrc.apiplatform.modules.applications.access.domain.models.{OverrideFlag, SellResellOrDistribute}
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models._
 import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.{SubmissionId, _}
 
@@ -607,6 +607,24 @@ object ApplicationEvents {
         s"granted by ${actor.user}",
         s"reasons: ${reasons}" + escalatedTo.fold("")(to => s" escalatedTo: $to"),
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
+      )
+    )
+  }
+
+  case class ApplicationSellResellOrDistributeChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      oldSellResellOrDistribute: Option[SellResellOrDistribute],
+      newSellResellOrDistribute: SellResellOrDistribute
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = (
+      "Application SellResellOrDistribute Changed",
+      List(
+        s"Old SellResellOrDistribute: ${oldSellResellOrDistribute.getOrElse("Not set")}",
+        s"New SellResellOrDistribute: ${newSellResellOrDistribute}"
       )
     )
   }
