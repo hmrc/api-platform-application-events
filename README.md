@@ -3,6 +3,8 @@
 
 Library of Api Platform events used for third party applications.
 
+The library is designed as a dependency for API Platform services and is subject to significant change without notice.
+
 ## Running the tests
 
     run_all_tests.sh
