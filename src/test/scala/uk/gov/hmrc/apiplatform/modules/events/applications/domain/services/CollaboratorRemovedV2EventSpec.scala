@@ -29,9 +29,9 @@ class CollaboratorRemovedV2EventSpec extends EventSpec {
 
     val collaboratorRemovedV2: ApplicationEvent = CollaboratorRemovedV2(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator)
 
-    // val jsonText = raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_REMOVED_V2"}"""
+    // val jsonText = raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}"},"clientSecretId":"someClientId","clientSecretName":"someClientSecretName","eventType":"CLIENT_SECRET_REMOVED_V2"}"""
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"collaborator":{"userId":"${developerCollaborator.userId.value.toString()}","emailAddress":"${developerCollaborator.emailAddress.text}","role":"DEVELOPER"},"eventType":"COLLABORATOR_REMOVED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"collaborator":{"userId":"${developerCollaborator.userId.value.toString()}","emailAddress":"${developerCollaborator.emailAddress.text}","role":"DEVELOPER"},"eventType":"COLLABORATOR_REMOVED"}"""
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]

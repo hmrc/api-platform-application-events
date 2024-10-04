@@ -20,17 +20,12 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.Collaborators
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{CollaboratorFixtures, CoreApplicationFixtures}
 
-class AppliationEventSpec extends EventSpec {
+class ApplicationEventSpec extends EventSpec with CoreApplicationFixtures with CollaboratorFixtures {
 
   "AbstractApplicationEvent" when {
-    val anActor       = Actors.Unknown
-    val anEmail       = LaxEmailAddress("bob@smith.com")
-    val aRole         = "ADMINISTRATOR"
-    val appId         = ApplicationId.random
-    val aUserId       = UserId.random
-    val aCollaborator = Collaborators.Developer(aUserId, anEmail)
+    val aRole = "ADMINISTRATOR"
 
     "Ordering a collection of events" should {
       "Sort the later ones first" in {
@@ -38,9 +33,9 @@ class AppliationEventSpec extends EventSpec {
         val time2 = time1.minus(2, ChronoUnit.DAYS)
         val time3 = time1.minus(3, ChronoUnit.DAYS)
 
-        val e1 = ApplicationEvents.TeamMemberRemovedEvent(EventId.random, appId, time1, anActor, anEmail, aRole)
-        val e2 = ApplicationEvents.TeamMemberAddedEvent(EventId.random, appId, time2, anActor, anEmail, aRole)
-        val e3 = ApplicationEvents.CollaboratorAddedV2(EventId.random, appId, time3, anActor, aCollaborator)
+        val e1 = ApplicationEvents.TeamMemberRemovedEvent(EventId.random, applicationIdOne, time1, Actors.Unknown, emailOne, aRole)
+        val e2 = ApplicationEvents.TeamMemberAddedEvent(EventId.random, applicationIdOne, time2, Actors.Unknown, emailOne, aRole)
+        val e3 = ApplicationEvents.CollaboratorAddedV2(EventId.random, applicationIdOne, time3, Actors.Unknown, developerCollaborator)
 
         val es = List[ApplicationEvent](e2, e3, e1)
 

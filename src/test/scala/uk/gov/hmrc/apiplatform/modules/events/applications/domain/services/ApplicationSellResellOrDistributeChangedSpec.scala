@@ -37,7 +37,7 @@ class ApplicationSellResellOrDistributeChangedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com"},"oldSellResellOrDistribute":"Yes","newSellResellOrDistribute":"No","eventType":"APPLICATION_SELL_RESELL_OR_DISTRIBUTE_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}"},"oldSellResellOrDistribute":"Yes","newSellResellOrDistribute":"No","eventType":"APPLICATION_SELL_RESELL_OR_DISTRIBUTE_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

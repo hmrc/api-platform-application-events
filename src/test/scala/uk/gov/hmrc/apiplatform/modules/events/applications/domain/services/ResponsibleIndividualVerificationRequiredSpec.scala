@@ -45,7 +45,7 @@ class ResponsibleIndividualVerificationRequiredSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email.text}","actorType":"${ActorType.COLLABORATOR}"},"applicationName":"App name","responsibleIndividualName":"$responsibleIndividualName","responsibleIndividualEmail":"${responsibleIndividualEmail.text.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"verificationId":"$verificationId","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email.text}","actorType":"${ActorType.COLLABORATOR}"},"applicationName":"App name","responsibleIndividualName":"$responsibleIndividualName","responsibleIndividualEmail":"${responsibleIndividualEmail.text.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"verificationId":"$verificationId","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

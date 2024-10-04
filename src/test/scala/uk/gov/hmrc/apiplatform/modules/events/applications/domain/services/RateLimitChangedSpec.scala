@@ -29,7 +29,7 @@ class RateLimitChangedSpec extends EventSpec {
     val event: ApplicationEvent = RateLimitChanged(anEventId, anAppId, anInstant, gkCollaborator, RateLimitTier.BRONZE, RateLimitTier.PLATINUM)
 
     val json =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"user":"someUser"},"oldRateLimit":"BRONZE","newRateLimit":"PLATINUM","eventType":"RATE_LIMIT_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"user":"A surname"},"oldRateLimit":"BRONZE","newRateLimit":"PLATINUM","eventType":"RATE_LIMIT_CHANGED"}"""
 
     "convert from json" in {
       val result = Json.parse(json).as[RateLimitChanged]

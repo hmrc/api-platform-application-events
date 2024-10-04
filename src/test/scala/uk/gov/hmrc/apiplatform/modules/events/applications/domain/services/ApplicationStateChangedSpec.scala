@@ -39,7 +39,7 @@ class ApplicationStateChangedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldAppState":"${State.TESTING.toString}","newAppState":"${State.PENDING_GATEKEEPER_APPROVAL.toString}","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_STATE_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldAppState":"${State.TESTING.toString}","newAppState":"${State.PENDING_GATEKEEPER_APPROVAL.toString}","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_STATE_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

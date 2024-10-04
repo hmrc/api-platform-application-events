@@ -29,7 +29,7 @@ class RedirectUrisUpdatedV2Spec extends EventSpec {
     val event: ApplicationEvent = RedirectUrisUpdatedV2(anEventId, anAppId, anInstant, appCollaborator, List(toChangeRedirectUri), List(aRedirectUri))
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldRedirectUris":["${toChangeRedirectUri.uri}"],"newRedirectUris":["${aRedirectUri.uri}"],"eventType":"REDIRECT_URIS_UPDATED_V2"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUris":["${toChangeRedirectUri.uri}"],"newRedirectUris":["${aRedirectUri.uri}"],"eventType":"REDIRECT_URIS_UPDATED_V2"}"""
 
     "convert from json" in {
 
