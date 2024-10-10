@@ -42,7 +42,7 @@ class TermsOfUseInvitationSentSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"dueBy":"${dueByText}","eventType":"TERMS_OF_USE_INVITATION_SENT"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"dueBy":"${dueByText}","eventType":"TERMS_OF_USE_INVITATION_SENT"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

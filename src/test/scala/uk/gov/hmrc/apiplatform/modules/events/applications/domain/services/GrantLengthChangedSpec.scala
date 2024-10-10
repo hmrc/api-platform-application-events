@@ -32,7 +32,7 @@ class GrantLengthChangedSpec extends EventSpec {
     val event: ApplicationEvent = GrantLengthChanged(anEventId, anAppId, anInstant, gkCollaborator, oldGrantLengthInDays, newGrantLengthInDays)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"oldGrantLengthInDays":$oldGrantLengthInDays,"newGrantLengthInDays":$newGrantLengthInDays,"eventType":"GRANT_LENGTH_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"A surname"},"oldGrantLengthInDays":$oldGrantLengthInDays,"newGrantLengthInDays":$newGrantLengthInDays,"eventType":"GRANT_LENGTH_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

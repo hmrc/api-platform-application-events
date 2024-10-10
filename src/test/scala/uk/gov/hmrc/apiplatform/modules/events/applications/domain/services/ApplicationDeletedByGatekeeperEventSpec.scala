@@ -29,7 +29,7 @@ class ApplicationDeletedByGatekeeperEventSpec extends EventSpec {
     val applicationDeletedByGatekeeper: ApplicationEvent = ApplicationDeletedByGatekeeper(anEventId, anAppId, anInstant, gkCollaborator, aClientId, "bob", reasons, requestingEmail)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"clientId":"${aClientId.value}","wso2ApplicationName":"bob","reasons":"$reasons","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"A surname"},"clientId":"${aClientId.value}","wso2ApplicationName":"bob","reasons":"$reasons","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_DELETED_BY_GATEKEEPER"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

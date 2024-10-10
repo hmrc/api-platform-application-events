@@ -33,7 +33,7 @@ class ProductionAppNameChangedEventSpec extends EventSpec {
       ProductionAppNameChangedEvent(anEventId, anAppId, anInstant, appCollaborator, oldName, newName, requestingEmail)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldAppName":"${oldName}","newAppName":"${newName}","requestingAdminEmail":"${requestingEmail.text}","eventType":"PROD_APP_NAME_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldAppName":"${oldName}","newAppName":"${newName}","requestingAdminEmail":"${requestingEmail.text}","eventType":"PROD_APP_NAME_CHANGED"}"""
 
     "convert from json" in {
 

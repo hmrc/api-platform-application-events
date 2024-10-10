@@ -31,7 +31,7 @@ class TeamMemberAddedEventSpec extends EventSpec {
       TeamMemberAddedEvent(anEventId, anAppId, anInstant, appCollaborator, developerCollaborator.emailAddress, Collaborator.describeRole(developerCollaborator))
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"teamMemberEmail":"${developerCollaborator.emailAddress.text}","teamMemberRole":"DEVELOPER","eventType":"TEAM_MEMBER_ADDED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"teamMemberEmail":"${developerCollaborator.emailAddress.text}","teamMemberRole":"DEVELOPER","eventType":"TEAM_MEMBER_ADDED"}"""
 
     "convert from json" in {
 

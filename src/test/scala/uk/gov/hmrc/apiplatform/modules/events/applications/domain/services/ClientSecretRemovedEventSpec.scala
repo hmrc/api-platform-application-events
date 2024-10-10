@@ -29,7 +29,7 @@ class ClientSecretRemovedEventSpec extends EventSpec {
     val clientSecretRemoved: ApplicationEvent = ClientSecretRemovedEvent(anEventId, anAppId, anInstant, appCollaborator, aClientSecretId)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"clientSecretId":"someClientId","eventType":"CLIENT_SECRET_REMOVED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"clientSecretId":"someClientId","eventType":"CLIENT_SECRET_REMOVED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

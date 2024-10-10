@@ -20,7 +20,9 @@ import java.util.UUID
 
 import play.api.libs.json.Format
 
-final case class EventId(value: UUID) extends AnyVal
+final case class EventId(value: UUID) extends AnyVal {
+  override def toString(): String = value.toString()
+}
 
 object EventId {
   def random: EventId = EventId(UUID.randomUUID())

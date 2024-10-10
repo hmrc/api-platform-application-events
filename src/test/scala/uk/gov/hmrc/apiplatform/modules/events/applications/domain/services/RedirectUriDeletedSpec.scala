@@ -29,7 +29,7 @@ class RedirectUriDeletedSpec extends EventSpec {
     val event: ApplicationEvent = RedirectUriDeleted(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"deletedRedirectUri":"${toChangeRedirectUri.uri}","eventType":"REDIRECT_URI_DELETED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"deletedRedirectUri":"${toChangeRedirectUri.uri}","eventType":"REDIRECT_URI_DELETED"}"""
 
     "convert from json" in {
 

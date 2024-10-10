@@ -30,7 +30,7 @@ class PpnsCallBackUriUpdatedEventSpec extends EventSpec {
       PpnsCallBackUriUpdatedEvent(anEventId, anAppId, anInstant, appCollaborator, boxId, boxName, oldCallbackUrl, newCallbackUrl)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"boxId":"${boxId}","boxName":"${boxName}","oldCallbackUrl":"$oldCallbackUrl","newCallbackUrl":"$newCallbackUrl","eventType":"PPNS_CALLBACK_URI_UPDATED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"boxId":"${boxId}","boxName":"${boxName}","oldCallbackUrl":"$oldCallbackUrl","newCallbackUrl":"$newCallbackUrl","eventType":"PPNS_CALLBACK_URI_UPDATED"}"""
 
     "convert from json" in {
 

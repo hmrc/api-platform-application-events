@@ -29,7 +29,7 @@ class ApiUnsubscribedV2Spec extends EventSpec {
     val apiUnSubscribedEvent: ApplicationEvent = ApiUnsubscribedV2(anEventId, anAppId, anInstant, appCollaborator, context, version)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"context":"${context.value}","version":"${version.value}","eventType":"API_UNSUBSCRIBED_V2"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"context":"${context.value}","version":"${version.value}","eventType":"API_UNSUBSCRIBED_V2"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

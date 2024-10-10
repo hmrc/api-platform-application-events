@@ -32,10 +32,10 @@ class BlockApplicationAutoDeleteSpec extends EventSpec {
     val blockApplicationAutoDeleteWithDefaultReasons: ApplicationEvent = ApplicationEvents.BlockApplicationAutoDelete(anEventId, anAppId, anInstant, gkCollaborator, defaultReasons)
 
     val jsonTextWithReasons =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"reasons":"Some reasons here","eventType":"BLOCK_APPLICATION_AUTO_DELETE"}""".stripMargin
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"A surname"},"reasons":"Some reasons here","eventType":"BLOCK_APPLICATION_AUTO_DELETE"}""".stripMargin
 
     val jsonTextWithoutReasons =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"someUser"},"eventType":"BLOCK_APPLICATION_AUTO_DELETE"}""".stripMargin
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"A surname"},"eventType":"BLOCK_APPLICATION_AUTO_DELETE"}""".stripMargin
 
     "convert from json without reasons gives event with default reasons" in {
       val evt = Json.parse(jsonTextWithoutReasons).as[ApplicationEvent]

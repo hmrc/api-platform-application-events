@@ -39,7 +39,7 @@ class TermsOfUsePassedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr","actorType":"${ActorType.GATEKEEPER}"},"submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"eventType":"TERMS_OF_USE_PASSED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"$gkUserStr","actorType":"${ActorType.GATEKEEPER}"},"submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"eventType":"TERMS_OF_USE_PASSED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

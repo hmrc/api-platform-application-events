@@ -44,7 +44,7 @@ class ResponsibleIndividualDeclinedOrDidNotVerifySpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr","actorType":"${ActorType.GATEKEEPER}"},"responsibleIndividualName":"$responsibleIndividualName","responsibleIndividualEmail":"${responsibleIndividualEmail.text.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"code":"$riCode","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"$gkUserStr","actorType":"${ActorType.GATEKEEPER}"},"responsibleIndividualName":"$responsibleIndividualName","responsibleIndividualEmail":"${responsibleIndividualEmail.text.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"code":"$riCode","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

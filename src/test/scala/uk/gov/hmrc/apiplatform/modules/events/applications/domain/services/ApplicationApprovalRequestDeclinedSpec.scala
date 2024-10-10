@@ -44,7 +44,7 @@ class ApplicationApprovalRequestDeclinedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr","actorType":"${ActorType.GATEKEEPER}"},"decliningUserName":"$gkUserStr","decliningUserEmail":"${gkUserStr.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"reasons":"$reasons","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_APPROVAL_REQUEST_DECLINED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"$gkUserStr","actorType":"${ActorType.GATEKEEPER}"},"decliningUserName":"$gkUserStr","decliningUserEmail":"${gkUserStr.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"reasons":"$reasons","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"APPLICATION_APPROVAL_REQUEST_DECLINED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

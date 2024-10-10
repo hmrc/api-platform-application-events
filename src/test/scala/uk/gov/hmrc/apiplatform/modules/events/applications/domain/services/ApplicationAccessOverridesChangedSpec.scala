@@ -45,7 +45,7 @@ class ApplicationAccessOverridesChangedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"},{"origin":"origin01","overrideType":"ORIGIN_OVERRIDE"}],"newOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"},{"scopes":["scope01","scope02"],"overrideType":"SUPPRESS_IV_FOR_INDIVIDUALS"},{"scopes":["scope03","scope04","scope05"],"overrideType":"GRANT_WITHOUT_TAXPAYER_CONSENT"}],"eventType":"APPLICATION_ACCESS_OVERRIDES_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"},{"origin":"origin01","overrideType":"ORIGIN_OVERRIDE"}],"newOverrides":[{"overrideType":"PERSIST_LOGIN_AFTER_GRANT"},{"scopes":["scope01","scope02"],"overrideType":"SUPPRESS_IV_FOR_INDIVIDUALS"},{"scopes":["scope03","scope04","scope05"],"overrideType":"GRANT_WITHOUT_TAXPAYER_CONSENT"}],"eventType":"APPLICATION_ACCESS_OVERRIDES_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
