@@ -48,6 +48,12 @@ class SandboxApplicationPrivacyPolicyUrlChangedSpec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
 
+    "convert to correct Meta Data" in {
+      event.asMetaData()
+      event.asMetaData()._1 shouldBe "Application Privacy Policy Url Changed"
+      event.asMetaData()._2 shouldBe List("From: http://someplace.com/old", "To: http://someplace.com/new")
+    }
+
     "display event correctly" in {
       testDisplay(
         event,
