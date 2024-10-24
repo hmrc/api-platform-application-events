@@ -149,8 +149,8 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      oldAppName: String,
-      newAppName: String,
+      oldAppName: ApplicationName,
+      newAppName: ApplicationName,
       requestingAdminEmail: LaxEmailAddress
     ) extends ApplicationEvent {
 
@@ -374,7 +374,7 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      applicationName: String,
+      applicationName: ApplicationName,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress,
       responsibleIndividualName: String,
@@ -400,7 +400,7 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      applicationName: String,
+      applicationName: ApplicationName,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress,
       responsibleIndividualName: String,
@@ -968,8 +968,14 @@ object ApplicationEvents {
     def asMetaData(): MetaData = ("Api Unsubscribed", List(s"API ${context} v${version}"))
   }
 
-  case class SandboxApplicationNameChanged(id: EventId, applicationId: ApplicationId, eventDateTime: Instant, actor: Actors.AppCollaborator, oldName: String, newName: String)
-      extends ApplicationEvent {
+  case class SandboxApplicationNameChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.AppCollaborator,
+      oldName: ApplicationName,
+      newName: ApplicationName
+    ) extends ApplicationEvent {
 
     def asMetaData(): MetaData = ("Application Name Changed", List(s"From: $oldName", s"To: $newName"))
   }

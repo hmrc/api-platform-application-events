@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.ApplicationName
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.ProductionAppNameChangedEvent
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
@@ -26,8 +27,8 @@ class ProductionAppNameChangedEventSpec extends EventSpec {
   "ProductionAppNameChangedEvent" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val oldName = "Adrians App"
-    val newName = "Bobs App"
+    val oldName = ApplicationName("Adrians App")
+    val newName = ApplicationName("Bobs App")
 
     val event: ApplicationEvent =
       ProductionAppNameChangedEvent(anEventId, anAppId, anInstant, appCollaborator, oldName, newName, requestingEmail)

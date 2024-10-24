@@ -23,6 +23,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, ApplicationId, LaxEmailAddress}
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.ApplicationName
 
 class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
 
@@ -60,8 +61,8 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
           ApplicationId.random,
           Instant.now(),
           Actors.Unknown,
-          "Old",
-          "New",
+          ApplicationName("Old"),
+          ApplicationName("New"),
           LaxEmailAddress("bob")
         )
 
