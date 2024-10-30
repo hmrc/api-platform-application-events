@@ -23,6 +23,8 @@ import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, ApplicationIdFixtures}
 import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.CollaboratorFixtures
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, ApplicationId, LaxEmailAddress}
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.ApplicationName
 
 class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues with ApplicationIdFixtures with CollaboratorFixtures with FixedClock {
 
@@ -60,8 +62,8 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues with App
           applicationIdOne,
           instant,
           Actors.Unknown,
-          "Old",
-          "New",
+          ApplicationName("Old"),
+          ApplicationName("New"),
           emailOne
         )
 

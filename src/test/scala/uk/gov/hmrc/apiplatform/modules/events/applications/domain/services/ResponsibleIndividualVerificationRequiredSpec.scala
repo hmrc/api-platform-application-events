@@ -18,6 +18,7 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.ActorType
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.ApplicationName
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
@@ -27,7 +28,7 @@ class ResponsibleIndividualVerificationRequiredSpec extends EventSpec {
   "ResponsibleIndividualVerificationRequired" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val appName = "App name"
+    val appName = ApplicationName("App name")
 
     val responsibleIndividualVerificationRequired: ApplicationEvent = ResponsibleIndividualVerificationRequired(
       anEventId,
