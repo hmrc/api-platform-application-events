@@ -34,7 +34,7 @@ class SandboxApplicationDescriptionChangedSpec extends EventSpec {
         SandboxApplicationDescriptionChanged(anEventId, anAppId, anInstant, appCollaborator, oldDescription, newDescription)
 
       val jsonText =
-        raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldDescription":"${oldDescription.get}","description":"${newDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CHANGED"}"""
+        raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}"},"oldDescription":"${oldDescription.get}","description":"${newDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CHANGED"}"""
 
       "convert from json" in {
         Json.parse(jsonText).as[ApplicationEvent] shouldBe a[SandboxApplicationDescriptionChanged]
@@ -62,7 +62,7 @@ class SandboxApplicationDescriptionChangedSpec extends EventSpec {
         SandboxApplicationDescriptionChanged(anEventId, anAppId, anInstant, appCollaborator, None, newDescription)
 
       val jsonText =
-        raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"description":"${newDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CHANGED"}"""
+        raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}"},"description":"${newDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CHANGED"}"""
 
       "convert from json" in {
         Json.parse(jsonText).as[ApplicationEvent] shouldBe a[SandboxApplicationDescriptionChanged]

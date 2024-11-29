@@ -32,7 +32,7 @@ class SandboxApplicationDescriptionClearedSpec extends EventSpec {
       SandboxApplicationDescriptionCleared(anEventId, anAppId, anInstant, appCollaborator, oldDescription)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldDescription":"${oldDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CLEARED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}"},"oldDescription":"${oldDescription}","eventType":"SANDBOX_APPLICATION_DESCRIPTION_CLEARED"}"""
 
     "convert from json" in {
 

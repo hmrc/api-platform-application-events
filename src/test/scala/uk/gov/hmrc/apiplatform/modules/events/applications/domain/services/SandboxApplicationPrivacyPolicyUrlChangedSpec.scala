@@ -33,7 +33,7 @@ class SandboxApplicationPrivacyPolicyUrlChangedSpec extends EventSpec {
       SandboxApplicationPrivacyPolicyUrlChanged(anEventId, anAppId, anInstant, appCollaborator, Some(oldPrivacyPolicyUrl), newPrivacyPolicyUrl)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldPrivacyPolicyUrl":"${oldPrivacyPolicyUrl}","privacyPolicyUrl":"${newPrivacyPolicyUrl}","eventType":"SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}"},"oldPrivacyPolicyUrl":"${oldPrivacyPolicyUrl}","privacyPolicyUrl":"${newPrivacyPolicyUrl}","eventType":"SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED"}"""
 
     "convert from json" in {
 
@@ -46,6 +46,12 @@ class SandboxApplicationPrivacyPolicyUrlChangedSpec extends EventSpec {
 
       val eventJSonString = Json.toJson(event).toString()
       eventJSonString shouldBe jsonText
+    }
+
+    "convert to correct Meta Data" in {
+      event.asMetaData()
+      event.asMetaData()._1 shouldBe "Application Privacy Policy Url Changed"
+      event.asMetaData()._2 shouldBe List("From: http://someplace.com/old", "To: http://someplace.com/new")
     }
 
     "display event correctly" in {

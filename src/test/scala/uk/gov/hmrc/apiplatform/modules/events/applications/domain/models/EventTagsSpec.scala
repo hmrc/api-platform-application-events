@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import java.time.Instant
-
 import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, ApplicationId, LaxEmailAddress}
+import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, ApplicationIdFixtures}
+import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{ApplicationName, CollaboratorFixtures}
 
-class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
+class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues with ApplicationIdFixtures with CollaboratorFixtures with FixedClock {
 
   "EventTags" when {
     "converting to and from description" should {
@@ -57,12 +57,12 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues {
       "Correctly tag event" in {
         val evt = ApplicationEvents.ProductionAppNameChangedEvent(
           EventId.random,
-          ApplicationId.random,
-          Instant.now(),
+          applicationIdOne,
+          instant,
           Actors.Unknown,
-          "Old",
-          "New",
-          LaxEmailAddress("bob")
+          ApplicationName("Old"),
+          ApplicationName("New"),
+          emailOne
         )
 
         EventTags.tag(evt) shouldBe EventTags.APP_NAME

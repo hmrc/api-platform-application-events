@@ -32,7 +32,7 @@ class SandboxApplicationPrivacyPolicyUrlRemovedSpec extends EventSpec {
       SandboxApplicationPrivacyPolicyUrlRemoved(anEventId, anAppId, anInstant, appCollaborator, oldPrivacyPolicyUrl)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldPrivacyPolicyUrl":"${oldPrivacyPolicyUrl}","eventType":"SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}"},"oldPrivacyPolicyUrl":"${oldPrivacyPolicyUrl}","eventType":"SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED"}"""
 
     "convert from json" in {
 

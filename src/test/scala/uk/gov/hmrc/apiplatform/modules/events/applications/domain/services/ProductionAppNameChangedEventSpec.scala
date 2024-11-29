@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.ApplicationName
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.ProductionAppNameChangedEvent
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
@@ -26,14 +27,14 @@ class ProductionAppNameChangedEventSpec extends EventSpec {
   "ProductionAppNameChangedEvent" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val oldName = "Adrians App"
-    val newName = "Bobs App"
+    val oldName = ApplicationName("Adrians App")
+    val newName = ApplicationName("Bobs App")
 
     val event: ApplicationEvent =
       ProductionAppNameChangedEvent(anEventId, anAppId, anInstant, appCollaborator, oldName, newName, requestingEmail)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com","actorType":"COLLABORATOR"},"oldAppName":"${oldName}","newAppName":"${newName}","requestingAdminEmail":"${requestingEmail.text}","eventType":"PROD_APP_NAME_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldAppName":"${oldName}","newAppName":"${newName}","requestingAdminEmail":"${requestingEmail.text}","eventType":"PROD_APP_NAME_CHANGED"}"""
 
     "convert from json" in {
 

@@ -32,7 +32,7 @@ class SandboxApplicationTermsAndConditionsUrlRemovedSpec extends EventSpec {
       SandboxApplicationTermsAndConditionsUrlRemoved(anEventId, anAppId, anInstant, appCollaborator, oldTermsAndConditionsUrl)
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"${instantText}","actor":{"email":"bob@example.com"},"oldTermsAndConditionsUrl":"${oldTermsAndConditionsUrl}","eventType":"SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"${instantText}","actor":{"email":"${appCollaborator.email}"},"oldTermsAndConditionsUrl":"${oldTermsAndConditionsUrl}","eventType":"SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED"}"""
 
     "convert from json" in {
 

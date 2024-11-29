@@ -40,7 +40,7 @@ class ApplicationScopesChangedSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldScopes":["scope01","scope02"],"newScopes":["scope01","scope03"],"eventType":"APPLICATION_SCOPES_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"user":"$gkUserStr"},"oldScopes":["scope01","scope02"],"newScopes":["scope01","scope03"],"eventType":"APPLICATION_SCOPES_CHANGED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]

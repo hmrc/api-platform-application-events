@@ -21,30 +21,30 @@ import java.util.UUID
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress.StringSyntax
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{Collaborators, RedirectUri}
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{CollaboratorFixtures, CoreApplicationFixtures, RedirectUri}
 import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.SubmissionId
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventId
 
-trait EventTestData {
+trait EventTestData extends CoreApplicationFixtures with CollaboratorFixtures with ApiIdentifierFixtures with ActorFixtures with FixedClock {
   val anEventId          = EventId.random
-  val anAppId            = ApplicationId.random
-  val appIdText          = anAppId.value.toString()
+  val anAppId            = applicationIdOne
+  val appIdText          = anAppId.toString()
   val sixMillisInNanos   = 6 * 1000 * 1000
   val anInstant: Instant = LocalDateTime.of(2020, 1, 2, 3, 4, 5, sixMillisInNanos).toInstant(ZoneOffset.UTC)
   val instantText        = "2020-01-02T03:04:05.006"
 
-  val context = ApiContext.random
-  val version = ApiVersionNbr.random
+  val context = apiContextOne
+  val version = apiVersionNbrOne
 
   val reasons = "Some reasons here"
 
-  val actorCollaboratorEmail = "bob@example.com".toLaxEmail
-  val appCollaborator        = Actors.AppCollaborator(actorCollaboratorEmail)
-  val gkCollaborator         = Actors.GatekeeperUser("someUser")
+  val actorCollaboratorEmail = collaboratorActorOne.email
+  val appCollaborator        = collaboratorActorOne
+  val gkCollaborator         = gatekeeperActorOne
   val aClientSecretId        = "someClientId"
   val aClientSecretName      = "someClientSecretName"
-  val aClientId              = ClientId.random
+  val aClientId              = clientIdOne
 
   val requestingEmail     = "fred@example.com".toLaxEmail
   val requestingAdminName = "fred example"
@@ -59,8 +59,8 @@ trait EventTestData {
   val adminCollaboratorEmail     = "admin@example.com".toLaxEmail
   val developerCollaboratorEmail = "developer@example.com".toLaxEmail
 
-  val developerCollaborator     = Collaborators.Developer(UserId.random, developerCollaboratorEmail)
-  val administratorCollaborator = Collaborators.Administrator(UserId.random, adminCollaboratorEmail)
+  val developerCollaborator     = developerOne
+  val administratorCollaborator = adminOne
 
   val boxId          = UUID.randomUUID().toString
   val boxName        = "BoxName2"

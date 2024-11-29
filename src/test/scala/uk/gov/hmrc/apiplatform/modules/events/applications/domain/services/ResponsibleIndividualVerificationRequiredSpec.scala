@@ -18,6 +18,7 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.ActorType
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.ApplicationName
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents._
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
@@ -27,7 +28,7 @@ class ResponsibleIndividualVerificationRequiredSpec extends EventSpec {
   "ResponsibleIndividualVerificationRequired" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val appName = "App name"
+    val appName = ApplicationName("App name")
 
     val responsibleIndividualVerificationRequired: ApplicationEvent = ResponsibleIndividualVerificationRequired(
       anEventId,
@@ -45,7 +46,7 @@ class ResponsibleIndividualVerificationRequiredSpec extends EventSpec {
     )
 
     val jsonText =
-      raw"""{"id":"${anEventId.value}","applicationId":"${anAppId.value}","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email.text}","actorType":"${ActorType.COLLABORATOR}"},"applicationName":"App name","responsibleIndividualName":"$responsibleIndividualName","responsibleIndividualEmail":"${responsibleIndividualEmail.text.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"verificationId":"$verificationId","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$anAppId","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email.text}","actorType":"${ActorType.COLLABORATOR}"},"applicationName":"App name","responsibleIndividualName":"$responsibleIndividualName","responsibleIndividualEmail":"${responsibleIndividualEmail.text.toLowerCase}","submissionId":"${submissionId.value}","submissionIndex":$submissionIndex,"verificationId":"$verificationId","requestingAdminName":"$requestingAdminName","requestingAdminEmail":"${requestingEmail.text}","eventType":"RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED"}"""
 
     "convert from json" in {
       val evt = Json.parse(jsonText).as[ApplicationEvent]
