@@ -3,7 +3,7 @@ import sbt._
 object LibraryDependencies {
 
   lazy val commonDomainVersion      = "0.18.0"
-  lazy val applicationDomainVersion = "0.63.0"
+  lazy val applicationDomainVersion = "0.64.0"
 
   def apply() = compileDependencies ++ testDependencies
 
