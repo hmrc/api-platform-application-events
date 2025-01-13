@@ -118,6 +118,8 @@ object EventTags {
         _: ApplicationDeletedByGatekeeper |
         _: AllowApplicationAutoDelete |
         _: BlockApplicationAutoDelete |
+        _: AllowApplicationDelete |
+        _: RestrictApplicationDelete |
         _: ApplicationBlocked |
         _: ApplicationUnblocked => APP_LIFECYCLE
     case _: ProductionAppPrivacyPolicyLocationChanged |

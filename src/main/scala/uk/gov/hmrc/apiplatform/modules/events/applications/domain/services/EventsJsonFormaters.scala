@@ -140,6 +140,30 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     OFormat(blockApplicationAutoDeleteReads, Json.writes[BlockApplicationAutoDelete])
   }
 
+  implicit val allowApplicationDeleteReads: Reads[AllowApplicationDelete] = (
+    (JsPath \ "id").read[EventId] and
+      (JsPath \ "applicationId").read[ApplicationId] and
+      (JsPath \ "eventDateTime").read[Instant] and
+      (JsPath \ "actor").read[Actors.GatekeeperUser] and
+      ((JsPath \ "reasons").read[String] or Reads.pure("No reason given"))
+  )(AllowApplicationDelete.apply _)
+
+  implicit val allowApplicationDeleteFormats: OFormat[AllowApplicationDelete] = {
+    OFormat(allowApplicationDeleteReads, Json.writes[AllowApplicationDelete])
+  }
+
+  implicit val restrictApplicationDeleteReads: Reads[RestrictApplicationDelete] = (
+    (JsPath \ "id").read[EventId] and
+      (JsPath \ "applicationId").read[ApplicationId] and
+      (JsPath \ "eventDateTime").read[Instant] and
+      (JsPath \ "actor").read[Actors.GatekeeperUser] and
+      ((JsPath \ "reasons").read[String] or Reads.pure("No reason given"))
+  )(RestrictApplicationDelete.apply _)
+
+  implicit val restrictApplicationDeleteFormats: OFormat[RestrictApplicationDelete] = {
+    OFormat(restrictApplicationDeleteReads, Json.writes[RestrictApplicationDelete])
+  }
+
   implicit val SandboxApplicationNameChangedFormats: OFormat[SandboxApplicationNameChanged] = {
     Json.format[SandboxApplicationNameChanged]
   }
@@ -216,6 +240,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED extends EventType
     case object ALLOW_APPLICATION_AUTO_DELETE              extends EventType
     case object BLOCK_APPLICATION_AUTO_DELETE              extends EventType
+    case object ALLOW_APPLICATION_DELETE                   extends EventType
+    case object RESTRICT_APPLICATION_DELETE                extends EventType
 
     case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED          extends EventType
     case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED        extends EventType
@@ -287,6 +313,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[ProductionCredentialsApplicationDeleted](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED.toString)
     .and[AllowApplicationAutoDelete](EventTypes.ALLOW_APPLICATION_AUTO_DELETE.toString)
     .and[BlockApplicationAutoDelete](EventTypes.BLOCK_APPLICATION_AUTO_DELETE.toString)
+    .and[AllowApplicationDelete](EventTypes.ALLOW_APPLICATION_DELETE.toString)
+    .and[RestrictApplicationDelete](EventTypes.RESTRICT_APPLICATION_DELETE.toString)
     .and[ApplicationBlocked](EventTypes.APPLICATION_BLOCKED.toString)
     .and[ApplicationUnblocked](EventTypes.APPLICATION_UNBLOCKED.toString)
     .and[ApplicationScopesChanged](EventTypes.APPLICATION_SCOPES_CHANGED.toString)
