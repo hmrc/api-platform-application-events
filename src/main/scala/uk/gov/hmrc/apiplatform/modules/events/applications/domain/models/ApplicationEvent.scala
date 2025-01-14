@@ -783,6 +783,28 @@ object ApplicationEvents {
     def asMetaData(): MetaData = ("Application auto delete blocked", List(s"Reason(s) given as: ${reasons}"))
   }
 
+  case class AllowApplicationDelete(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      reasons: String
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application delete allowed", List(s"Reason(s) given as: ${reasons}"))
+  }
+
+  case class RestrictApplicationDelete(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      reasons: String
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application delete restricted", List(s"Reason(s) given as: ${reasons}"))
+  }
+
   case class RateLimitChanged(
       id: EventId,
       applicationId: ApplicationId,
