@@ -105,11 +105,17 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val applicationScopesChangedFormats: OFormat[ApplicationScopesChanged]                   = Json.format[ApplicationScopesChanged]
   implicit val applicationAccessOverridesChangedFormats: OFormat[ApplicationAccessOverridesChanged] = Json.format[ApplicationAccessOverridesChanged]
 
-  implicit val redirectUrisUpdatedEventFormats: OFormat[RedirectUrisUpdatedEvent]       = Json.format[RedirectUrisUpdatedEvent]
-  implicit val redirectUrisUpdatedFormats: OFormat[LoginRedirectUrisUpdatedV2]          = Json.format[LoginRedirectUrisUpdatedV2]
-  implicit val redirectUriAddedFormats: OFormat[LoginRedirectUriAdded]                  = Json.format[LoginRedirectUriAdded]
-  implicit val redirectUriChangedFormats: OFormat[LoginRedirectUriChanged]              = Json.format[LoginRedirectUriChanged]
-  implicit val redirectUriDeletedFormats: OFormat[LoginRedirectUriDeleted]              = Json.format[LoginRedirectUriDeleted]
+  implicit val redirectUrisUpdatedEventFormats: OFormat[LoginRedirectUrisUpdatedEvent] = Json.format[LoginRedirectUrisUpdatedEvent]
+  implicit val redirectUrisUpdatedFormats: OFormat[LoginRedirectUrisUpdatedV2]         = Json.format[LoginRedirectUrisUpdatedV2]
+  implicit val redirectUriAddedFormats: OFormat[LoginRedirectUriAdded]                 = Json.format[LoginRedirectUriAdded]
+  implicit val redirectUriChangedFormats: OFormat[LoginRedirectUriChanged]             = Json.format[LoginRedirectUriChanged]
+  implicit val redirectUriDeletedFormats: OFormat[LoginRedirectUriDeleted]             = Json.format[LoginRedirectUriDeleted]
+
+  implicit val postLogoutRedirectUrisUpdatedEventFormats: OFormat[PostLogoutRedirectUrisUpdated] = Json.format[PostLogoutRedirectUrisUpdated]
+  implicit val postLogoutRedirectUriAddedFormats: OFormat[PostLogoutRedirectUriAdded]            = Json.format[PostLogoutRedirectUriAdded]
+  implicit val postLogoutRedirectUriChangedFormats: OFormat[PostLogoutRedirectUriChanged]        = Json.format[PostLogoutRedirectUriChanged]
+  implicit val postLogoutRedirectUriDeletedFormats: OFormat[PostLogoutRedirectUriDeleted]        = Json.format[PostLogoutRedirectUriDeleted]
+
   implicit val ppnsCallBackUriUpdatedEventFormats: OFormat[PpnsCallBackUriUpdatedEvent] = Json.format[PpnsCallBackUriUpdatedEvent]
 
   implicit val rateLimitChangedEvent: OFormat[RateLimitChanged] = Json.format[RateLimitChanged]
@@ -255,6 +261,11 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object REDIRECT_URI_CHANGED     extends EventType
     case object REDIRECT_URI_DELETED     extends EventType
 
+    case object POST_LOGOUT_REDIRECT_URIS_UPDATED extends EventType
+    case object POST_LOGOUT_REDIRECT_URI_ADDED    extends EventType
+    case object POST_LOGOUT_REDIRECT_URI_CHANGED  extends EventType
+    case object POST_LOGOUT_REDIRECT_URI_DELETED  extends EventType
+
     case object PPNS_CALLBACK_URI_UPDATED extends EventType
 
     case object RATE_LIMIT_CHANGED extends EventType
@@ -326,11 +337,15 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[CollaboratorAddedV2](EventTypes.COLLABORATOR_ADDED.toString)
     .and[CollaboratorRemovedV2](EventTypes.COLLABORATOR_REMOVED.toString)
     .and[GrantLengthChanged](EventTypes.GRANT_LENGTH_CHANGED.toString)
-    .and[RedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
+    .and[LoginRedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
     .and[LoginRedirectUrisUpdatedV2](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
     .and[LoginRedirectUriAdded](EventTypes.REDIRECT_URI_ADDED.toString)
     .and[LoginRedirectUriChanged](EventTypes.REDIRECT_URI_CHANGED.toString)
     .and[LoginRedirectUriDeleted](EventTypes.REDIRECT_URI_DELETED.toString)
+    .and[PostLogoutRedirectUrisUpdated](EventTypes.POST_LOGOUT_REDIRECT_URIS_UPDATED.toString)
+    .and[PostLogoutRedirectUriAdded](EventTypes.POST_LOGOUT_REDIRECT_URI_ADDED.toString)
+    .and[PostLogoutRedirectUriChanged](EventTypes.POST_LOGOUT_REDIRECT_URI_CHANGED.toString)
+    .and[PostLogoutRedirectUriDeleted](EventTypes.POST_LOGOUT_REDIRECT_URI_DELETED.toString)
     .and[PpnsCallBackUriUpdatedEvent](EventTypes.PPNS_CALLBACK_URI_UPDATED.toString)
     .and[ApiSubscribedEvent](EventTypes.API_SUBSCRIBED.toString)
     .and[ApiUnsubscribedEvent](EventTypes.API_UNSUBSCRIBED.toString)

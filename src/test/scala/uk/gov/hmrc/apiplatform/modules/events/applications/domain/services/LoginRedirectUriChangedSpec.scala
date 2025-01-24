@@ -26,10 +26,10 @@ class LoginRedirectUriChangedSpec extends EventSpec {
   "LoginRedirectUriChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = LoginRedirectUriChanged(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri, aRedirectUri)
+    val event: ApplicationEvent = LoginRedirectUriChanged(anEventId, anAppId, anInstant, appCollaborator, toChangeLoginRedirectUri, aLoginRedirectUri)
 
     val jsonText =
-      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUri":"${toChangeRedirectUri.uri}","newRedirectUri":"${aRedirectUri.uri}","eventType":"REDIRECT_URI_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUri":"${toChangeLoginRedirectUri.uri}","newRedirectUri":"${aLoginRedirectUri.uri}","eventType":"REDIRECT_URI_CHANGED"}"""
 
     "convert from json" in {
 
@@ -49,7 +49,7 @@ class LoginRedirectUriChangedSpec extends EventSpec {
         event,
         EventTags.REDIRECT_URIS,
         "Login Redirect URI changed",
-        List(s"Original:", aRedirectUri.uri, "Replaced with:", toChangeRedirectUri.uri)
+        List(s"Original:", aLoginRedirectUri.uri, "Replaced with:", toChangeLoginRedirectUri.uri)
       )
     }
   }

@@ -118,6 +118,40 @@ object ApplicationEvents {
     def asMetaData(): MetaData = ("Login Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
   }
 
+  case class PostLogoutRedirectUriAdded(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      newRedirectUri: PostLogoutRedirectUri
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Post Logout Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
+  }
+
+  case class PostLogoutRedirectUriChanged(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      oldRedirectUri: PostLogoutRedirectUri,
+      newRedirectUri: PostLogoutRedirectUri
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Post Logout Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
+  }
+
+  case class PostLogoutRedirectUriDeleted(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      deletedRedirectUri: PostLogoutRedirectUri
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Post Logout Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
+  }
+
   case class PpnsCallBackUriUpdatedEvent(
       id: EventId,
       applicationId: ApplicationId,
@@ -143,6 +177,19 @@ object ApplicationEvents {
 
     def asMetaData(): MetaData =
       ("Login Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
+  }
+
+  case class PostLogoutRedirectUrisUpdated(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      oldRedirectUris: List[PostLogoutRedirectUri],
+      newRedirectUris: List[PostLogoutRedirectUri]
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData =
+      ("Post Logout Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
   }
 
   case class ProductionAppNameChangedEvent(
@@ -898,7 +945,7 @@ object ApplicationEvents {
 
   /** DEPRECATED Use RedirectUrisUpdated instead
     */
-  case class RedirectUrisUpdatedEvent(
+  case class LoginRedirectUrisUpdatedEvent(
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,

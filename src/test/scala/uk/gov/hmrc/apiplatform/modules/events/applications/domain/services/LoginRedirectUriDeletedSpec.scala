@@ -26,10 +26,10 @@ class LoginRedirectUriDeletedSpec extends EventSpec {
   "LoginRedirectUriAdded" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = LoginRedirectUriDeleted(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri)
+    val event: ApplicationEvent = LoginRedirectUriDeleted(anEventId, anAppId, anInstant, appCollaborator, toChangeLoginRedirectUri)
 
     val jsonText =
-      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"deletedRedirectUri":"${toChangeRedirectUri.uri}","eventType":"REDIRECT_URI_DELETED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"deletedRedirectUri":"${toChangeLoginRedirectUri.uri}","eventType":"REDIRECT_URI_DELETED"}"""
 
     "convert from json" in {
 
@@ -49,7 +49,7 @@ class LoginRedirectUriDeletedSpec extends EventSpec {
         event,
         EventTags.REDIRECT_URIS,
         "Login Redirect URI deleted",
-        List(s"Removed Uri:", toChangeRedirectUri.uri)
+        List(s"Removed Uri:", toChangeLoginRedirectUri.uri)
       )
     }
   }

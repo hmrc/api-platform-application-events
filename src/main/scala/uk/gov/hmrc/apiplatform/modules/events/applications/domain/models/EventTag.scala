@@ -92,7 +92,11 @@ object EventTags {
         _: LoginRedirectUriAdded |
         _: LoginRedirectUriDeleted |
         _: LoginRedirectUriChanged |
-        _: RedirectUrisUpdatedEvent => REDIRECT_URIS
+        _: LoginRedirectUrisUpdatedEvent => REDIRECT_URIS
+    case _: PostLogoutRedirectUrisUpdated |
+        _: PostLogoutRedirectUriAdded |
+        _: PostLogoutRedirectUriDeleted |
+        _: PostLogoutRedirectUriChanged => REDIRECT_URIS
     case _: ResponsibleIndividualChanged |
         _: ResponsibleIndividualChangedToSelf |
         _: ResponsibleIndividualDeclined |

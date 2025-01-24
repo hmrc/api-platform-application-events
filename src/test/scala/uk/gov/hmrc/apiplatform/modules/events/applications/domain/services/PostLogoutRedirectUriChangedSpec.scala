@@ -18,24 +18,24 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.LoginRedirectUriAdded
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.PostLogoutRedirectUriChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class LoginRedirectUriAddedSpec extends EventSpec {
+class PostLogoutRedirectUriChangedSpec extends EventSpec {
 
-  "LoginRedirectUriAdded" should {
+  "PostLogoutRedirectUriChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = LoginRedirectUriAdded(anEventId, anAppId, anInstant, appCollaborator, aLoginRedirectUri)
+    val event: ApplicationEvent = PostLogoutRedirectUriChanged(anEventId, anAppId, anInstant, appCollaborator, toChangePostLogoutRedirectUri, aPostLogoutRedirectUri)
 
     val jsonText =
-      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"newRedirectUri":"${aLoginRedirectUri.uri}","eventType":"REDIRECT_URI_ADDED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUri":"${toChangePostLogoutRedirectUri.uri}","newRedirectUri":"${aPostLogoutRedirectUri.uri}","eventType":"POST_LOGOUT_REDIRECT_URI_CHANGED"}"""
 
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[LoginRedirectUriAdded]
+      evt shouldBe a[PostLogoutRedirectUriChanged]
     }
 
     "convert to correctJson" in {
@@ -44,12 +44,12 @@ class LoginRedirectUriAddedSpec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
 
-    "display LoginRedirectUriAdded correctly" in {
+    "display PostLogoutRedirectUriChanged correctly" in {
       testDisplay(
         event,
         EventTags.REDIRECT_URIS,
-        "Login Redirect URI Added",
-        List(s"New Redirect Uri:", aLoginRedirectUri.uri)
+        "Post Logout Redirect URI changed",
+        List(s"Original:", aPostLogoutRedirectUri.uri, "Replaced with:", toChangePostLogoutRedirectUri.uri)
       )
     }
   }
