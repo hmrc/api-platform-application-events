@@ -84,38 +84,38 @@ object ApplicationEvents {
     def asMetaData(): MetaData = ("Grant Length Changed", List(s"old grant length $oldGrantLengthInDays days", s"new grant length $newGrantLengthInDays days"))
   }
 
-  case class RedirectUriAdded(
+  case class LoginRedirectUriAdded(
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      newRedirectUri: RedirectUri
+      newRedirectUri: LoginRedirectUri
     ) extends ApplicationEvent {
 
-    def asMetaData(): MetaData = ("Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
+    def asMetaData(): MetaData = ("Login Redirect URI Added", List(s"New Redirect Uri: ${newRedirectUri.uri}"))
   }
 
-  case class RedirectUriChanged(
+  case class LoginRedirectUriChanged(
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      oldRedirectUri: RedirectUri,
-      newRedirectUri: RedirectUri
+      oldRedirectUri: LoginRedirectUri,
+      newRedirectUri: LoginRedirectUri
     ) extends ApplicationEvent {
 
-    def asMetaData(): MetaData = ("Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
+    def asMetaData(): MetaData = ("Login Redirect URI changed", List(s"Original: ${oldRedirectUri.uri}", s"Replaced with: ${newRedirectUri.uri}"))
   }
 
-  case class RedirectUriDeleted(
+  case class LoginRedirectUriDeleted(
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      deletedRedirectUri: RedirectUri
+      deletedRedirectUri: LoginRedirectUri
     ) extends ApplicationEvent {
 
-    def asMetaData(): MetaData = ("Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
+    def asMetaData(): MetaData = ("Login Redirect URI deleted", List(s"Removed Uri: ${deletedRedirectUri.uri}"))
   }
 
   case class PpnsCallBackUriUpdatedEvent(
@@ -132,16 +132,17 @@ object ApplicationEvents {
     def asMetaData(): MetaData = ("Ppns CallBackUri Updated", List(s"boxName: ${boxName}", s"oldCallBackUrl: ${oldCallbackUrl}", s"newCallBackUrl: ${newCallbackUrl}"))
   }
 
-  case class RedirectUrisUpdatedV2(
+  case class LoginRedirectUrisUpdatedV2(
       id: EventId,
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      oldRedirectUris: List[RedirectUri],
-      newRedirectUris: List[RedirectUri]
+      oldRedirectUris: List[LoginRedirectUri],
+      newRedirectUris: List[LoginRedirectUri]
     ) extends ApplicationEvent {
 
-    def asMetaData(): MetaData = ("Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
+    def asMetaData(): MetaData =
+      ("Login Redirect Uris Updated", List(s"""oldRedirectUris: ${oldRedirectUris.mkString(",")}""", s"""newRedirectUris: ${newRedirectUris.mkString(",")}"""))
   }
 
   case class ProductionAppNameChangedEvent(
@@ -906,7 +907,7 @@ object ApplicationEvents {
       newRedirectUris: String
     ) extends ApplicationEvent {
 
-    def asMetaData(): MetaData = ("Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
+    def asMetaData(): MetaData = ("Login Redirect URI updated", List(s"Original: $oldRedirectUris", s"Replaced with: $newRedirectUris"))
   }
 
   /** DEPRECATED Use ClientSecretAdded instead

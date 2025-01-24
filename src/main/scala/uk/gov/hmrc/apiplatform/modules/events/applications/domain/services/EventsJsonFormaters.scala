@@ -106,10 +106,10 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val applicationAccessOverridesChangedFormats: OFormat[ApplicationAccessOverridesChanged] = Json.format[ApplicationAccessOverridesChanged]
 
   implicit val redirectUrisUpdatedEventFormats: OFormat[RedirectUrisUpdatedEvent]       = Json.format[RedirectUrisUpdatedEvent]
-  implicit val redirectUrisUpdatedFormats: OFormat[RedirectUrisUpdatedV2]               = Json.format[RedirectUrisUpdatedV2]
-  implicit val redirectUriAddedFormats: OFormat[RedirectUriAdded]                       = Json.format[RedirectUriAdded]
-  implicit val redirectUriChangedFormats: OFormat[RedirectUriChanged]                   = Json.format[RedirectUriChanged]
-  implicit val redirectUriDeletedFormats: OFormat[RedirectUriDeleted]                   = Json.format[RedirectUriDeleted]
+  implicit val redirectUrisUpdatedFormats: OFormat[LoginRedirectUrisUpdatedV2]          = Json.format[LoginRedirectUrisUpdatedV2]
+  implicit val redirectUriAddedFormats: OFormat[LoginRedirectUriAdded]                  = Json.format[LoginRedirectUriAdded]
+  implicit val redirectUriChangedFormats: OFormat[LoginRedirectUriChanged]              = Json.format[LoginRedirectUriChanged]
+  implicit val redirectUriDeletedFormats: OFormat[LoginRedirectUriDeleted]              = Json.format[LoginRedirectUriDeleted]
   implicit val ppnsCallBackUriUpdatedEventFormats: OFormat[PpnsCallBackUriUpdatedEvent] = Json.format[PpnsCallBackUriUpdatedEvent]
 
   implicit val rateLimitChangedEvent: OFormat[RateLimitChanged] = Json.format[RateLimitChanged]
@@ -327,10 +327,10 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[CollaboratorRemovedV2](EventTypes.COLLABORATOR_REMOVED.toString)
     .and[GrantLengthChanged](EventTypes.GRANT_LENGTH_CHANGED.toString)
     .and[RedirectUrisUpdatedEvent](EventTypes.REDIRECT_URIS_UPDATED.toString)
-    .and[RedirectUrisUpdatedV2](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
-    .and[RedirectUriAdded](EventTypes.REDIRECT_URI_ADDED.toString)
-    .and[RedirectUriChanged](EventTypes.REDIRECT_URI_CHANGED.toString)
-    .and[RedirectUriDeleted](EventTypes.REDIRECT_URI_DELETED.toString)
+    .and[LoginRedirectUrisUpdatedV2](EventTypes.REDIRECT_URIS_UPDATED_V2.toString)
+    .and[LoginRedirectUriAdded](EventTypes.REDIRECT_URI_ADDED.toString)
+    .and[LoginRedirectUriChanged](EventTypes.REDIRECT_URI_CHANGED.toString)
+    .and[LoginRedirectUriDeleted](EventTypes.REDIRECT_URI_DELETED.toString)
     .and[PpnsCallBackUriUpdatedEvent](EventTypes.PPNS_CALLBACK_URI_UPDATED.toString)
     .and[ApiSubscribedEvent](EventTypes.API_SUBSCRIBED.toString)
     .and[ApiUnsubscribedEvent](EventTypes.API_UNSUBSCRIBED.toString)

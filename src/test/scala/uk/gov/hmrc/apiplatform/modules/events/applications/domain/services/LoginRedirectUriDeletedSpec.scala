@@ -18,24 +18,24 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUrisUpdatedEvent
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.LoginRedirectUriDeleted
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class RedirectUrisUpdatedEventSpec extends EventSpec {
+class LoginRedirectUriDeletedSpec extends EventSpec {
 
-  "RedirectUrisUpdatedEvent" should {
+  "LoginRedirectUriAdded" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = RedirectUrisUpdatedEvent(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri.uri, aRedirectUri.uri)
+    val event: ApplicationEvent = LoginRedirectUriDeleted(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri)
 
     val jsonText =
-      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUris":"${toChangeRedirectUri.uri}","newRedirectUris":"${aRedirectUri.uri}","eventType":"REDIRECT_URIS_UPDATED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"deletedRedirectUri":"${toChangeRedirectUri.uri}","eventType":"REDIRECT_URI_DELETED"}"""
 
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[RedirectUrisUpdatedEvent]
+      evt shouldBe a[LoginRedirectUriDeleted]
     }
 
     "convert to correctJson" in {
@@ -44,12 +44,12 @@ class RedirectUrisUpdatedEventSpec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
 
-    "display RedirectUrisUpdatedEvent correctly" in {
+    "display LoginRedirectUriDeleted correctly" in {
       testDisplay(
         event,
         EventTags.REDIRECT_URIS,
-        "Redirect URI updated",
-        List(s"Original:", toChangeRedirectUri.uri, "Replaced with:", aRedirectUri.uri)
+        "Login Redirect URI deleted",
+        List(s"Removed Uri:", toChangeRedirectUri.uri)
       )
     }
   }

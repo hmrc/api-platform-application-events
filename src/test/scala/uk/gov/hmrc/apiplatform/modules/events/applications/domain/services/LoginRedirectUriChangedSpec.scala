@@ -18,15 +18,15 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUriChanged
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.LoginRedirectUriChanged
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class RedirectUriChangedSpec extends EventSpec {
+class LoginRedirectUriChangedSpec extends EventSpec {
 
-  "RedirectUriChanged" should {
+  "LoginRedirectUriChanged" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = RedirectUriChanged(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri, aRedirectUri)
+    val event: ApplicationEvent = LoginRedirectUriChanged(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri, aRedirectUri)
 
     val jsonText =
       raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUri":"${toChangeRedirectUri.uri}","newRedirectUri":"${aRedirectUri.uri}","eventType":"REDIRECT_URI_CHANGED"}"""
@@ -35,7 +35,7 @@ class RedirectUriChangedSpec extends EventSpec {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[RedirectUriChanged]
+      evt shouldBe a[LoginRedirectUriChanged]
     }
 
     "convert to correctJson" in {
@@ -44,11 +44,11 @@ class RedirectUriChangedSpec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
 
-    "display RedirectUriChanged correctly" in {
+    "display LoginRedirectUriChanged correctly" in {
       testDisplay(
         event,
         EventTags.REDIRECT_URIS,
-        "Redirect URI changed",
+        "Login Redirect URI changed",
         List(s"Original:", aRedirectUri.uri, "Replaced with:", toChangeRedirectUri.uri)
       )
     }

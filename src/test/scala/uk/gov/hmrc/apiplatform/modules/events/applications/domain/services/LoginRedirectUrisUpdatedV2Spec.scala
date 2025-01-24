@@ -18,15 +18,15 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUrisUpdatedV2
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.LoginRedirectUrisUpdatedV2
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class RedirectUrisUpdatedV2Spec extends EventSpec {
+class LoginRedirectUrisUpdatedV2Spec extends EventSpec {
 
-  "RedirectUrisUpdatedV2" should {
+  "LoginRedirectUrisUpdatedV2" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = RedirectUrisUpdatedV2(anEventId, anAppId, anInstant, appCollaborator, List(toChangeRedirectUri), List(aRedirectUri))
+    val event: ApplicationEvent = LoginRedirectUrisUpdatedV2(anEventId, anAppId, anInstant, appCollaborator, List(toChangeRedirectUri), List(aRedirectUri))
 
     val jsonText =
       raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUris":["${toChangeRedirectUri.uri}"],"newRedirectUris":["${aRedirectUri.uri}"],"eventType":"REDIRECT_URIS_UPDATED_V2"}"""
@@ -35,7 +35,7 @@ class RedirectUrisUpdatedV2Spec extends EventSpec {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[RedirectUrisUpdatedV2]
+      evt shouldBe a[LoginRedirectUrisUpdatedV2]
     }
 
     "convert to correctJson" in {
@@ -44,11 +44,11 @@ class RedirectUrisUpdatedV2Spec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
 
-    "display RedirectUrisUpdatedV2 correctly" in {
+    "display LoginRedirectUrisUpdatedV2 correctly" in {
       testDisplay(
         event,
         EventTags.REDIRECT_URIS,
-        "Redirect Uris Updated",
+        "Login Redirect Uris Updated",
         List(s"oldRedirectUris:", toChangeRedirectUri.uri, "newRedirectUris:", aRedirectUri.uri)
       )
     }

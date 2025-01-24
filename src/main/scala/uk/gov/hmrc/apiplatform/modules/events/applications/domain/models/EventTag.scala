@@ -88,10 +88,10 @@ object EventTags {
         _: ClientSecretRemovedEvent => CLIENT_SECRET
     case _: GrantLengthChanged          => GRANT_LENGTH
     case _: PpnsCallBackUriUpdatedEvent => PPNS_CALLBACK
-    case _: RedirectUrisUpdatedV2 |
-        _: RedirectUriAdded |
-        _: RedirectUriDeleted |
-        _: RedirectUriChanged |
+    case _: LoginRedirectUrisUpdatedV2 |
+        _: LoginRedirectUriAdded |
+        _: LoginRedirectUriDeleted |
+        _: LoginRedirectUriChanged |
         _: RedirectUrisUpdatedEvent => REDIRECT_URIS
     case _: ResponsibleIndividualChanged |
         _: ResponsibleIndividualChangedToSelf |
