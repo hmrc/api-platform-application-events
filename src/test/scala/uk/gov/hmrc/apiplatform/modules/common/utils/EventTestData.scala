@@ -21,7 +21,7 @@ import java.util.UUID
 
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.LaxEmailAddress.StringSyntax
 import uk.gov.hmrc.apiplatform.modules.common.domain.models._
-import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{CollaboratorFixtures, CoreApplicationFixtures, RedirectUri}
+import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{CollaboratorFixtures, CoreApplicationFixtures, LoginRedirectUri, PostLogoutRedirectUri}
 import uk.gov.hmrc.apiplatform.modules.applications.submissions.domain.models.SubmissionId
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.EventId
@@ -67,8 +67,11 @@ trait EventTestData extends CoreApplicationFixtures with CollaboratorFixtures wi
   val oldCallbackUrl = "http://old.com/boo"
   val newCallbackUrl = "http://new.com/yey"
 
-  val aRedirectUri: RedirectUri        = RedirectUri.unsafeApply("http://localhost:8000/some")
-  val toChangeRedirectUri: RedirectUri = RedirectUri.unsafeApply("http://localhost:8000/different")
+  val aLoginRedirectUri: LoginRedirectUri        = LoginRedirectUri.unsafeApply("http://localhost:8000/some")
+  val toChangeLoginRedirectUri: LoginRedirectUri = LoginRedirectUri.unsafeApply("http://localhost:8000/different")
+
+  val aPostLogoutRedirectUri: PostLogoutRedirectUri        = PostLogoutRedirectUri.unsafeApply("http://localhost:8005/some")
+  val toChangePostLogoutRedirectUri: PostLogoutRedirectUri = PostLogoutRedirectUri.unsafeApply("http://localhost:8005/different")
 
   val submissionId    = SubmissionId(UUID.randomUUID())
   val submissionIndex = 1

@@ -18,24 +18,24 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUriChanged
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.LoginRedirectUriAdded
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class RedirectUriChangedSpec extends EventSpec {
+class LoginRedirectUriAddedSpec extends EventSpec {
 
-  "RedirectUriChanged" should {
+  "LoginRedirectUriAdded" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = RedirectUriChanged(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri, aRedirectUri)
+    val event: ApplicationEvent = LoginRedirectUriAdded(anEventId, anAppId, anInstant, appCollaborator, aLoginRedirectUri)
 
     val jsonText =
-      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"oldRedirectUri":"${toChangeRedirectUri.uri}","newRedirectUri":"${aRedirectUri.uri}","eventType":"REDIRECT_URI_CHANGED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"newRedirectUri":"${aLoginRedirectUri.uri}","eventType":"REDIRECT_URI_ADDED"}"""
 
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[RedirectUriChanged]
+      evt shouldBe a[LoginRedirectUriAdded]
     }
 
     "convert to correctJson" in {
@@ -44,12 +44,12 @@ class RedirectUriChangedSpec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
 
-    "display RedirectUriChanged correctly" in {
+    "display LoginRedirectUriAdded correctly" in {
       testDisplay(
         event,
         EventTags.REDIRECT_URIS,
-        "Redirect URI changed",
-        List(s"Original:", aRedirectUri.uri, "Replaced with:", toChangeRedirectUri.uri)
+        "Login Redirect URI Added",
+        List(s"New Redirect Uri:", aLoginRedirectUri.uri)
       )
     }
   }

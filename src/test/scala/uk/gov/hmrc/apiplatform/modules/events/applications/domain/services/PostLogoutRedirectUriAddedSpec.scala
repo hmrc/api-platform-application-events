@@ -18,24 +18,24 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.services
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.RedirectUriDeleted
+import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.PostLogoutRedirectUriAdded
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.{ApplicationEvent, EventSpec, EventTags}
 
-class RedirectUriDeletedSpec extends EventSpec {
+class PostLogoutRedirectUriAddedSpec extends EventSpec {
 
-  "RedirectUriAdded" should {
+  "PostLogoutRedirectUriAdded" should {
     import EventsInterServiceCallJsonFormatters._
 
-    val event: ApplicationEvent = RedirectUriDeleted(anEventId, anAppId, anInstant, appCollaborator, toChangeRedirectUri)
+    val event: ApplicationEvent = PostLogoutRedirectUriAdded(anEventId, anAppId, anInstant, appCollaborator, aPostLogoutRedirectUri)
 
     val jsonText =
-      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"deletedRedirectUri":"${toChangeRedirectUri.uri}","eventType":"REDIRECT_URI_DELETED"}"""
+      raw"""{"id":"$anEventId","applicationId":"$appIdText","eventDateTime":"$instantText","actor":{"email":"${appCollaborator.email}","actorType":"COLLABORATOR"},"newRedirectUri":"${aPostLogoutRedirectUri.uri}","eventType":"POST_LOGOUT_REDIRECT_URI_ADDED"}"""
 
     "convert from json" in {
 
       val evt = Json.parse(jsonText).as[ApplicationEvent]
 
-      evt shouldBe a[RedirectUriDeleted]
+      evt shouldBe a[PostLogoutRedirectUriAdded]
     }
 
     "convert to correctJson" in {
@@ -44,12 +44,12 @@ class RedirectUriDeletedSpec extends EventSpec {
       eventJSonString shouldBe jsonText
     }
 
-    "display RedirectUriDeleted correctly" in {
+    "display PostLogoutRedirectUriAdded correctly" in {
       testDisplay(
         event,
         EventTags.REDIRECT_URIS,
-        "Redirect URI deleted",
-        List(s"Removed Uri:", toChangeRedirectUri.uri)
+        "Post Logout Redirect URI Added",
+        List(s"New Redirect Uri:", aPostLogoutRedirectUri.uri)
       )
     }
   }
