@@ -6,7 +6,7 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 import bloop.integrations.sbt.BloopDefaults
 
 val appName = "api-platform-application-events"
-lazy val scala213 = "2.13.12"
+lazy val scala213 = "2.13.16"
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
