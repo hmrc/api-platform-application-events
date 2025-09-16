@@ -35,6 +35,7 @@ object EventTags {
   case object RATE_LIMIT           extends EventTag("Rate Limit")
   case object IP_ALLOWLIST         extends EventTag("IP Allowlist")
   case object SCOPES               extends EventTag("Scopes")
+  case object ORGANISATION         extends EventTag("Organisation")
 
   val ALL = Set(
     SUBSCRIPTION,
@@ -50,7 +51,8 @@ object EventTags {
     APP_LIFECYCLE,
     RATE_LIMIT,
     IP_ALLOWLIST,
-    SCOPES
+    SCOPES,
+    ORGANISATION
   )
 
   /*
@@ -86,8 +88,8 @@ object EventTags {
         _: ClientSecretRemovedV2 |
         _: ClientSecretAddedEvent |
         _: ClientSecretRemovedEvent => CLIENT_SECRET
-    case _: GrantLengthChanged          => GRANT_LENGTH
-    case _: PpnsCallBackUriUpdatedEvent => PPNS_CALLBACK
+    case _: GrantLengthChanged              => GRANT_LENGTH
+    case _: PpnsCallBackUriUpdatedEvent     => PPNS_CALLBACK
     case _: LoginRedirectUrisUpdatedV2 |
         _: LoginRedirectUriAdded |
         _: LoginRedirectUriDeleted |
@@ -134,14 +136,15 @@ object EventTags {
         _: SandboxApplicationTermsAndConditionsUrlChanged |
         _: SandboxApplicationTermsAndConditionsUrlRemoved |
         _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
-    case _: RateLimitChanged            => RATE_LIMIT
-    case _: IpAllowlistCidrBlockChanged => IP_ALLOWLIST
+    case _: RateLimitChanged                => RATE_LIMIT
+    case _: IpAllowlistCidrBlockChanged     => IP_ALLOWLIST
     case _: ProductionAppNameChangedEvent |
         _: SandboxApplicationNameChanged |
         _: SandboxApplicationDescriptionChanged |
         _: SandboxApplicationDescriptionCleared => APP_NAME
     case _: ApplicationScopesChanged |
         _: ApplicationAccessOverridesChanged => SCOPES
+    case _: ApplicationLinkedToOrganisation => ORGANISATION
   }
   // scalastyle:on cyclomatic.complexity
 }

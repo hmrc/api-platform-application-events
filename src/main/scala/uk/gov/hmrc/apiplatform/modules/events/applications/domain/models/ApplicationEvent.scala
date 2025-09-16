@@ -941,6 +941,17 @@ object ApplicationEvents {
     )
   }
 
+  case class ApplicationLinkedToOrganisation(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      organisationId: OrganisationId
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application linked to organisation", List(s"Organisation Id: ${organisationId.value}"))
+  }
+
   // *** DEPRECATED EVENTS ***
 
   /** DEPRECATED Use RedirectUrisUpdated instead

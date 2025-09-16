@@ -198,6 +198,10 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     Json.format[SandboxApplicationTermsAndConditionsUrlRemoved]
   }
 
+  implicit val ApplicationLinkedToOrganisationFormats: OFormat[ApplicationLinkedToOrganisation] = {
+    Json.format[ApplicationLinkedToOrganisation]
+  }
+
   private sealed trait EventType
 
   private object EventTypes {
@@ -285,6 +289,8 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object APPLICATION_SCOPES_CHANGED           extends EventType
     case object APPLICATION_ACCESS_OVERRIDES_CHANGED extends EventType
 
+    case object APPLICATION_LINKED_TO_ORGANISATION extends EventType
+
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
   }
@@ -362,6 +368,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[SandboxApplicationDescriptionCleared](EventTypes.SANDBOX_APPLICATION_DESCRIPTION_CLEARED.toString)
     .and[SandboxApplicationPrivacyPolicyUrlRemoved](EventTypes.SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED.toString)
     .and[SandboxApplicationTermsAndConditionsUrlRemoved](EventTypes.SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED.toString)
+    .and[ApplicationLinkedToOrganisation](EventTypes.APPLICATION_LINKED_TO_ORGANISATION.toString)
     .format
 }
 
