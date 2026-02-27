@@ -402,16 +402,18 @@ object ApplicationEvents {
       applicationId: ApplicationId,
       eventDateTime: Instant,
       actor: Actor,
-      oldAppState: String,
-      newAppState: String,
+      oldAppState: State,
+      newAppState: State,
       requestingAdminName: String,
       requestingAdminEmail: LaxEmailAddress
     ) extends ApplicationEvent {
 
+    import uk.gov.hmrc.apiplatform.modules.common.domain.services.EnumJsonHelper.*
+
     def asMetaData(): MetaData = (
       "Application State changed",
       List(
-        s"From ${oldAppState} to ${newAppState}",
+        s"From ${oldAppState.asScreamingSnakeCase} to ${newAppState.asScreamingSnakeCase}",
         s"Requested by ${requestingAdminName} @ ${requestingAdminEmail.text}"
       )
     )

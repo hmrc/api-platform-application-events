@@ -18,87 +18,82 @@ package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
 import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.ApplicationEvents.*
 
-sealed abstract class EventTag(val description: String)
+enum EventTag(val description: String) {
+  case Subscription       extends EventTag("API subscription")
+  case AppName            extends EventTag("Application name")
+  case PpnsCallback       extends EventTag("Callback URL")
+  case ClientSecret       extends EventTag("Client secret")
+  case GrantLength        extends EventTag("Grant Length")
+  case PrivacyPolicy      extends EventTag("Privacy Policy URL")
+  case TeamMember         extends EventTag("Team member")
+  case TermsAndConditions extends EventTag("Terms and Conditions URL")
+  case RedirectUris       extends EventTag("Redirect URL")
+  case TermsOfUse         extends EventTag("Terms of Use")
+  case AppLifecycle       extends EventTag("Application lifecycle")
+  case RateLimit          extends EventTag("Rate Limit")
+  case IpAllowlist        extends EventTag("IP Allowlist")
+  case Scopes             extends EventTag("Scopes")
+  case Organisation       extends EventTag("Organisation")
+}
 
-object EventTags {
-  case object SUBSCRIPTION         extends EventTag("API subscription")
-  case object APP_NAME             extends EventTag("Application name")
-  case object PPNS_CALLBACK        extends EventTag("Callback URL")
-  case object CLIENT_SECRET        extends EventTag("Client secret")
-  case object GRANT_LENGTH         extends EventTag("Grant Length")
-  case object PRIVACY_POLICY       extends EventTag("Privacy Policy URL")
-  case object TEAM_MEMBER          extends EventTag("Team member")
-  case object TERMS_AND_CONDITIONS extends EventTag("Terms and Conditions URL")
-  case object REDIRECT_URIS        extends EventTag("Redirect URL")
-  case object TERMS_OF_USE         extends EventTag("Terms of Use")
-  case object APP_LIFECYCLE        extends EventTag("Application lifecycle")
-  case object RATE_LIMIT           extends EventTag("Rate Limit")
-  case object IP_ALLOWLIST         extends EventTag("IP Allowlist")
-  case object SCOPES               extends EventTag("Scopes")
-  case object ORGANISATION         extends EventTag("Organisation")
-
-  val ALL = Set(
-    SUBSCRIPTION,
-    APP_NAME,
-    PPNS_CALLBACK,
-    CLIENT_SECRET,
-    GRANT_LENGTH,
-    PRIVACY_POLICY,
-    TERMS_AND_CONDITIONS,
-    TEAM_MEMBER,
-    REDIRECT_URIS,
-    TERMS_OF_USE,
-    APP_LIFECYCLE,
-    RATE_LIMIT,
-    IP_ALLOWLIST,
-    SCOPES,
-    ORGANISATION
-  )
-
+object EventTag {
   /*
    * Used for display purposes
    */
-  private val lookupDescription: Map[String, EventTag] = ALL.map(et => et.description -> et).toMap
-
-  def fromDescription(text: String): Option[EventTag] =
-    lookupDescription.get(text)
+  def fromDescription(text: String): Option[EventTag] = EventTag.values.find(_.description == text)
 
   /*
    * Used for Json only
    */
-  private val lookupName: Map[String, EventTag] = ALL.map(et => et.toString() -> et).toMap
+  def apply(text: String): Option[EventTag] = EventTag.values.find(_.toString.equalsIgnoreCase(text))
 
-  def fromString(text: String): Option[EventTag] =
-    lookupName.get(text)
+  import play.api.libs.json.*
+  import uk.gov.hmrc.apiplatform.modules.common.domain.services.EnumJsonHelper.*
+
+  given Format[EventTag] = new Format[EventTag] {
+
+    override def writes(o: EventTag): JsValue = Json.obj("description" -> o.description, "type" -> o.asScreamingSnakeCase)
+
+    override def reads(json: JsValue): JsResult[EventTag] = {
+      (json match {
+        case JsString(t)   => EventTag.apply(fromScreamingSnakeCase(t))
+        case JsObject(obj) => obj.get("type").flatMap(_ match {
+            case JsString(t) => EventTag.apply(fromScreamingSnakeCase(t))
+            case _           => None
+          })
+        case _             => None
+      })
+        .fold[JsResult[EventTag]](JsError(s"Cannot find event tag from $json"))(JsSuccess(_))
+    }
+  }
 
   /*
    * Resolve event to an eventTag
    */
-  // scalastyle:off cyclomatic.complexity
   def tag(evt: ApplicationEvent): EventTag = evt match {
     case _: ApiSubscribedEvent |
         _: ApiSubscribedV2 |
         _: ApiUnsubscribedEvent |
-        _: ApiUnsubscribedV2 => SUBSCRIPTION
+        _: ApiUnsubscribedV2 => EventTag.Subscription
     case _: CollaboratorAddedV2 |
         _: CollaboratorRemovedV2 |
         _: TeamMemberAddedEvent |
-        _: TeamMemberRemovedEvent => TEAM_MEMBER
+        _: TeamMemberRemovedEvent => EventTag.TeamMember
     case _: ClientSecretAddedV2 |
         _: ClientSecretRemovedV2 |
         _: ClientSecretAddedEvent |
-        _: ClientSecretRemovedEvent => CLIENT_SECRET
-    case _: GrantLengthChanged              => GRANT_LENGTH
-    case _: PpnsCallBackUriUpdatedEvent     => PPNS_CALLBACK
+        _: ClientSecretRemovedEvent => EventTag.ClientSecret
+    case _: GrantLengthChanged              => EventTag.GrantLength
+    case _: PpnsCallBackUriUpdatedEvent     => EventTag.PpnsCallback
     case _: LoginRedirectUrisUpdatedV2 |
         _: LoginRedirectUriAdded |
         _: LoginRedirectUriDeleted |
         _: LoginRedirectUriChanged |
-        _: LoginRedirectUrisUpdatedEvent => REDIRECT_URIS
+        _: LoginRedirectUrisUpdatedEvent => EventTag.RedirectUris
     case _: PostLogoutRedirectUrisUpdated |
         _: PostLogoutRedirectUriAdded |
         _: PostLogoutRedirectUriDeleted |
-        _: PostLogoutRedirectUriChanged => REDIRECT_URIS
+        _: PostLogoutRedirectUriChanged => EventTag.RedirectUris
     case _: ResponsibleIndividualChanged |
         _: ResponsibleIndividualChangedToSelf |
         _: ResponsibleIndividualDeclined |
@@ -119,7 +114,7 @@ object EventTags {
         _: TermsOfUseApprovalGranted |
         _: TermsOfUseInvitationSent |
         _: TermsOfUsePassed |
-        _: ProductionCredentialsApplicationDeleted => TERMS_OF_USE
+        _: ProductionCredentialsApplicationDeleted => EventTag.TermsOfUse
     case _: ApplicationDeleted |
         _: ApplicationDeletedByGatekeeper |
         _: AllowApplicationAutoDelete |
@@ -127,24 +122,23 @@ object EventTags {
         _: AllowApplicationDelete |
         _: RestrictApplicationDelete |
         _: ApplicationBlocked |
-        _: ApplicationUnblocked => APP_LIFECYCLE
+        _: ApplicationUnblocked => EventTag.AppLifecycle
     case _: ProductionAppPrivacyPolicyLocationChanged |
         _: SandboxApplicationPrivacyPolicyUrlChanged |
         _: SandboxApplicationPrivacyPolicyUrlRemoved |
-        _: ProductionLegacyAppPrivacyPolicyLocationChanged => PRIVACY_POLICY
+        _: ProductionLegacyAppPrivacyPolicyLocationChanged => EventTag.PrivacyPolicy
     case _: ProductionAppTermsConditionsLocationChanged |
         _: SandboxApplicationTermsAndConditionsUrlChanged |
         _: SandboxApplicationTermsAndConditionsUrlRemoved |
-        _: ProductionLegacyAppTermsConditionsLocationChanged => TERMS_AND_CONDITIONS
-    case _: RateLimitChanged                => RATE_LIMIT
-    case _: IpAllowlistCidrBlockChanged     => IP_ALLOWLIST
+        _: ProductionLegacyAppTermsConditionsLocationChanged => EventTag.TermsAndConditions
+    case _: RateLimitChanged                => EventTag.RateLimit
+    case _: IpAllowlistCidrBlockChanged     => EventTag.IpAllowlist
     case _: ProductionAppNameChangedEvent |
         _: SandboxApplicationNameChanged |
         _: SandboxApplicationDescriptionChanged |
-        _: SandboxApplicationDescriptionCleared => APP_NAME
+        _: SandboxApplicationDescriptionCleared => EventTag.AppName
     case _: ApplicationScopesChanged |
-        _: ApplicationAccessOverridesChanged => SCOPES
-    case _: ApplicationLinkedToOrganisation => ORGANISATION
+        _: ApplicationAccessOverridesChanged => EventTag.Scopes
+    case _: ApplicationLinkedToOrganisation => EventTag.Organisation
   }
-  // scalastyle:on cyclomatic.complexity
 }
