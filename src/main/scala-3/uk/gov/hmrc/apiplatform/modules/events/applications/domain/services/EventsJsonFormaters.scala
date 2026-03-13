@@ -31,11 +31,9 @@ import uk.gov.hmrc.apiplatform.modules.events.applications.domain.models.Applica
 /*
  * We are not using companion object based formatters because of the need to provide formatters with different time formatting (.e. for mongo)
  */
-abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
+abstract class EventsJsonFormatters(using instantFormatter: Format[Instant]) {
 
   import Actor.given
-
-  private given Format[Instant] = instantFormatter
 
   // scalastyle:off number.of.types
   // scalastyle:off number.of.methods
@@ -375,7 +373,7 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .format
 }
 
-object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(InstantJsonFormatter.NoTimeZone.instantNoTimeZoneFormat)
+object EventsInterServiceCallJsonFormatters extends EventsJsonFormatters(using InstantJsonFormatter.NoTimeZone.instantNoTimeZoneFormat)
 
 /*
  *  For mongo use the following
