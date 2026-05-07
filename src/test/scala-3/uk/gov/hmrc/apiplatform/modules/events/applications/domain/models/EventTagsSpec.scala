@@ -16,15 +16,11 @@
 
 package uk.gov.hmrc.apiplatform.modules.events.applications.domain.models
 
-import org.scalatest.OptionValues
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-
 import uk.gov.hmrc.apiplatform.modules.common.domain.models.{Actors, ApplicationIdFixtures}
-import uk.gov.hmrc.apiplatform.modules.common.utils.FixedClock
+import uk.gov.hmrc.apiplatform.modules.common.utils.{BaseJsonFormattersSpec, FixedClock}
 import uk.gov.hmrc.apiplatform.modules.applications.core.domain.models.{ApplicationName, CollaboratorFixtures}
 
-class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues with ApplicationIdFixtures with CollaboratorFixtures with FixedClock {
+class EventTagsSpec extends BaseJsonFormattersSpec with ApplicationIdFixtures with CollaboratorFixtures with FixedClock {
 
   "EventTags" when {
     "converting to and from description" should {
@@ -66,6 +62,24 @@ class EventTagsSpec extends AnyWordSpec with Matchers with OptionValues with App
         )
 
         EventTag.tag(evt) shouldBe EventTag.AppName
+      }
+    }
+
+    "json handling" should {
+      "read correctly when only a JsString" in {
+        testFromJson[EventTag](s""" "APP_LIFECYCLE" """)(EventTag.AppLifecycle)
+      }
+
+      "read correctly when only a JsString from toString" in {
+        testFromJson[EventTag](s""" "${EventTag.AppLifecycle.toString}" """)(EventTag.AppLifecycle)
+      }
+
+      "read correctly when an object with a type field" in {
+        testFromJson[EventTag](s"""{ "description": "Application lifecycle", "type": "APP_LIFECYCLE" }""")(EventTag.AppLifecycle)
+      }
+
+      "write correctly" in {
+        testToJson[EventTag](EventTag.AppLifecycle)("description" -> "Application lifecycle", "type" -> "APP_LIFECYCLE")
       }
     }
   }
