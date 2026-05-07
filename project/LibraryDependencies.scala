@@ -2,7 +2,7 @@ import sbt._
 
 object LibraryDependencies {
 
-  val applicationDomainVersion = "1.0.0"
+  val applicationDomainVersion = "1.1.0"
 
   def apply(scalaVersion: String) = compileDependencies(scalaVersion) ++ testDependencies(scalaVersion)
 
