@@ -119,9 +119,12 @@ object EventTags {
         _: TermsOfUseApprovalGranted |
         _: TermsOfUseInvitationSent |
         _: TermsOfUsePassed |
-        _: ProductionCredentialsApplicationDeleted => TERMS_OF_USE
+        _: ProductionCredentialsApplicationDeleted |
+        _: ProductionCredentialsApplicationDeletedV2 => TERMS_OF_USE
     case _: ApplicationDeleted |
         _: ApplicationDeletedByGatekeeper |
+        _: ApplicationDeletedV2 |
+        _: ApplicationDeletedByGatekeeperV2 |
         _: AllowApplicationAutoDelete |
         _: BlockApplicationAutoDelete |
         _: AllowApplicationDelete |

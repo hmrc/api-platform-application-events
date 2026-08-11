@@ -784,6 +784,18 @@ object ApplicationEvents {
     def asMetaData(): MetaData = ("Application deleted", List(s"Reason(s) given as ${reasons}"))
   }
 
+  case class ApplicationDeletedV2(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      clientId: ClientId,
+      reasons: String
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application deleted", List(s"Reason(s) given as ${reasons}"))
+  }
+
   case class ApplicationDeletedByGatekeeper(
       id: EventId,
       applicationId: ApplicationId,
@@ -798,6 +810,19 @@ object ApplicationEvents {
     def asMetaData(): MetaData = ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
   }
 
+  case class ApplicationDeletedByGatekeeperV2(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actors.GatekeeperUser,
+      clientId: ClientId,
+      reasons: String,
+      requestingAdminEmail: LaxEmailAddress
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Deleted", List(s"Reason(s) given as $reasons", s"Requested by ${requestingAdminEmail.text}"))
+  }
+
   case class ProductionCredentialsApplicationDeleted(
       id: EventId,
       applicationId: ApplicationId,
@@ -805,6 +830,18 @@ object ApplicationEvents {
       actor: Actor,
       clientId: ClientId,
       wso2ApplicationName: String,
+      reasons: String
+    ) extends ApplicationEvent {
+
+    def asMetaData(): MetaData = ("Application credentials deleted", List(s"Reason(s) given as $reasons"))
+  }
+
+  case class ProductionCredentialsApplicationDeletedV2(
+      id: EventId,
+      applicationId: ApplicationId,
+      eventDateTime: Instant,
+      actor: Actor,
+      clientId: ClientId,
       reasons: String
     ) extends ApplicationEvent {
 

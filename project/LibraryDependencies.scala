@@ -2,7 +2,7 @@ import sbt._
 
 object LibraryDependencies {
 
-  val applicationDomainVersion = "1.1.0"
+  val applicationDomainVersion = "1.5.0"
 
   def apply(scalaVersion: String) = compileDependencies(scalaVersion) ++ testDependencies(scalaVersion)
 
@@ -16,7 +16,7 @@ object LibraryDependencies {
     "org.scalatest"        %% "scalatest"                                % "3.2.19"
     ) ++ (
       CrossVersion.partialVersion(scalaVersion) match {
-        case Some((2,_)) => Seq("org.mockito" %% "mockito-scala-scalatest" % "2.0.0")
+        case Some((2,_)) => Seq("org.mockito" %% "mockito-scala-scalatest" % "2.2.1")
         case _           => Seq("org.scalatestplus" %% "mockito-5-18" % "3.2.19.0")
       }
   )).map(_ % "test")
