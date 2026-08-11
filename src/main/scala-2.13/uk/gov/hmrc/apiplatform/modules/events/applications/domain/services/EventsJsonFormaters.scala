@@ -96,9 +96,12 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
   implicit val termsOfUseInvitationSentFormats: OFormat[TermsOfUseInvitationSent]                                           = Json.format[TermsOfUseInvitationSent]
   implicit val termsOfUsePassedFormats: OFormat[TermsOfUsePassed]                                                           = Json.format[TermsOfUsePassed]
 
-  implicit val applicationDeletedFormats: OFormat[ApplicationDeleted]                                           = Json.format[ApplicationDeleted]
-  implicit val applicationDeletedByGatekeeperFormats: OFormat[ApplicationDeletedByGatekeeper]                   = Json.format[ApplicationDeletedByGatekeeper]
-  implicit val productionCredentialsApplicationDeletedFormats: OFormat[ProductionCredentialsApplicationDeleted] = Json.format[ProductionCredentialsApplicationDeleted]
+  implicit val applicationDeletedFormats: OFormat[ApplicationDeleted]                                               = Json.format[ApplicationDeleted]
+  implicit val applicationDeletedFormatsV2: OFormat[ApplicationDeletedV2]                                           = Json.format[ApplicationDeletedV2]
+  implicit val applicationDeletedByGatekeeperFormats: OFormat[ApplicationDeletedByGatekeeper]                       = Json.format[ApplicationDeletedByGatekeeper]
+  implicit val applicationDeletedByGatekeeperFormatsV2: OFormat[ApplicationDeletedByGatekeeperV2]                   = Json.format[ApplicationDeletedByGatekeeperV2]
+  implicit val productionCredentialsApplicationDeletedFormats: OFormat[ProductionCredentialsApplicationDeleted]     = Json.format[ProductionCredentialsApplicationDeleted]
+  implicit val productionCredentialsApplicationDeletedFormatsV2: OFormat[ProductionCredentialsApplicationDeletedV2] = Json.format[ProductionCredentialsApplicationDeletedV2]
 
   implicit val applicationBlockedFormats: OFormat[ApplicationBlocked]                               = Json.format[ApplicationBlocked]
   implicit val applicationUnblockedFormats: OFormat[ApplicationUnblocked]                           = Json.format[ApplicationUnblocked]
@@ -245,13 +248,16 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     case object TERMS_OF_USE_PASSED                                extends EventType
     case object APPLICATION_STATE_CHANGED                          extends EventType
 
-    case object APPLICATION_DELETED                        extends EventType
-    case object APPLICATION_DELETED_BY_GATEKEEPER          extends EventType
-    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED extends EventType
-    case object ALLOW_APPLICATION_AUTO_DELETE              extends EventType
-    case object BLOCK_APPLICATION_AUTO_DELETE              extends EventType
-    case object ALLOW_APPLICATION_DELETE                   extends EventType
-    case object RESTRICT_APPLICATION_DELETE                extends EventType
+    case object APPLICATION_DELETED                           extends EventType
+    case object APPLICATION_DELETED_V2                        extends EventType
+    case object APPLICATION_DELETED_BY_GATEKEEPER             extends EventType
+    case object APPLICATION_DELETED_BY_GATEKEEPER_V2          extends EventType
+    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED    extends EventType
+    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED_V2 extends EventType
+    case object ALLOW_APPLICATION_AUTO_DELETE                 extends EventType
+    case object BLOCK_APPLICATION_AUTO_DELETE                 extends EventType
+    case object ALLOW_APPLICATION_DELETE                      extends EventType
+    case object RESTRICT_APPLICATION_DELETE                   extends EventType
 
     case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED          extends EventType
     case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED        extends EventType
@@ -326,8 +332,11 @@ abstract class EventsJsonFormatters(instantFormatter: Format[Instant]) {
     .and[TermsOfUseInvitationSent](EventTypes.TERMS_OF_USE_INVITATION_SENT.toString)
     .and[TermsOfUsePassed](EventTypes.TERMS_OF_USE_PASSED.toString)
     .and[ApplicationDeleted](EventTypes.APPLICATION_DELETED.toString)
+    .and[ApplicationDeletedV2](EventTypes.APPLICATION_DELETED_V2.toString)
     .and[ApplicationDeletedByGatekeeper](EventTypes.APPLICATION_DELETED_BY_GATEKEEPER.toString)
+    .and[ApplicationDeletedByGatekeeperV2](EventTypes.APPLICATION_DELETED_BY_GATEKEEPER_V2.toString)
     .and[ProductionCredentialsApplicationDeleted](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED.toString)
+    .and[ProductionCredentialsApplicationDeletedV2](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED_V2.toString)
     .and[AllowApplicationAutoDelete](EventTypes.ALLOW_APPLICATION_AUTO_DELETE.toString)
     .and[BlockApplicationAutoDelete](EventTypes.BLOCK_APPLICATION_AUTO_DELETE.toString)
     .and[AllowApplicationDelete](EventTypes.ALLOW_APPLICATION_DELETE.toString)

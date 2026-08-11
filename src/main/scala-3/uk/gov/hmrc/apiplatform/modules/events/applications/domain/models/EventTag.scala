@@ -56,9 +56,9 @@ object EventTag {
 
     override def reads(json: JsValue): JsResult[EventTag] = {
       (json match {
-        case JsString(t)   => EventTag.apply(fromScreamingSnakeCase(t))
+        case JsString(t)   => EventTag.apply(fromSnakeCase(t))
         case JsObject(obj) => obj.get("type").flatMap(_ match {
-            case JsString(t) => EventTag.apply(fromScreamingSnakeCase(t))
+            case JsString(t) => EventTag.apply(fromSnakeCase(t))
             case _           => None
           })
         case _             => None
@@ -114,9 +114,13 @@ object EventTag {
         _: TermsOfUseApprovalGranted |
         _: TermsOfUseInvitationSent |
         _: TermsOfUsePassed |
-        _: ProductionCredentialsApplicationDeleted => EventTag.TermsOfUse
+        _: ProductionCredentialsApplicationDeleted |
+        _: ProductionCredentialsApplicationDeletedV2 => EventTag.TermsOfUse
     case _: ApplicationDeleted |
         _: ApplicationDeletedByGatekeeper |
+        _: AllowApplicationAutoDelete |
+        _: ApplicationDeletedV2 |
+        _: ApplicationDeletedByGatekeeperV2 |
         _: AllowApplicationAutoDelete |
         _: BlockApplicationAutoDelete |
         _: AllowApplicationDelete |

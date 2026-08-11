@@ -6,7 +6,7 @@ object ScoverageSettings {
       "<empty>",
       """uk\.gov\.hmrc\.BuildInfo""" ,
     ).mkString(";"),
-    ScoverageKeys.coverageMinimumStmtTotal := 77.9, // Push back to 83+ when scoverage exclusion works in scala 3
+    ScoverageKeys.coverageMinimumStmtTotal := 79.9, // Push back to 83+ when scoverage exclusion works in scala 3
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true
   )

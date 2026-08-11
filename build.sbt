@@ -7,7 +7,7 @@ import bloop.integrations.sbt.BloopDefaults
 
 val appName = "api-platform-application-events"
 
-val scala2_13 = "2.13.16"
+val scala2_13 = "2.13.18"
 val scala3 = "3.3.7"
 
 inThisBuild(

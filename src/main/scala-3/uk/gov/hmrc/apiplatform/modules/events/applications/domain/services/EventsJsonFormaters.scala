@@ -97,9 +97,12 @@ abstract class EventsJsonFormatters(using instantFormatter: Format[Instant]) {
   given OFormat[TermsOfUseInvitationSent]                      = Json.format[TermsOfUseInvitationSent]
   given OFormat[TermsOfUsePassed]                              = Json.format[TermsOfUsePassed]
 
-  given OFormat[ApplicationDeleted]                      = Json.format[ApplicationDeleted]
-  given OFormat[ApplicationDeletedByGatekeeper]          = Json.format[ApplicationDeletedByGatekeeper]
-  given OFormat[ProductionCredentialsApplicationDeleted] = Json.format[ProductionCredentialsApplicationDeleted]
+  given OFormat[ApplicationDeleted]                        = Json.format[ApplicationDeleted]
+  given OFormat[ApplicationDeletedV2]                      = Json.format[ApplicationDeletedV2]
+  given OFormat[ApplicationDeletedByGatekeeper]            = Json.format[ApplicationDeletedByGatekeeper]
+  given OFormat[ApplicationDeletedByGatekeeperV2]          = Json.format[ApplicationDeletedByGatekeeperV2]
+  given OFormat[ProductionCredentialsApplicationDeleted]   = Json.format[ProductionCredentialsApplicationDeleted]
+  given OFormat[ProductionCredentialsApplicationDeletedV2] = Json.format[ProductionCredentialsApplicationDeletedV2]
 
   given OFormat[ApplicationBlocked]                = Json.format[ApplicationBlocked]
   given OFormat[ApplicationUnblocked]              = Json.format[ApplicationUnblocked]
@@ -206,77 +209,80 @@ abstract class EventsJsonFormatters(using instantFormatter: Format[Instant]) {
   private sealed trait EventType
 
   private object EventTypes {
-    case object COLLABORATOR_ADDED   extends EventType
-    case object COLLABORATOR_REMOVED extends EventType
-
-    case object TEAM_MEMBER_ADDED   extends EventType
-    case object TEAM_MEMBER_REMOVED extends EventType
-
-    case object CLIENT_SECRET_ADDED    extends EventType
-    case object CLIENT_SECRET_ADDED_V2 extends EventType
-
-    case object CLIENT_SECRET_REMOVED_V2 extends EventType
-    case object CLIENT_SECRET_REMOVED    extends EventType
-
-    case object API_SUBSCRIBED_V2   extends EventType
-    case object API_UNSUBSCRIBED_V2 extends EventType
-
-    case object API_SUBSCRIBED                                    extends EventType
-    case object API_UNSUBSCRIBED                                  extends EventType
-    case object GRANT_LENGTH_CHANGED                              extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_SET                        extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_CHANGED                    extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF            extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_STARTED       extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED      extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DECLINED                   extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE            extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY             extends EventType
-    case object RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY extends EventType
-
-    case object APPLICATION_APPROVAL_REQUEST_DECLINED              extends EventType
-    case object APPLICATION_APPROVAL_REQUEST_GRANTED               extends EventType
-    case object APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS extends EventType
-    case object APPLICATION_SELL_RESELL_OR_DISTRIBUTE_CHANGED      extends EventType
-    case object APPLICATION_APPROVAL_REQUEST_SUBMITTED             extends EventType
-    case object TERMS_OF_USE_APPROVAL_REQUEST_SUBMITTED            extends EventType
-    case object REQUESTER_EMAIL_VERIFICATION_RESENT                extends EventType
-    case object TERMS_OF_USE_APPROVAL_GRANTED                      extends EventType
-    case object TERMS_OF_USE_INVITATION_SENT                       extends EventType
-    case object TERMS_OF_USE_PASSED                                extends EventType
-    case object APPLICATION_STATE_CHANGED                          extends EventType
-
-    case object APPLICATION_DELETED                        extends EventType
-    case object APPLICATION_DELETED_BY_GATEKEEPER          extends EventType
-    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED extends EventType
-    case object ALLOW_APPLICATION_AUTO_DELETE              extends EventType
-    case object BLOCK_APPLICATION_AUTO_DELETE              extends EventType
-    case object ALLOW_APPLICATION_DELETE                   extends EventType
-    case object RESTRICT_APPLICATION_DELETE                extends EventType
-
-    case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED          extends EventType
-    case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED        extends EventType
-    case object PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED   extends EventType
-    case object PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED extends EventType
-    case object PROD_APP_NAME_CHANGED                             extends EventType
-
-    case object REDIRECT_URIS_UPDATED    extends EventType
-    case object REDIRECT_URIS_UPDATED_V2 extends EventType
-    case object REDIRECT_URI_ADDED       extends EventType
-    case object REDIRECT_URI_CHANGED     extends EventType
-    case object REDIRECT_URI_DELETED     extends EventType
-
-    case object POST_LOGOUT_REDIRECT_URIS_UPDATED extends EventType
-    case object POST_LOGOUT_REDIRECT_URI_ADDED    extends EventType
-    case object POST_LOGOUT_REDIRECT_URI_CHANGED  extends EventType
-    case object POST_LOGOUT_REDIRECT_URI_DELETED  extends EventType
-
-    case object PPNS_CALLBACK_URI_UPDATED extends EventType
-
-    case object RATE_LIMIT_CHANGED extends EventType
-
-    case object IP_ALLOWLIST_CIDR_BLOCK_CHANGED extends EventType
-
+    case object COLLABORATOR_ADDED                                   extends EventType
+    case object COLLABORATOR_REMOVED                                 extends EventType
+    //
+    case object TEAM_MEMBER_ADDED                                    extends EventType
+    case object TEAM_MEMBER_REMOVED                                  extends EventType
+    //
+    case object CLIENT_SECRET_ADDED                                  extends EventType
+    case object CLIENT_SECRET_ADDED_V2                               extends EventType
+    //
+    case object CLIENT_SECRET_REMOVED_V2                             extends EventType
+    case object CLIENT_SECRET_REMOVED                                extends EventType
+    //
+    case object API_SUBSCRIBED_V2                                    extends EventType
+    case object API_UNSUBSCRIBED_V2                                  extends EventType
+    //
+    case object API_SUBSCRIBED                                       extends EventType
+    case object API_UNSUBSCRIBED                                     extends EventType
+    case object GRANT_LENGTH_CHANGED                                 extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_SET                           extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_CHANGED                       extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_CHANGED_TO_SELF               extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_STARTED          extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_VERIFICATION_REQUIRED         extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED                      extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED_UPDATE               extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DID_NOT_VERIFY                extends EventType
+    case object RESPONSIBLE_INDIVIDUAL_DECLINED_OR_DID_NOT_VERIFY    extends EventType
+    //
+    case object APPLICATION_APPROVAL_REQUEST_DECLINED                extends EventType
+    case object APPLICATION_APPROVAL_REQUEST_GRANTED                 extends EventType
+    case object APPLICATION_APPROVAL_REQUEST_GRANTED_WITH_WARNINGS   extends EventType
+    case object APPLICATION_SELL_RESELL_OR_DISTRIBUTE_CHANGED        extends EventType
+    case object APPLICATION_APPROVAL_REQUEST_SUBMITTED               extends EventType
+    case object TERMS_OF_USE_APPROVAL_REQUEST_SUBMITTED              extends EventType
+    case object REQUESTER_EMAIL_VERIFICATION_RESENT                  extends EventType
+    case object TERMS_OF_USE_APPROVAL_GRANTED                        extends EventType
+    case object TERMS_OF_USE_INVITATION_SENT                         extends EventType
+    case object TERMS_OF_USE_PASSED                                  extends EventType
+    case object APPLICATION_STATE_CHANGED                            extends EventType
+    //
+    case object APPLICATION_DELETED                                  extends EventType
+    case object APPLICATION_DELETED_V2                               extends EventType
+    case object APPLICATION_DELETED_BY_GATEKEEPER_V2                 extends EventType
+    case object APPLICATION_DELETED_BY_GATEKEEPER                    extends EventType
+    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED           extends EventType
+    case object PRODUCTION_CREDENTIALS_APPLICATION_DELETED_V2        extends EventType
+    case object ALLOW_APPLICATION_AUTO_DELETE                        extends EventType
+    case object BLOCK_APPLICATION_AUTO_DELETE                        extends EventType
+    case object ALLOW_APPLICATION_DELETE                             extends EventType
+    case object RESTRICT_APPLICATION_DELETE                          extends EventType
+    //
+    case object PROD_APP_PRIVACY_POLICY_LOCATION_CHANGED             extends EventType
+    case object PROD_APP_TERMS_CONDITIONS_LOCATION_CHANGED           extends EventType
+    case object PROD_LEGACY_APP_PRIVACY_POLICY_LOCATION_CHANGED      extends EventType
+    case object PROD_LEGACY_APP_TERMS_CONDITIONS_LOCATION_CHANGED    extends EventType
+    case object PROD_APP_NAME_CHANGED                                extends EventType
+    //
+    case object REDIRECT_URIS_UPDATED                                extends EventType
+    case object REDIRECT_URIS_UPDATED_V2                             extends EventType
+    case object REDIRECT_URI_ADDED                                   extends EventType
+    case object REDIRECT_URI_CHANGED                                 extends EventType
+    case object REDIRECT_URI_DELETED                                 extends EventType
+    //
+    case object POST_LOGOUT_REDIRECT_URIS_UPDATED                    extends EventType
+    case object POST_LOGOUT_REDIRECT_URI_ADDED                       extends EventType
+    case object POST_LOGOUT_REDIRECT_URI_CHANGED                     extends EventType
+    case object POST_LOGOUT_REDIRECT_URI_DELETED                     extends EventType
+    //
+    case object PPNS_CALLBACK_URI_UPDATED                            extends EventType
+    //
+    case object RATE_LIMIT_CHANGED                                   extends EventType
+    //
+    case object IP_ALLOWLIST_CIDR_BLOCK_CHANGED                      extends EventType
+    //
     case object SANDBOX_APPLICATION_NAME_CHANGED                     extends EventType
     case object SANDBOX_APPLICATION_DESCRIPTION_CHANGED              extends EventType
     case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_CHANGED       extends EventType
@@ -284,13 +290,13 @@ abstract class EventsJsonFormatters(using instantFormatter: Format[Instant]) {
     case object SANDBOX_APPLICATION_DESCRIPTION_CLEARED              extends EventType
     case object SANDBOX_APPLICATION_PRIVACY_POLICY_URL_REMOVED       extends EventType
     case object SANDBOX_APPLICATION_TERMS_AND_CONDITIONS_URL_REMOVED extends EventType
-
-    case object APPLICATION_BLOCKED                  extends EventType
-    case object APPLICATION_UNBLOCKED                extends EventType
-    case object APPLICATION_SCOPES_CHANGED           extends EventType
-    case object APPLICATION_ACCESS_OVERRIDES_CHANGED extends EventType
-
-    case object APPLICATION_LINKED_TO_ORGANISATION extends EventType
+    //
+    case object APPLICATION_BLOCKED                                  extends EventType
+    case object APPLICATION_UNBLOCKED                                extends EventType
+    case object APPLICATION_SCOPES_CHANGED                           extends EventType
+    case object APPLICATION_ACCESS_OVERRIDES_CHANGED                 extends EventType
+    //
+    case object APPLICATION_LINKED_TO_ORGANISATION                   extends EventType
 
     // scalastyle:on number.of.types
     // scalastyle:on number.of.methods
@@ -327,8 +333,11 @@ abstract class EventsJsonFormatters(using instantFormatter: Format[Instant]) {
     .and[TermsOfUseInvitationSent](EventTypes.TERMS_OF_USE_INVITATION_SENT.toString)
     .and[TermsOfUsePassed](EventTypes.TERMS_OF_USE_PASSED.toString)
     .and[ApplicationDeleted](EventTypes.APPLICATION_DELETED.toString)
+    .and[ApplicationDeletedV2](EventTypes.APPLICATION_DELETED_V2.toString)
     .and[ApplicationDeletedByGatekeeper](EventTypes.APPLICATION_DELETED_BY_GATEKEEPER.toString)
+    .and[ApplicationDeletedByGatekeeperV2](EventTypes.APPLICATION_DELETED_BY_GATEKEEPER_V2.toString)
     .and[ProductionCredentialsApplicationDeleted](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED.toString)
+    .and[ProductionCredentialsApplicationDeletedV2](EventTypes.PRODUCTION_CREDENTIALS_APPLICATION_DELETED_V2.toString)
     .and[AllowApplicationAutoDelete](EventTypes.ALLOW_APPLICATION_AUTO_DELETE.toString)
     .and[BlockApplicationAutoDelete](EventTypes.BLOCK_APPLICATION_AUTO_DELETE.toString)
     .and[AllowApplicationDelete](EventTypes.ALLOW_APPLICATION_DELETE.toString)
