@@ -67,7 +67,7 @@ lazy val library = Project(appName, file("."))
     name                             := appName,
     majorVersion                     := 1,
     isPublicArtefact                 := true,
-    libraryDependencies ++= LibraryDependencies(scalaVersion.value)
+    libraryDependencies ++= LibraryDependencies.apply
   )
   .settings(
     ScoverageSettings()
