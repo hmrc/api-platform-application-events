@@ -3,7 +3,7 @@ import sbt._
 object LibraryDependencies {
 
   val commonDomainVersion = "1.4.0"
-  val applicationDomainVersion = "1.6.0-SNAPSHOT"
+  val applicationDomainVersion = "1.6.0"
 
   // Cut down and simplified from other libraries as this provides no fixtures
   
